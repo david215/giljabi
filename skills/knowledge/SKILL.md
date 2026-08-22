@@ -129,7 +129,13 @@ to consult both systems.
 4. **Delete the absorbed sources in the same commit** as the page that replaced them — a surviving
    ADR beside a page is two homes for every fact, and the ADR is the copy nobody updates. Repo-fact
    content in `CLAUDE.md` stays; domain content moves.
-5. **One PR**, reviewed by reading pages against code — the user decides any claim the code
+5. **Repoint the code comments in that same commit.** The old system told code to point at ADRs in
+   one line, so the codebase is full of references a deletion strands. Sweep for them —
+   `grep -rn 'ADR[- ]\?[0-9]\|docs/adr' <src dirs>` plus any docs-path pattern the repo uses — and
+   repoint each to the absorbing page; drop the comment instead where the page adds nothing the
+   code doesn't now say. Close with the absence proof: the same grep returning nothing (a bare
+   grep suffices — absence needs no context).
+6. **One PR**, reviewed by reading pages against code — the user decides any claim the code
    contradicts, since either the doc lied or the code is bugged, and only they know which.
 
 ## Integrity check

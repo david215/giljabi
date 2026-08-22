@@ -1,0 +1,3 @@
+interface:
+  display_name: "Knowledge"
+  short_description: "Maintain current-state domain pages — rewritten in place, git as the ledger"

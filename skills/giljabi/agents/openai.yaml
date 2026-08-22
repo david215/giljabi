@@ -1,0 +1,5 @@
+interface:
+  display_name: "giljabi"
+  short_description: "Run a feature end to end — sliced PRs, context resets at every boundary"
+policy:
+  allow_implicit_invocation: false

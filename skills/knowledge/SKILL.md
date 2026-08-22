@@ -1,6 +1,6 @@
 ---
 name: knowledge
-description: Maintain the repo's knowledge layer — one current-state page per domain entity, rewritten in place, git as the ledger. Use when recording a design decision, defining or sharpening domain terminology, updating docs after a code change, or when another skill needs the page contract.
+description: Maintain the repo's knowledge layer — one current-state page per domain entity, rewritten in place, git as the ledger. Use when recording a design decision, defining or sharpening domain terminology, updating docs after a code change, migrating legacy docs (ADRs, known-issues, CONTEXT.md) into the layer, or when another skill needs the page contract.
 ---
 
 # Knowledge
@@ -108,6 +108,29 @@ When maintaining the model live (a grill session, a design discussion):
 - **Cross-reference the code.** When the user states how something works, check whether the code
   agrees, and surface contradictions rather than recording the claim.
 - **Write inline, the moment a term or decision crystallises.** Batching is how it gets lost.
+
+## Migrating legacy docs
+
+A repo arriving with ADRs, a known-issues file, or a `CONTEXT.md` glossary converts in one focused
+effort — a docs-only branch, one PR — not gradually, because a long mixed period forces every reader
+to consult both systems.
+
+1. **Inventory and cluster.** List every ADR, known-issues entry, and glossary term; cluster them by
+   the entity whose code defends each fact. The clusters are the page list.
+2. **Verify before converting — this is the step that cannot be skipped.** A page asserts present
+   tense, so conversion *mints every claim fresh*: an ADR that drifted since it was written becomes
+   a false current-state assertion the moment it is transcribed. For each claim, check the code
+   still agrees — delegate sweeps to `Explore` subagents returning `file:line`, and read the hits.
+   A claim the code no longer supports is dropped or rewritten to what is true now; note genuine
+   discoveries (the code is wrong, not the doc) as hazards.
+3. **Write each page through the anti-inference test.** Most ADR prose dies here — motivation,
+   history, superseded clauses, alternatives the current code forecloses. Expect an order-of-
+   magnitude shrink; a conversion that keeps most of the source text has skipped the test.
+4. **Delete the absorbed sources in the same commit** as the page that replaced them — a surviving
+   ADR beside a page is two homes for every fact, and the ADR is the copy nobody updates. Repo-fact
+   content in `CLAUDE.md` stays; domain content moves.
+5. **One PR**, reviewed by reading pages against code — the user decides any claim the code
+   contradicts, since either the doc lied or the code is bugged, and only they know which.
 
 ## Integrity check
 

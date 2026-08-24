@@ -109,34 +109,45 @@ When maintaining the model live (a grill session, a design discussion):
   agrees, and surface contradictions rather than recording the claim.
 - **Write inline, the moment a term or decision crystallises.** Batching is how it gets lost.
 
-## Migrating legacy docs
+## Migrating existing docs
 
-A repo arriving with ADRs, a known-issues file, or a `CONTEXT.md` glossary converts in one focused
-effort — a docs-only branch, one PR — not gradually, because a long mixed period forces every reader
-to consult both systems.
+A repo arriving with prose about itself — ADR directories, design and architecture docs, defect
+lists, glossaries, package READMEs, wiki exports — converts in one focused effort, not gradually: a
+long mixed period forces every reader to consult both systems.
 
-1. **Inventory and cluster.** List every ADR, known-issues entry, and glossary term; cluster them by
-   the entity whose code defends each fact. The clusters are the page list.
-2. **Verify before converting — this is the step that cannot be skipped.** A page asserts present
-   tense, so conversion *mints every claim fresh*: an ADR that drifted since it was written becomes
-   a false current-state assertion the moment it is transcribed. For each claim, check the code
-   still agrees — delegate sweeps to `Explore` subagents returning `file:line`, and read the hits.
-   A claim the code no longer supports is dropped or rewritten to what is true now; note genuine
-   discoveries (the code is wrong, not the doc) as hazards.
-3. **Write each page through the anti-inference test.** Most ADR prose dies here — motivation,
-   history, superseded clauses, alternatives the current code forecloses. Expect an order-of-
-   magnitude shrink; a conversion that keeps most of the source text has skipped the test.
+1. **Inventory and triage.** Find every doc, then classify each piece by what it *is*, never by
+   where it lives:
+   - **Domain facts** (decisions, invariants, lifecycles, defects, terms) → absorb into entity
+     pages. Cluster by the entity whose code defends each fact; the clusters are the page list.
+   - **Repo facts** (how to commit, test, open PRs here) → `docs/agents/`.
+   - **Procedures and event records** (runbooks, postmortems, changelogs) → not facts about the
+     domain; leave them where they are.
+   - **External-audience docs** (published guides, API references) → out of scope entirely.
+   - **Dead text** (nothing above applies) → propose for deletion; list it in the PR.
+
+   Write the inventory — clusters, sources, per-claim status — to `.scratch/<slug>/` before
+   converting anything: a migration can outlive a context window, and the checkpoint is what
+   resumes it.
+2. **Verify before converting — the step that cannot be skipped.** A page asserts present tense, so
+   conversion *mints every claim fresh*: a doc that drifted since it was written becomes a false
+   current-state assertion the moment it is transcribed. For each claim, check the code still
+   agrees — delegate sweeps to `Explore` subagents returning `file:line`, and read the hits. A
+   claim the code no longer supports is dropped or rewritten to what is true now; where the *code*
+   turns out to be the wrong side, record a hazard.
+3. **Write each page through the anti-inference test.** Most source prose dies here — motivation,
+   history, superseded clauses, alternatives the current code forecloses. Expect an
+   order-of-magnitude shrink; a conversion that keeps most of the source text has skipped the test.
 4. **Delete the absorbed sources in the same commit** as the page that replaced them — a surviving
-   ADR beside a page is two homes for every fact, and the ADR is the copy nobody updates. Repo-fact
-   content in `CLAUDE.md` stays; domain content moves.
-5. **Repoint the code comments in that same commit.** The old system told code to point at ADRs in
-   one line, so the codebase is full of references a deletion strands. Sweep for them —
-   `grep -rn 'ADR[- ]\?[0-9]\|docs/adr' <src dirs>` plus any docs-path pattern the repo uses — and
-   repoint each to the absorbing page; drop the comment instead where the page adds nothing the
-   code doesn't now say. Close with the absence proof: the same grep returning nothing (a bare
-   grep suffices — absence needs no context).
-6. **One PR**, reviewed by reading pages against code — the user decides any claim the code
-   contradicts, since either the doc lied or the code is bugged, and only they know which.
+   source beside a page is two homes for every fact, and the source is the copy nobody updates.
+5. **Repoint stranded references in that same commit.** Grep for the identifiers and paths of
+   whatever was deleted — `ADR-NNNN`-style ids, relative doc paths, wiki links — across code
+   comments *and* the surviving docs. Repoint each to the absorbing page; drop the comment instead
+   where the page adds nothing the code doesn't now say. Close with the absence proof: the same
+   grep returning nothing (a bare grep suffices — absence needs no context).
+6. **Ship at reviewable size** — one docs-only PR normally; slice by entity cluster when a human
+   could not review it in one sitting. The review is reading pages against code, and the user
+   decides any claim the code contradicts: either the doc lied or the code is bugged, and only
+   they know which.
 
 ## Integrity check
 

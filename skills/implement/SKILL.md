@@ -71,10 +71,11 @@ harness): every call site of `X`, every spec building a fixture, every importer 
 changing. It returns **`file:line` lists, never counts** — state that contract in the prompt; a
 subagent reporting a number has thrown the evidence somewhere nobody can inspect. Running a suite is
 the same shape — a `fast` agent runs the command from `docs/agents/testing.md` and returns the
-failures verbatim, keeping the log out of this window. Decisions and edits stay here — the tier
-agents cannot edit, which is why they are the right type. This is not "send the ticket to a subagent", which `/giljabi`
-forbids: discovery answers a question you already have; implementation decides what to do about the
-answer.
+failures verbatim, keeping the log out of this window. Decisions and edits stay here. The tier
+agents are told not to edit, and told that no tool set enforces it — so say it again in the prompt
+(*report only; change nothing*), and treat an unexpected diff after a sweep as the agent's error, not
+a gift. This is not "send the ticket to a subagent", which `/giljabi` forbids: discovery answers a
+question you already have; implementation decides what to do about the answer.
 
 ## Close out
 

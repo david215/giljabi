@@ -13,12 +13,15 @@ Three-axis review of the diff between `HEAD` and a fixed point:
 - **Knowledge** — after this diff, do the `docs/domain/` and `docs/platform/` pages still tell the
   truth, and is the layer's shape intact (placement, generated index, relations)?
 
-The axes run as **parallel read-only sub-agents at the `deep` tier** (`/giljabi` maps the type per
+The axes run as **parallel non-editing sub-agents at the `deep` tier** (`/giljabi` maps the type per
 harness) so they don't pollute each other's context. That is a **precondition, not an implementation
 detail**: if this session cannot spawn sub-agents, stop and say so before any setup — do not quietly
-run the axes in one context, where the report looks the same and is weaker. A reviewer that can edit
-will occasionally fix what it found, putting unreviewed changes into the diff under review — the
-tier agents cannot edit; on a harness without read-only types, state the constraint in each prompt.
+run the axes in one context, where the report looks the same and is weaker. A reviewer that edits
+will occasionally fix what it found, putting unreviewed changes into the diff under review. No tool
+set prevents that — the `deep` agent has Bash because `git diff` and the index check need it — so the
+constraint is instruction, and it goes in **every** axis prompt on every harness: *report only; edit
+nothing; run no command that changes the working tree or git state.* After the axes return,
+`git status --porcelain` against the pre-review state is the check that they obeyed.
 
 ## 1. Pin the fixed point
 

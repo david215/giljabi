@@ -21,12 +21,20 @@ reset costs nothing.
 | 5. Build, per slice | `/implement` × N, `/review`, `/pr` | code, page updates, one PR per slice |
 | 6. Close | `/knowledge-tend` on the feature's pages | cleanup, layer shape re-checked, friction routed to retro |
 
-Every phase runs on every feature, a one-line fix included — the phases self-limit (an interview
-with no fork has nothing to ask; a spec for a one-line fix is five lines), so there is no size
-exemption to judge.
-
 Phases 1–3 need only the knowledge pages (`docs/domain/`, `docs/platform/`) and tolerate their absence. If `docs/agents/` is missing, say
 so once and continue; the gate is at phase 4.
+
+## Not every change is a feature
+
+A change that fits one context window and ships as one PR runs the standalone path:
+`/implement` → `/review` → `/commit` → `/pr`. No `.scratch/`, no plan PR, no phases. The knowledge
+discipline is not what is skipped — `/implement` still updates pages in the same diff and `/review`'s
+Knowledge axis still fails drift; only the ceremony that exists to survive context resets is.
+
+The test is artifacts, not size: **if you would need `STATE.md` to resume it, it is a feature** and
+runs the six phases. A one-line fix never needs one; a change whose interview surfaces a fork you
+cannot settle in one sitting always does — at that point stop, name the slug, and start phase 1 with
+what you have learned as the first entry in `findings.md`.
 
 ## Phases 2 and 3 — draft delegated, decision here
 

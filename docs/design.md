@@ -115,6 +115,25 @@ model and effort travel together; on Codex it is the `model` and `reasoning_effo
 asking the model its name — self-report is wrong on both harnesses; session logs are the evidence. `grill`, `setup`, `implement` stay inline — their primary source
 is the user.
 
+## Why there is a standalone path
+
+An earlier version ran every phase on every change, arguing the phases self-limit and so no size
+judgment was needed. But `/implement` already claimed to run standalone, so the exemption existed and
+`giljabi` merely denied it — every user drew the line privately, which is the worst kind of
+judgment call. The test that replaced it is checkable: would resuming need `STATE.md`? The six
+phases exist to survive context resets; a change that fits one window has nothing for them to save.
+What is never exempted is the knowledge discipline, and that lives in `/implement` and `/review`, not
+in the phases — so the standalone path loses no page and no check, only bookkeeping.
+
+## Why the tier agents are non-editing by instruction, not by tool set
+
+Every tier carries Bash: `review`'s Knowledge axis runs `git diff` and `diff <(index.sh …)`, `fast`
+runs suites and `/commit`. Bash can also `sed -i` and `git commit`, so no `tools:` list makes an
+agent read-only, and an earlier version claiming "read-only by tool set" was asserting a guarantee
+nothing provided. The honest shape is the one Codex already had: the constraint is stated in the
+agent definition and repeated in every prompt, and the caller checks `git status` afterwards. A
+guarantee that is really a convention is safer named as a convention.
+
 ## Why directives have their own file
 
 A user instruction that is neither spec, repo fact, nor hazard — "skip e2e this week" — had no

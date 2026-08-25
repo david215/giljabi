@@ -13,9 +13,9 @@ for f in "$dir"/*.md; do
   [ "$(basename "$f")" = README.md ] && continue
   awk -v f="$(basename "$f")" '
     /^---$/ { fm++; next }
-    fm==1 && /^id: /      { id=$2 }
-    fm==1 && /^context: / { ctx=$2 }
-    fm==1 && /^status: /  { st=$2 }
+    fm==1 && /^id: /      { id=$0;  sub(/^id: */, "", id) }
+    fm==1 && /^context: / { ctx=$0; sub(/^context: */, "", ctx) }
+    fm==1 && /^status: /  { st=$0;  sub(/^status: */, "", st) }
     fm>=2 && /^# /        { intitle=1; next }
     fm>=2 && intitle && NF { def = def (def ? " " : "") $0; if ($0 ~ /\.( |$)/) intitle=0 }
     END {

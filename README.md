@@ -44,7 +44,7 @@ table: domain, platform, conventions, agents, runbook, and an entry point that o
 | `to-spec` | Synthesizes the conversation into a spec |
 | `to-tickets` | Tracer-bullet tickets with blocking edges, grouped into mergeable slices |
 | `implement` | One ticket, test-first; docs in the same diff; discoveries routed, never deferred |
-| `review` | Three axes — Standards, Spec, Knowledge — in parallel read-only sub-agents |
+| `review` | Three axes — Standards, Spec, Knowledge — in parallel non-editing sub-agents |
 | `commit` | Secret-screened Conventional Commits in the repo's own conventions |
 | `pr` | Real PRs from the merge base, template-faithful, on GitHub or Azure DevOps |
 | `setup` | One run configures a repo: tracker, VCS, testing, `.scratch/`, the knowledge directories |

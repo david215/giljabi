@@ -1,6 +1,6 @@
 ---
 name: giljabi
-description: Run a feature from an idea to merged PRs — grill, spec, tickets sliced into independently-mergeable PRs, a plan commit, sequential implementation, three-axis review. Owns the phase order and the context resets; each phase's method lives in its own skill. Use when starting or resuming feature work.
+description: Run a feature from an idea to merged PRs while keeping the repo's knowledge layer true at every phase — grill (pages tended first), spec, tickets sliced into independently-mergeable PRs, a plan commit, sequential implementation with page updates in the same diff, three-axis review, a closing tend. Owns the phase order and the context resets; each phase's method lives in its own skill. Use when starting or resuming feature work.
 ---
 
 # giljabi (길잡이)

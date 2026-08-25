@@ -1,25 +1,30 @@
 # giljabi (길잡이)
 
-Twelve agent skills that run a feature from an idea to merged PRs, and leave the repo in a state any
-agent — or any person — can work from. *Giljabi* is Korean for "guide": the one who leaves the
-markers so the next traveler crosses the terrain alone.
+Twelve agent skills that keep a repo's knowledge of itself true — one current-state page per domain
+entity and platform behaviour, rewritten in the same diff as the code — and a feature pipeline, idea
+to merged PRs, whose every phase is what keeps those pages honest. *Giljabi* is Korean for "guide":
+the one who leaves the markers so the next traveler crosses the terrain alone. The markers are the
+point; the trip is how they get left.
 
 ## The shape of the system
-
-**A feature does not fit in one context window.** Every phase therefore leaves an artifact, and the
-next phase reads a file instead of remembering a conversation:
-
-```
-/grill  →  /to-spec  →  /to-tickets  →  plan PR  →  /implement × N  →  /review  →  /pr
-                                                    └──────── per slice, sequential ───────┘
-```
 
 **Documentation is a knowledge layer, not a ledger.** One current-state page per entity — business
 entities in `docs/domain/`, stack behaviour in `docs/platform/` — rewritten in place, git as the only
 history, the index generated from frontmatter. No ADRs, no known-issues file, no
 append-only anything: a page asserts present tense, which makes a wrong page a findable bug instead
 of an old memo with an excuse. Pages change in the same diff as the code, and the review's Knowledge
-axis fails the change when they don't. `/knowledge` carries the contract.
+axis fails the change when they don't. `/knowledge` carries the contract; `/knowledge-tend` keeps the
+layer's shape and re-verifies its claims against code; `/migrate-docs` folds legacy prose into it.
+
+**A feature does not fit in one context window.** Every phase therefore leaves an artifact — a page,
+a spec, a ticket — and the next phase reads a file instead of remembering a conversation. The
+pipeline exists to touch the layer at every step: the grill tends the pages it will lean on before
+asking, implement updates them in the code diff, review fails drift, close re-checks the shape.
+
+```
+/grill  →  /to-spec  →  /to-tickets  →  plan PR  →  /implement × N  →  /review  →  /pr
+                                                    └──────── per slice, sequential ───────┘
+```
 
 **Three layers, three placement tests.** A line lives in a skill if it would be identical in every
 repo (method); in the repo's docs if it could differ per repo (fact); in the always-on rules file if
@@ -31,6 +36,9 @@ table: domain, platform, conventions, agents, runbook, and an entry point that o
 
 | Skill | Does |
 | --- | --- |
+| `knowledge` | The knowledge-layer contract: page format, writing tests, integrity check |
+| `knowledge-tend` | Layer maintenance — placement, generated index, page shape, drift against code, a page for an undocumented entity; proposals applied on approval |
+| `migrate-docs` | One-time conversion of legacy docs (ADRs, design docs) into the layer, one entity cluster per run |
 | `giljabi` | The orchestrator — phase order, slices, context resets, STATE.md |
 | `grill` | Relentless design interview; maps code and data first, asks in rounds |
 | `to-spec` | Synthesizes the conversation into a spec |
@@ -39,9 +47,6 @@ table: domain, platform, conventions, agents, runbook, and an entry point that o
 | `review` | Three axes — Standards, Spec, Knowledge — in parallel read-only sub-agents |
 | `commit` | Secret-screened Conventional Commits in the repo's own conventions |
 | `pr` | Real PRs from the merge base, template-faithful, on GitHub or Azure DevOps |
-| `knowledge` | The knowledge-layer contract: page format, writing tests, integrity check |
-| `knowledge-tend` | Layer maintenance — placement, generated index, page shape, drift against code, a page for an undocumented entity; proposals applied on approval |
-| `migrate-docs` | One-time conversion of legacy docs (ADRs, design docs) into the layer, one entity cluster per run |
 | `setup` | One run configures a repo: tracker, VCS, testing, `.scratch/`, the knowledge directories |
 
 ## Install

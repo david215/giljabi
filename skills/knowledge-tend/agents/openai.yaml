@@ -1,0 +1,5 @@
+interface:
+  display_name: "Knowledge Tend"
+  short_description: "Re-verify the knowledge layer's shape and claims against code, fix on approval"
+policy:
+  allow_implicit_invocation: true

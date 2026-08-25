@@ -13,6 +13,8 @@ for d in skills/*/; do
   fm_name=$(sed -n 's/^name: //p' "$d/SKILL.md" | head -1)
   [ "$fm_name" = "$name" ] || { echo "FAIL: $d frontmatter name is '$fm_name'"; fail=1; }
   grep -q '^description: ' "$d/SKILL.md" || { echo "FAIL: $d has no description"; fail=1; }
+  # Codex metadata — optional for Codex, mandatory here so the /skills picker stays uniform.
+  [ -f "$d/agents/openai.yaml" ] || { echo "FAIL: $d has no agents/openai.yaml"; fail=1; }
 done
 
 # Every tier agent has matching name, a model and an effort.

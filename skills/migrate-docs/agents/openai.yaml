@@ -1,0 +1,5 @@
+interface:
+  display_name: "Migrate Docs"
+  short_description: "Convert legacy ADRs and design docs into the docs/domain knowledge layer"
+policy:
+  allow_implicit_invocation: false

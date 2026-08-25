@@ -12,11 +12,12 @@ Three-axis review of the diff between `HEAD` and a fixed point:
 - **Spec** — does the code faithfully implement what was asked?
 - **Knowledge** — after this diff, do the `docs/domain/` pages still tell the truth?
 
-The axes run as **parallel read-only sub-agents** so they don't pollute each other's context. That is
-a **precondition, not an implementation detail**: if this session cannot spawn sub-agents, stop and
-say so before any setup — do not quietly run the axes in one context, where the report looks the same
-and is weaker. A reviewer that can edit will occasionally fix what it found, putting unreviewed
-changes into the diff under review — read-only agent types for all three.
+The axes run as **parallel read-only sub-agents at the `deep` tier** (`/giljabi` maps the type per
+harness) so they don't pollute each other's context. That is a **precondition, not an implementation
+detail**: if this session cannot spawn sub-agents, stop and say so before any setup — do not quietly
+run the axes in one context, where the report looks the same and is weaker. A reviewer that can edit
+will occasionally fix what it found, putting unreviewed changes into the diff under review — the
+tier agents cannot edit; on a harness without read-only types, state the constraint in each prompt.
 
 ## 1. Pin the fixed point
 

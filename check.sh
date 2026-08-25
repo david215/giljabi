@@ -15,6 +15,14 @@ for d in skills/*/; do
   grep -q '^description: ' "$d/SKILL.md" || { echo "FAIL: $d has no description"; fail=1; }
 done
 
+# Every tier agent has matching name, a model and an effort.
+for f in agents/*.md; do
+  name=$(basename "$f" .md)
+  [ "$(sed -n 's/^name: //p' "$f" | head -1)" = "$name" ] || { echo "FAIL: $f frontmatter name mismatch"; fail=1; }
+  grep -q '^model: ' "$f" || { echo "FAIL: $f has no model"; fail=1; }
+  grep -qE '^effort: (low|medium|high|xhigh|max)$' "$f" || { echo "FAIL: $f has no valid effort"; fail=1; }
+done
+
 # plugin.json paths exist, and every skill dir is listed.
 while read -r p; do
   [ -d "$p" ] || { echo "FAIL: plugin.json lists missing $p"; fail=1; }
@@ -24,7 +32,7 @@ for d in skills/*/; do
 done
 
 # No skill references a skill that does not exist in this repo.
-known="giljabi|grill|to-spec|to-tickets|implement|review|commit|pr|knowledge|setup|clear|compact|handoff"
+known="giljabi|grill|to-spec|to-tickets|implement|review|commit|pr|knowledge|migrate-docs|setup|clear|compact|handoff|new"
 if grep -rnoE '`/[a-z-]+`' skills/*/SKILL.md | grep -vE "\`/(${known})\`"; then
   echo "FAIL: reference to an unknown skill (above)"; fail=1
 fi

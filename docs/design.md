@@ -58,3 +58,52 @@ Its predecessor banned narration without giving overflow a destination, so multi
 notes, and outcomes all flowed into the one file the next session was guaranteed to read — a
 25-line log wearing a bookmark's name. The fix was homes (slices.md, findings.md, knowledge pages),
 not a sterner ban.
+
+## Why migration is its own skill, scoped by entity cluster
+
+`/knowledge` is loaded by every phase that touches a page; migration runs once per repo. Carrying
+the procedure in `/knowledge` taxed every reader for a writer-only concern, so it moves to
+`/migrate-docs`. A run converts one entity cluster from a checkpointed inventory, ordered by
+proximity to planned work, until the inventory is empty — bounded, so the two-system period has an
+end date. Migration converts *existing* docs only; undocumented entities take the layer's normal
+lazy path, which is why "the whole codebase" is never the scope.
+
+## Why harness-specific tokens are capabilities with a map
+
+`/clear`, `AskUserQuestion`, the `Explore` agent type and three others are Claude Code spellings of
+capabilities every harness has under another name. Skills name the capability; one table in
+`giljabi/SKILL.md` maps it per harness (Claude Code, Codex verified; others translate). The map is
+not a `docs/agents/` file because the harness is a property of the session, not the repo.
+
+## Why tiers apply only to delegated work
+
+A skill running inline runs on the session model; nothing a skill says can change that, and
+switching `/model` for a thirty-second `/commit` costs more than it saves. So the tier vocabulary
+(`deep | standard | fast`) attaches to subagents — each tier fixing model *and* reasoning effort
+together, because both answer one question and two knobs is a choice with no rule — and the set of delegated skills widened to make
+tiers worth having: `to-spec` and `to-tickets` draft as `deep` subagents from artifacts (reviewed
+and edited inline, published after approval), all three `review` axes run `deep`, `pr` runs `standard` (prose humans read, synthesized from
+several artifacts), `commit`/test runs and `Explore` sweeps run `fast`. On Claude Code a tier is an agent definition the plugin ships, so a skill spawns by type name and
+model and effort travel together; on Codex it is the `model` and `reasoning_effort` pair on
+`spawn_agent`. A tier is never verified by
+asking the model its name — self-report is wrong on both harnesses; session logs are the evidence. `grill`, `setup`, `implement` stay inline — their primary source
+is the user.
+
+## Why directives have their own file
+
+A user instruction that is neither spec, repo fact, nor hazard — "skip e2e this week" — had no
+home, so it flowed into STATE.md, which is what the pointer-only cap exists to stop.
+`.scratch/<slug>/directives.md` holds them: one line each, rewritten in place, deleted when lapsed,
+read at every session start after STATE.md. Not `findings.md` — that file grows and its register is
+unjudged discovery; a directive on line 40 is a directive missed.
+
+## Why a code comment may say more than "see the page"
+
+The page owns the domain invariant; the code site may own the *local* why — why this ordering,
+what breaks if a reader "fixes" this line — because that fact has no locatable home on a page.
+Restating the page's argument at the call site stays banned: two homes, and the code copy drifts.
+
+## Why the setup gate sits at phase 4
+
+`docs/agents/` protects branching and commit conventions, which nothing before phase 4 uses. An
+ideation-only run through phases 1–3 was blocked by a gate guarding a step it never reached.

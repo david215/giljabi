@@ -1,6 +1,6 @@
 # giljabi (길잡이)
 
-Ten agent skills that run a feature from an idea to merged PRs, and leave the repo in a state any
+Eleven agent skills that run a feature from an idea to merged PRs, and leave the repo in a state any
 agent — or any person — can work from. *Giljabi* is Korean for "guide": the one who leaves the
 markers so the next traveler crosses the terrain alone.
 
@@ -38,6 +38,7 @@ passing no test is deleted, not homed.
 | `commit` | Secret-screened Conventional Commits in the repo's own conventions |
 | `pr` | Real PRs from the merge base, template-faithful, on GitHub or Azure DevOps |
 | `knowledge` | The knowledge-layer contract: page format, writing tests, integrity check |
+| `migrate-docs` | One-time conversion of legacy docs (ADRs, design docs) into the layer, one entity cluster per run |
 | `setup` | One run configures a repo: tracker, VCS, testing, `.scratch/`, `docs/domain/` |
 
 ## Install
@@ -45,6 +46,17 @@ passing no test is deleted, not homed.
 ```
 npx skills add david215/giljabi -g -s '*' -y -a claude-code codex cursor gemini-cli
 ```
+
+The `skills` CLI installs skills only. The three tier agents in `agents/` (`deep`, `standard`,
+`fast`) reach Claude Code by one directory symlink from a checkout — Claude Code scans
+subdirectories of `~/.claude/agents/`, so this adds no files there and a `git pull` updates them:
+
+```
+git clone https://github.com/david215/giljabi
+mkdir -p ~/.claude/agents && ln -s "$PWD"/giljabi/agents ~/.claude/agents/giljabi
+```
+
+Codex needs neither: the tier table in `giljabi/SKILL.md` maps each tier to `spawn_agent` parameters.
 
 Edit here, push, reinstall — never `cp` into an install directory: a copy has no lock entry, so
 `skills update` skips it forever while it looks fine on disk. Run `./check.sh` before committing.

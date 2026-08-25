@@ -52,7 +52,7 @@ Every answer you can read out of the repo is one the user does not have to type:
 - `CLAUDE.md` / `AGENTS.md` — an existing `## Agent skills` block, and any rules already in prose.
 - `docs/agents/`, `docs/domain/` — this skill's own prior output.
 - Legacy docs — `docs/adr/`, `CONTEXT.md`, a known-issues file. Their presence means a migration to
-  the knowledge layer is owed; note it, offer it as a separate follow-up, and do not delete anything.
+  the knowledge layer is owed; note it, name `/migrate-docs` as the follow-up, and do not delete anything.
 
 **Infer the PR host and the issue tracker separately.** They usually coincide and legitimately
 differ — local-markdown issues with Azure DevOps PRs is a real configuration. Deriving one from the

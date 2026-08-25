@@ -18,9 +18,9 @@ questions: the sharpest question in a session is usually a fork nobody knew was 
 and you open by asking the user to describe their own codebase — slower and less accurate than
 reading it.
 
-**Delegate the sweep, read the hits yourself.** Send each sweep to an `Explore` subagent — one per
-question — returning **`file:line` pointers, never conclusions or counts**; state that contract in
-every prompt. Then open the files that matter, here: the map becomes the design tree, and a
+**Delegate the sweep, read the hits yourself.** Send each sweep to a read-only search subagent at
+the `fast` tier — one per question — returning **`file:line` pointers, never conclusions or counts**;
+state that contract in every prompt (`/giljabi` maps tiers and agent types per harness). Then open the files that matter, here: the map becomes the design tree, and a
 summarised map is a secondary source at the moment you most need a primary one.
 
 **Map the data too, when behaviour keys off it.** Code says what *can* happen; only stored data says
@@ -52,10 +52,11 @@ Each question goes on **both** surfaces:
 ➡️ <your recommended answer>
 ```
 
-…and `AskUserQuestion`, one question per frontier item, recommendation first and labelled
-`(Recommended)`. They carry different content, not two copies: the tool's labels cannot hold an
-argument, and prose cannot be clicked. Four questions per tool call at most — on a wider frontier,
-ask the remainder in prose rather than dropping it.
+…and, where the harness has a structured-question tool (`AskUserQuestion` on Claude Code), one
+question per frontier item, recommendation first and labelled `(Recommended)`. They carry different
+content, not two copies: the tool's labels cannot hold an argument, and prose cannot be clicked.
+Four questions per tool call at most — on a wider frontier, ask the remainder in prose rather than
+dropping it. Without such a tool, the prose block stands alone.
 
 **Facts are your job; decisions are the user's.** A question needing a fact from the environment
 goes to a lookup or a subagent, never to the user — and an unfinished lookup only blocks the
@@ -66,10 +67,16 @@ argue against it with evidence before asking within it.
 
 ## Checkpoint continuously
 
-After every round, write the settled decisions and open branches to
-`.scratch/<feature-slug>/findings.md`. A long grilling outlives its window; the checkpoint is what
-lets a mid-phase `/clear` re-enter from files instead of re-interviewing. The main window holds the
-conversation — never the greps.
+After every round, write to `.scratch/<feature-slug>/findings.md`: every settled decision with
+its one-line reason, every rejected branch with why it lost, every open branch, and every fact the
+map established. The checkpoint has two readers and must satisfy both: a mid-phase context reset
+re-entering from files instead of re-interviewing, and the `deep` agent that drafts `/to-spec` from
+this file alone in phase 2 — it never sees the transcript, so a decision missing here is a decision
+missing from the spec. The main window holds the conversation — never the greps.
+
+An instruction the user gives that is neither a decision about the feature nor a fact about the
+repo — how to run this feature's work — goes to `directives.md` the moment it is said
+(`/giljabi` owns that file).
 
 ## Write knowledge as it crystallises
 

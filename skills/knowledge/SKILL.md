@@ -1,6 +1,6 @@
 ---
 name: knowledge
-description: Maintain the repo's knowledge layer — one current-state page per domain entity, rewritten in place, git as the ledger. Use when recording a design decision, defining or sharpening domain terminology, updating docs after a code change, migrating legacy docs (ADRs, known-issues, CONTEXT.md) into the layer, or when another skill needs the page contract.
+description: Maintain the repo's knowledge layer — one current-state page per domain entity, rewritten in place, git as the ledger. Use when recording a design decision, defining or sharpening domain terminology, updating docs after a code change, or when another skill needs the page contract. Legacy-doc migration itself is /migrate-docs.
 ---
 
 # Knowledge
@@ -95,8 +95,10 @@ cut the story); anything restating the code; references to anything ephemeral �
 `.scratch/` paths, feature slugs. State the fact, not where it was decided: *no ticket asked for
 it* → *nobody asked for it*.
 
-Point at a page from code in **one line**; never restate its argument at the call site — two copies
-drift, and the code copy is the one nobody updates.
+Point at a page from code in **one line**. The code site may add a short *local* why — why this
+ordering, what breaks if a reader "fixes" this line — when that fact passes the anti-inference test
+at the line and has no home on the page. Never restate the page's argument at the call site: two
+copies drift, and the code copy is the one nobody updates.
 
 ## Sharpening, while designing
 
@@ -111,43 +113,10 @@ When maintaining the model live (a grill session, a design discussion):
 
 ## Migrating existing docs
 
-A repo arriving with prose about itself — ADR directories, design and architecture docs, defect
-lists, glossaries, package READMEs, wiki exports — converts in one focused effort, not gradually: a
-long mixed period forces every reader to consult both systems.
-
-1. **Inventory and triage.** Find every doc, then classify each piece by what it *is*, never by
-   where it lives:
-   - **Domain facts** (decisions, invariants, lifecycles, defects, terms) → absorb into entity
-     pages. Cluster by the entity whose code defends each fact; the clusters are the page list.
-   - **Repo facts** (how to commit, test, open PRs here) → `docs/agents/`.
-   - **Procedures and event records** (runbooks, postmortems, changelogs) → not facts about the
-     domain; leave them where they are.
-   - **External-audience docs** (published guides, API references) → out of scope entirely.
-   - **Dead text** (nothing above applies) → propose for deletion; list it in the PR.
-
-   Write the inventory — clusters, sources, per-claim status — to `.scratch/<slug>/` before
-   converting anything: a migration can outlive a context window, and the checkpoint is what
-   resumes it.
-2. **Verify before converting — the step that cannot be skipped.** A page asserts present tense, so
-   conversion *mints every claim fresh*: a doc that drifted since it was written becomes a false
-   current-state assertion the moment it is transcribed. For each claim, check the code still
-   agrees — delegate sweeps to `Explore` subagents returning `file:line`, and read the hits. A
-   claim the code no longer supports is dropped or rewritten to what is true now; where the *code*
-   turns out to be the wrong side, record a hazard.
-3. **Write each page through the anti-inference test.** Most source prose dies here — motivation,
-   history, superseded clauses, alternatives the current code forecloses. Expect an
-   order-of-magnitude shrink; a conversion that keeps most of the source text has skipped the test.
-4. **Delete the absorbed sources in the same commit** as the page that replaced them — a surviving
-   source beside a page is two homes for every fact, and the source is the copy nobody updates.
-5. **Repoint stranded references in that same commit.** Grep for the identifiers and paths of
-   whatever was deleted — `ADR-NNNN`-style ids, relative doc paths, wiki links — across code
-   comments *and* the surviving docs. Repoint each to the absorbing page; drop the comment instead
-   where the page adds nothing the code doesn't now say. Close with the absence proof: the same
-   grep returning nothing (a bare grep suffices — absence needs no context).
-6. **Ship at reviewable size** — one docs-only PR normally; slice by entity cluster when a human
-   could not review it in one sitting. The review is reading pages against code, and the user
-   decides any claim the code contradicts: either the doc lied or the code is bugged, and only
-   they know which.
+A repo arriving with prose about itself — ADRs, design docs, known-issues files, glossaries —
+converts through `/migrate-docs`: one checkpointed inventory, one entity cluster per run, sources
+deleted and references repointed in the same commit. That skill applies this page contract; it is
+not restated here because it runs once per repo and this file is loaded on every page edit.
 
 ## Integrity check
 

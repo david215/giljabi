@@ -5,8 +5,10 @@ description: Turn the current conversation into a spec and publish it to the pro
 
 # To Spec
 
-Synthesize the current conversation and codebase understanding into a spec. Do **not** interview the
-user — the interview already happened; this is the write-down.
+Synthesize the design into a spec. Do **not** interview the user — the interview already happened;
+this is the write-down. Your source is the conversation when you have it; under `/giljabi` you are a
+`deep` agent and your source is `.scratch/<feature-slug>/findings.md` plus the repo — return the
+draft as text and skip steps 2–4, which the caller runs with the user.
 
 The issue tracker should have been configured — run `/setup` if `docs/agents/issue-tracker.md` is
 missing.

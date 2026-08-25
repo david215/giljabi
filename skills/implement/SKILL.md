@@ -66,11 +66,13 @@ surface, one line, unjudged:
 
 ## Delegate discovery, keep decisions
 
-A bounded, read-only question goes to an `Explore` subagent: every call site of `X`, every spec
-building a fixture, every importer of a module you are changing. It returns **`file:line` lists,
-never counts** — state that contract in the prompt; a subagent reporting a number has thrown the
-evidence somewhere nobody can inspect. Decisions and edits stay here — `Explore` has no `Edit`,
-which is why it is the right type. This is not "send the ticket to a subagent", which `/giljabi`
+A bounded, read-only question goes to a `fast`-tier search subagent (`/giljabi` maps the type per
+harness): every call site of `X`, every spec building a fixture, every importer of a module you are
+changing. It returns **`file:line` lists, never counts** — state that contract in the prompt; a
+subagent reporting a number has thrown the evidence somewhere nobody can inspect. Running a suite is
+the same shape — a `fast` agent runs the command from `docs/agents/testing.md` and returns the
+failures verbatim, keeping the log out of this window. Decisions and edits stay here — the tier
+agents cannot edit, which is why they are the right type. This is not "send the ticket to a subagent", which `/giljabi`
 forbids: discovery answers a question you already have; implementation decides what to do about the
 answer.
 
@@ -78,6 +80,8 @@ answer.
 
 The ticket is done when: the typecheck and this ticket's suites are green (a red suite means the
 work is wrong — fix it, or have the user accept the failure out loud); the pages are updated in the
-diff; `/commit` has run on the current branch; and `STATE.md` names the next ticket. Review runs at
+diff; `/commit` has run on the current branch — delegated to a `fast` agent, which reads the ticket
+file and `directives.md` and has everything the message needs; and `STATE.md` names the next
+ticket. Review runs at
 slice scope via `/review` — running standalone outside `/giljabi`, run `/review` yourself over the
 whole change at the end, and say that you did.

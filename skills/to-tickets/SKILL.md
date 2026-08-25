@@ -16,7 +16,9 @@ missing.
 ### 1. Gather context
 
 Work from the conversation and the spec. If the user passes a reference (a spec path, an issue URL),
-fetch and read its full body and comments.
+fetch and read its full body and comments. Under `/giljabi` you are a `deep` agent working from
+`spec.md` alone: run steps 2–4, return the breakdown as text, and stop — the quiz and the publish
+are the caller's.
 
 ### 2. Explore the codebase
 

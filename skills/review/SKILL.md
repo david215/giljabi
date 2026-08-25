@@ -1,6 +1,6 @@
 ---
 name: review
-description: Review the changes since a fixed point along three axes — Standards (repo's coding standards + smell baseline), Spec (does the diff match what was asked?), and Knowledge (do the docs/domain pages still tell the truth?) — in parallel read-only sub-agents, then route every finding through the disposition rule. Use to review a slice, branch, or PR, or as the review step of /giljabi.
+description: Review the changes since a fixed point along three axes — Standards (repo's coding standards + smell baseline), Spec (does the diff match what was asked?), and Knowledge (do the docs/domain and docs/platform pages still tell the truth, and is the layer's shape intact?) — in parallel read-only sub-agents, then route every finding through the disposition rule. Use to review a slice, branch, or PR, or as the review step of /giljabi.
 ---
 
 # Review
@@ -10,7 +10,8 @@ Three-axis review of the diff between `HEAD` and a fixed point:
 - **Standards** — does the code conform to this repo's documented standards (plus the smell
   baseline below)?
 - **Spec** — does the code faithfully implement what was asked?
-- **Knowledge** — after this diff, do the `docs/domain/` pages still tell the truth?
+- **Knowledge** — after this diff, do the `docs/domain/` and `docs/platform/` pages still tell the
+  truth, and is the layer's shape intact (placement, generated index, relations)?
 
 The axes run as **parallel read-only sub-agents at the `deep` tier** (`/giljabi` maps the type per
 harness) so they don't pollute each other's context. That is a **precondition, not an implementation
@@ -58,8 +59,9 @@ it; skip anything tooling enforces:
 - **Middle Man** — a thing that mostly delegates onward → cut it, call the target.
 - **Refused Bequest** — an implementer ignoring most of what it inherits → composition.
 
-**Knowledge sources**: the `docs/domain/` pages whose entities the diff touches — map pages to
-changed files by the entity each file serves, erring toward inclusion.
+**Knowledge sources**: the `docs/domain/` and `docs/platform/` pages whose entities the diff
+touches — map pages to changed files by the entity each file serves, erring toward inclusion — plus
+`/knowledge-tend`'s placement, index and relation checks (its checks 1–3) as pass/fail.
 
 ## 3. Spawn the three sub-agents in parallel
 
@@ -74,8 +76,11 @@ paths. Each returns findings as `file:line` + claim + evidence, under 400 words.
 - **Knowledge brief**: (a) claims on touched pages the diff has made false; (b) behaviour changes
   the diff makes that no page states and the anti-inference test says a page must (paste the test:
   *would a reader working from code alone arrive at the opposite?*); (c) `(intended)` markers whose
-  code this diff built but whose marker survives; (d) dangling `relations:` ids. This axis checks
-  pages against **code**, including entities the spec never mentioned.
+  code this diff built but whose marker survives; (d) dangling `relations:` ids; (e) a generated
+  index that no longer matches its pages (`diff <(index.sh docs/domain) docs/domain/README.md`, same
+  for platform), a new page with no `context:`, or a page or `CLAUDE.md` paragraph the layer table
+  places elsewhere. This axis checks pages against **code**, including entities the spec never
+  mentioned.
 
 ## 4. Aggregate, then dispose
 

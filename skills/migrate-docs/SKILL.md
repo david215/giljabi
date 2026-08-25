@@ -6,8 +6,9 @@ description: Convert a repo's legacy prose about itself — ADR directories, des
 # Migrate docs
 
 Convert a repo's existing prose about itself into the knowledge layer `/knowledge` defines. Load
-`/knowledge` first — the page contract, the anti-inference test and the four rules all apply here
-and are not restated.
+`/knowledge` first — the layer table, the page contract, the anti-inference test and the four rules
+all apply here and are not restated. Steps 2 and 5 below are `/knowledge-tend`'s drift and placement
+checks run on a cluster; that skill holds their method.
 
 The conversion is one focused effort with an end date, never a gradual drift: while ADRs and pages
 coexist, every reader must consult both systems for every entity. This skill bounds that period by
@@ -27,8 +28,13 @@ as one docs-only PR. A cluster a human could not review in one sitting is two cl
 
 Find every doc, then classify each piece by what it *is*, never by where it lives:
 
-- **Domain facts** (decisions, invariants, lifecycles, defects, terms) → absorb into entity pages.
-  Cluster by the entity whose code defends each fact; the clusters are the page list.
+- **Domain facts** (decisions, invariants, lifecycles, defects, terms about a business entity) →
+  absorb into `docs/domain/` pages. Cluster by the entity whose code defends each fact; the clusters
+  are the page list.
+- **Platform facts** (how the ORM, database, framework or host behaves here — a trap, a blind spot,
+  a default nobody overrode) → `docs/platform/` pages, same contract, clustered by technology.
+- **Conventions** (how code is written here) → `docs/conventions/`; a convention already in a
+  tool-native file the team still uses gets an index line there, not a copy.
 - **Repo facts** (how to commit, test, open PRs here) → `docs/agents/`.
 - **Procedures and event records** (runbooks, postmortems, changelogs) → not facts about the domain;
   leave them where they are.
@@ -44,17 +50,18 @@ reads it, takes the first unconverted cluster, and continues. Never re-inventory
 ## 2. Verify before converting — the step that cannot be skipped
 
 A page asserts present tense, so conversion *mints every claim fresh*: a doc that drifted since it
-was written becomes a false current-state assertion the moment it is transcribed. For each claim in
-the cluster, check the code still agrees — delegate sweeps to a read-only search subagent returning
-`file:line`, and read the hits yourself. A claim the code no longer supports is dropped or rewritten
-to what is true now; where the *code* turns out to be the wrong side, record a hazard. Update the
-claim's status in the inventory as you go.
+was written becomes a false current-state assertion the moment it is transcribed. Run
+`/knowledge-tend`'s drift check over the cluster's claims — sweeps delegated to a read-only search
+subagent returning `file:line`, hits read here. A claim the code no longer supports is dropped or
+rewritten to what is true now; where the *code* turns out to be the wrong side, record a hazard.
+Update the claim's status in the inventory as you go.
 
 ## 3. Write each page through the anti-inference test
 
 Most source prose dies here — motivation, history, superseded clauses, alternatives the current code
 forecloses. Expect an order-of-magnitude shrink; a conversion that keeps most of the source text has
-skipped the test.
+skipped the test. Give each page its `context:` and regenerate the index; a hand-edited index line is
+a second home for the definition.
 
 ## 4. Delete the absorbed sources in the same commit
 
@@ -75,5 +82,9 @@ nothing.
 
 One docs-only PR per cluster. The review is reading pages against code, and the user decides any
 claim the code contradicts: either the doc lied or the code is bugged, and only they know which.
-Mark the cluster converted in the inventory; when every cluster is, delete `.scratch/migrate-docs/`
-and the repo has one system.
+Mark the cluster converted in the inventory.
+
+When every cluster is converted, the **entry point is the last source**: run `/knowledge-tend`'s
+placement check over `CLAUDE.md` / `AGENTS.md` so every rule-shaped paragraph moves to the layer
+that can falsify it and a pointer stays behind, delete the emptied legacy files, delete
+`.scratch/migrate-docs/`, and the repo has one system.

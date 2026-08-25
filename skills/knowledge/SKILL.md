@@ -1,28 +1,51 @@
 ---
 name: knowledge
-description: Maintain the repo's knowledge layer — one current-state page per domain entity, rewritten in place, git as the ledger. Use when recording a design decision, defining or sharpening domain terminology, updating docs after a code change, or when another skill needs the page contract. Legacy-doc migration itself is /migrate-docs.
+description: Maintain the repo's knowledge layer — one current-state page per domain entity (docs/domain/) or platform behaviour (docs/platform/), rewritten in place, git as the ledger, the index generated from frontmatter. Use when recording a design decision, defining or sharpening domain terminology, updating docs after a code change, or when another skill needs the page contract. Legacy-doc migration is /migrate-docs; layer maintenance is /knowledge-tend.
 ---
 
 # Knowledge
 
-The knowledge layer is `docs/domain/`: **one page per domain entity, stating how the repo is now.**
-No ADRs, no known-issues ledger, no append-only anything. When a fact changes, the page is rewritten
-in place; git history is the only record of what it used to say. A page asserts present tense, which
-makes it falsifiable — a wrong page is a bug you can find by reading the code, not an old memo with
-an excuse.
+The knowledge layer is **one page per entity, stating how the repo is now.** No ADRs, no
+known-issues ledger, no append-only anything. When a fact changes, the page is rewritten in place;
+git history is the only record of what it used to say. A page asserts present tense, which makes it
+falsifiable — a wrong page is a bug you can find by reading the code, not an old memo with an excuse.
+
+## Layers
+
+A repo's prose about itself splits by **what falsifies it**, and each layer has one home:
+
+| Home | Holds | Falsified by |
+| --- | --- | --- |
+| `docs/domain/` | what a business entity is and what must hold of it | the business changing |
+| `docs/platform/` | how the stack behaves *here* — the ORM, the database, the framework, the host | an upgrade or a re-platform |
+| `docs/conventions/` | how code is written here — naming, layout, patterns to reach for and avoid | a reviewer disagreeing |
+| `docs/agents/` | how work moves here — commit, test, track, ship | a command that stops working |
+| `docs/runbook/` | manual procedures with no self-service path | the end state changing |
+| `CLAUDE.md` / `AGENTS.md` | the entry point: what this repo is, and pointers to the layers above | drift from them |
+
+`docs/domain/` and `docs/platform/` are the **knowledge pages** and share the contract below; only
+the subject differs. The placement test: *is the entity a business noun or a technology?* A page
+about `Subscription` is domain; a page about `Prisma undefined filters` or `Korean collation` is
+platform even when a business need caused it. The entry point holds **pointers only** — a rule that
+lives in `CLAUDE.md` has no falsifier but drift, so it moves to the layer that can prove it wrong.
+
+`docs/conventions/` is an index of conventions **wherever they live**: a convention kept in a
+tool-native file (an eslint config, a lint rule's rationale) gets one index line pointing there
+rather than a copy. Same for pages — one home per fact, pointers elsewhere.
 
 ## Layout
 
 ```
 docs/domain/
-├── README.md            ← index: one line per entity — the only file a reader must find unaided
+├── README.md            ← generated index, grouped by context — never hand-edited
 ├── subscription.md
-├── invitation.md
+└── …
+docs/platform/
+├── README.md            ← generated the same way
 └── …
 ```
 
-Create pages lazily — an entity earns a page when the first fact about it needs a home. The index
-gains a line in the same edit.
+Create pages lazily — an entity earns a page when the first fact about it needs a home.
 
 ## Page format
 
@@ -30,6 +53,7 @@ gains a line in the same edit.
 ---
 id: subscription
 status: built                # intended | built — page-level; a wholly-new entity starts intended
+context: billing             # the group this page is indexed under; one per page
 relations:
   - {rel: classified-by, to: subscription-type}
   - {rel: reduced-by, to: scheduled-seat-reduction}
@@ -37,7 +61,7 @@ relations:
 # Subscription
 
 One or two sentences: what this entity IS. This opening is the term's definition — the glossary
-and the page are the same document.
+and the page are the same document, and its first sentence is the page's index line.
 _Avoid_: plan, contract    ← synonyms this repo deliberately does not use
 
 ## Lifecycle
@@ -56,8 +80,15 @@ they apply — a fixed vocabulary is what lets an update land in the right place
 at the bottom.
 
 **Frontmatter is an index, never a summary.** It holds only what the prose does not state — the id,
-the lifecycle status, machine-greppable relations. Never restate a prose claim in frontmatter: what
-is stated once cannot disagree with itself.
+the lifecycle status, the context, machine-greppable relations. Never restate a prose claim in
+frontmatter: what is stated once cannot disagree with itself.
+
+**`context:` is a grouping claim and meets the same bar as any other.** The first cut is whatever
+boundary the code already enforces — an app, a bounded context, a package — so a reader can check
+it. A page belongs to one context; an entity two contexts share sits where its code lives and is
+reached from the other through `relations:`. Regrouping is a frontmatter edit plus a regenerated
+index, which is why the index is generated: hand-maintained grouping is the one drift nothing else
+detects. On a platform page, `context:` names the technology (`prisma`, `postgres`, `nest`).
 
 ## The four rules
 
@@ -68,12 +99,12 @@ is stated once cannot disagree with itself.
    pointer (`see subscription.md`), never a copy. When a fact could live on two pages, it lives on
    the entity whose code defends it.
 3. **Same diff as the code.** A change that alters an entity's behaviour updates that entity's page
-   in the same commit. A doc update deferred to later is a doc update that does not happen — this
-   rule exists because a deferral pile was tried and became a graveyard.
+   in the same commit — and regenerates the index. A doc update deferred to later is a doc update
+   that does not happen; a deferral pile was tried and became a graveyard.
 4. **`(intended)` marks the unbuilt.** Planning commits claims about code that does not exist yet.
    Tag each such claim inline with `(intended)`; a wholly-new entity takes `status: intended`
-   page-level instead. `grep -rn '(intended)' docs/domain/` is the list of promised-but-unbuilt
-   work. Implementation removes each marker in the diff that makes the claim true.
+   page-level instead. `grep -rn '(intended)' docs/domain/ docs/platform/` is the list of
+   promised-but-unbuilt work. Implementation removes each marker in the diff that makes the claim true.
 
 ## What a page keeps — the anti-inference test
 
@@ -86,9 +117,9 @@ with what code cannot show. The highest-value line is a decision the obvious rea
 fights — where the textbook answer is the wrong one here. Spend words there and nowhere else.
 
 **Keep:** invariants a reader would "fix" into bugs; constraints invisible in code (a client keying
-on a status code, a measured population, a partner's rate limit); deliberate omissions; a rejected
-alternative *only while a reader starting from the current code could still choose it* — once the
-code forecloses it, it is history, and history goes.
+on a status code, a measured population, a partner's rate limit, a deployment topology); deliberate
+omissions; a rejected alternative *only while a reader starting from the current code could still
+choose it* — once the code forecloses it, it is history, and history goes.
 
 **Cut:** motivation, narrative, how a fact was learned (minimal provenance: keep the failure mode,
 cut the story); anything restating the code; references to anything ephemeral — tickets, specs,
@@ -111,20 +142,37 @@ When maintaining the model live (a grill session, a design discussion):
   agrees, and surface contradictions rather than recording the claim.
 - **Write inline, the moment a term or decision crystallises.** Batching is how it gets lost.
 
-## Migrating existing docs
+## The index is generated
 
-A repo arriving with prose about itself — ADRs, design docs, known-issues files, glossaries —
-converts through `/migrate-docs`: one checkpointed inventory, one entity cluster per run, sources
-deleted and references repointed in the same commit. That skill applies this page contract; it is
-not restated here because it runs once per repo and this file is loaded on every page edit.
+`README.md` in each knowledge directory is built from frontmatter and each page's first sentence,
+grouped by `context:`, and is never edited by hand — an edited index is a second home for the
+definition. Regenerate after any page edit (`/knowledge-tend` runs it and diffs; the review's
+Knowledge axis fails a stale one). The script is [index.sh](./index.sh) in this skill's directory:
+
+```bash
+bash <path-to-this-skill>/index.sh docs/domain > docs/domain/README.md
+bash <path-to-this-skill>/index.sh docs/platform > docs/platform/README.md
+```
+
+It writes the preamble too, so the whole file is output. A page whose first sentence makes a poor
+index line has a poor definition — fix the sentence, not the index.
 
 ## Integrity check
 
 ```bash
-grep -rho 'to: [a-z0-9-]*' docs/domain/ | sed 's/to: //' | sort -u | while read id; do
-  grep -qrl "^id: $id$" docs/domain/ || echo "dangling relation: $id"
+grep -rho 'to: [a-z0-9-]*' docs/domain/ docs/platform/ | sed 's/to: //' | sort -u | while read id; do
+  grep -qrl "^id: $id$" docs/domain/ docs/platform/ || echo "dangling relation: $id"
 done
 ```
 
 Dangling relations fail the review's Knowledge axis. The check validates references, not truth —
-truth is checked by reading, which is why pages stay short enough to read.
+truth is checked by reading, which is why pages stay short enough to read. Shape and placement
+drift — a page in the wrong layer, an oversized page, a stale index — are `/knowledge-tend`'s job.
+
+## Migrating and tending
+
+A repo arriving with prose about itself — ADRs, design docs, known-issues files, glossaries —
+converts through `/migrate-docs`: one checkpointed inventory, one entity cluster per run. Keeping
+the layer's *shape* right afterwards — placement, grouping, page size, drift against code, entities
+still without a page — is `/knowledge-tend`. Neither is restated here: this file is loaded on every
+page edit and carries the contract only.

@@ -1,6 +1,6 @@
 # giljabi (길잡이)
 
-Eleven agent skills that run a feature from an idea to merged PRs, and leave the repo in a state any
+Twelve agent skills that run a feature from an idea to merged PRs, and leave the repo in a state any
 agent — or any person — can work from. *Giljabi* is Korean for "guide": the one who leaves the
 markers so the next traveler crosses the terrain alone.
 
@@ -14,16 +14,18 @@ next phase reads a file instead of remembering a conversation:
                                                     └──────── per slice, sequential ───────┘
 ```
 
-**Documentation is a knowledge layer, not a ledger.** One current-state page per domain entity in
-`docs/domain/`, rewritten in place, git as the only history. No ADRs, no known-issues file, no
+**Documentation is a knowledge layer, not a ledger.** One current-state page per entity — business
+entities in `docs/domain/`, stack behaviour in `docs/platform/` — rewritten in place, git as the only
+history, the index generated from frontmatter. No ADRs, no known-issues file, no
 append-only anything: a page asserts present tense, which makes a wrong page a findable bug instead
 of an old memo with an excuse. Pages change in the same diff as the code, and the review's Knowledge
 axis fails the change when they don't. `/knowledge` carries the contract.
 
 **Three layers, three placement tests.** A line lives in a skill if it would be identical in every
-repo (method); in `docs/agents/` or `docs/domain/` if it could differ per repo (fact); in the
-always-on rules file if it should govern a session that never invokes a skill (disposition). A line
-passing no test is deleted, not homed.
+repo (method); in the repo's docs if it could differ per repo (fact); in the always-on rules file if
+it should govern a session that never invokes a skill (disposition). A line passing no test is
+deleted, not homed. Repo facts split further by what falsifies them — `/knowledge` carries that
+table: domain, platform, conventions, agents, runbook, and an entry point that only points.
 
 ## The skills
 
@@ -38,8 +40,9 @@ passing no test is deleted, not homed.
 | `commit` | Secret-screened Conventional Commits in the repo's own conventions |
 | `pr` | Real PRs from the merge base, template-faithful, on GitHub or Azure DevOps |
 | `knowledge` | The knowledge-layer contract: page format, writing tests, integrity check |
+| `knowledge-tend` | Layer maintenance — placement, generated index, page shape, drift against code, a page for an undocumented entity; proposals applied on approval |
 | `migrate-docs` | One-time conversion of legacy docs (ADRs, design docs) into the layer, one entity cluster per run |
-| `setup` | One run configures a repo: tracker, VCS, testing, `.scratch/`, `docs/domain/` |
+| `setup` | One run configures a repo: tracker, VCS, testing, `.scratch/`, the knowledge directories |
 
 ## Install
 

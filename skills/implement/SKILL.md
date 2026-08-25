@@ -42,9 +42,9 @@ commands and traps.
 
 ## Knowledge rides the same diff
 
-A change that alters an entity's behaviour updates that entity's `docs/domain/` page **in the same
-commit** — and removes each `(intended)` marker this ticket's code just made true (`/knowledge` has
-the page contract). This is not a follow-up task; a doc update deferred out of the diff is one that
+A change that alters an entity's behaviour updates that entity's `docs/domain/` or `docs/platform/`
+page **in the same commit**, regenerates the index, and removes each `(intended)` marker this
+ticket's code just made true (`/knowledge` has the page contract and the index script). This is not a follow-up task; a doc update deferred out of the diff is one that
 does not happen, and the review's Knowledge axis will fail the slice for it.
 
 ## Route discoveries; never defer them

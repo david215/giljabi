@@ -30,6 +30,11 @@ prices importance — a question deserves attention in proportion to the populat
 cannot reach the database, write the SQL to `.scratch/<feature-slug>/`, show it, and ask — do not
 proceed on an unrun survey without saying the spec rests on unmeasured assumptions.
 
+**Tend the pages you are about to lean on.** Before round one, run `/knowledge-tend` scoped to the
+entities the change touches (checks 1–4). A page that drifted since it was written makes the
+interview lie in the one place it trusts most; fixing it first costs a few sweeps and is applied on
+the user's approval like any other tend.
+
 ## Name the feature after its outcome
 
 `.scratch/<feature-slug>/` is named at the moment of maximum ignorance. Slug the **outcome**, never

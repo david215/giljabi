@@ -14,18 +14,18 @@ reset costs nothing.
 
 | Phase | Skill | Leaves behind |
 | --- | --- | --- |
-| 1. Interrogate | `/grill` | knowledge pages (`(intended)`-marked), `findings.md` |
+| 1. Interrogate | `/grill` (tends touched pages first via `/knowledge-tend`) | knowledge pages (`(intended)`-marked), `findings.md` |
 | 2. Specify | `/to-spec` — drafted by a `deep` agent from `findings.md`, edited here | `spec.md` |
 | 3. Slice | `/to-tickets` — drafted by a `deep` agent from `spec.md`, approved here | `issues/NN-*.md`, `slices.md` |
 | 4. Commit the plan | — | a small docs PR, merged before any implementation |
 | 5. Build, per slice | `/implement` × N, `/review`, `/pr` | code, page updates, one PR per slice |
-| 6. Close | — | cleanup, friction routed to retro |
+| 6. Close | `/knowledge-tend` on the feature's pages | cleanup, layer shape re-checked, friction routed to retro |
 
 Every phase runs on every feature, a one-line fix included — the phases self-limit (an interview
 with no fork has nothing to ask; a spec for a one-line fix is five lines), so there is no size
 exemption to judge.
 
-Phases 1–3 need only `docs/domain/` (and tolerate its absence). If `docs/agents/` is missing, say
+Phases 1–3 need only the knowledge pages (`docs/domain/`, `docs/platform/`) and tolerate their absence. If `docs/agents/` is missing, say
 so once and continue; the gate is at phase 4.
 
 ## Phases 2 and 3 — draft delegated, decision here
@@ -87,6 +87,11 @@ rm -rf .scratch/<feature-slug>
 
 `.scratch/` is gitignored; a deleted directory is unrecoverable. That is the point — and why the
 checks run first, every time.
+
+**Re-check the shape.** Run `/knowledge-tend` scoped to the feature's pages, checks 2–3: a feature
+that grew a page past the size signal or moved an entity's code across a boundary has changed what
+the right grouping is, and the close is the one moment somebody is looking. Proposals only; apply on
+approval, as its own docs commit.
 
 **Route the friction.** `findings.md` lines tagged `[friction]` — moments a skill fought you, an
 instruction that misfired, a gate that checked the wrong thing — append to `retro/inbox.md` in the

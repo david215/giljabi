@@ -68,6 +68,32 @@ proximity to planned work, until the inventory is empty — bounded, so the two-
 end date. Migration converts *existing* docs only; undocumented entities take the layer's normal
 lazy path, which is why "the whole codebase" is never the scope.
 
+## Why knowledge splits into domain and platform
+
+The first layer had one directory, and pages about Postgres collation and Prisma retry semantics sat
+beside `subscription.md`. They passed the anti-inference test — the content was right — but the
+falsifier was wrong: a business change cannot make a collation page false and a Prisma upgrade cannot
+make a subscription page false. Placement by falsifier gives a reader one question per layer and a
+reviewer one test for "is this in the right place". The entry point (`CLAUDE.md`) is the residue: a
+rule living there has no falsifier but drift, which is why it may hold pointers only.
+
+## Why the index is generated
+
+A hand-kept index is a second home for every definition, and grouping is the one drift nothing else
+detects — a page moves context and the README keeps the old group until somebody notices. Generating
+from `context:` and the page's first sentence makes the definition the index line, so a bad index
+line is a bad definition and the fix lands on the page. `docs/conventions/README.md` is the exception
+because it indexes files it does not own.
+
+## Why tending is its own skill
+
+`/knowledge` is loaded on every page edit and must stay the contract alone. The questions no page
+edit asks — is this page in the right layer, is the index stale, has this page outgrown one entity,
+does the code still agree — need a caller-scoped procedure, and three skills call it at different
+scopes (`/grill` before it trusts a page, `/review` as pass/fail, `/migrate-docs` as its verify step).
+One skill with a scope argument beats three restatements. It proposes and never applies unsupervised
+for the same reason skills never edit themselves.
+
 ## Why harness-specific tokens are capabilities with a map
 
 `/clear`, `AskUserQuestion`, the `Explore` agent type and three others are Claude Code spellings of

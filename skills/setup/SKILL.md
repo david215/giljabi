@@ -12,7 +12,7 @@ Scaffold the per-repo configuration the giljabi skills read:
 - **VCS** — host, integration branch, languages, reviewers → `docs/agents/vcs.md`
 - **Testing** — how suites run here, and what breaks when run wrong → `docs/agents/testing.md`
 - **Working directory** — `.scratch/` gitignored → `.gitignore`
-- **Knowledge layer** — `docs/domain/README.md` index scaffold → see `/knowledge` for the contract
+- **Knowledge layer** — `docs/domain/`, `docs/platform/`, `docs/conventions/` scaffolds → see `/knowledge` for the layer table and contract
 - **Agent doc** — pointer blocks in `CLAUDE.md` / `AGENTS.md`
 
 Prompt-driven, not a script: explore, present what you found, confirm, write.
@@ -50,7 +50,7 @@ Every answer you can read out of the repo is one the user does not have to type:
   (`**/*.spec.*`, `**/*.test.*`, `**/test_*.py`) to read the layout off the paths.
 - `find . -maxdepth 3 -iname 'pull_request_template*'` — whether the repo ships a PR template.
 - `CLAUDE.md` / `AGENTS.md` — an existing `## Agent skills` block, and any rules already in prose.
-- `docs/agents/`, `docs/domain/` — this skill's own prior output.
+- `docs/agents/`, `docs/domain/`, `docs/platform/`, `docs/conventions/` — this skill's own prior output.
 - Legacy docs — `docs/adr/`, `CONTEXT.md`, a known-issues file. Their presence means a migration to
   the knowledge layer is owed; note it, name `/migrate-docs` as the follow-up, and do not delete anything.
 
@@ -92,7 +92,10 @@ Seed templates in this folder — start from them rather than composing:
 [testing.md](./testing.md). For a host with no seed, keep the same headings so `/pr` and `/commit`
 find what they expect, and say `/pr` will need the commands spelled out.
 
-Write `docs/domain/README.md` as an index with no entries yet — `/knowledge` creates pages lazily.
+Generate `docs/domain/README.md` and `docs/platform/README.md` with `/knowledge`'s `index.sh` (empty
+directories yield the preamble alone — pages are created lazily), and write
+`docs/conventions/README.md` as a hand-kept index with no entries; it points at conventions wherever
+they live, so it is the one index not generated.
 
 **Append `.scratch/` to `.gitignore`** if missing; do not reorder or tidy the file around it.
 
@@ -115,8 +118,9 @@ other section alone:
 "Never run the whole suite locally; it can take the machine down."]
 
 ### Knowledge layer
-Current-state domain pages in `docs/domain/` — read the pages for any entity you touch, and change
-them in the same diff as the code.
+Current-state pages: business entities in `docs/domain/`, stack behaviour in `docs/platform/`, coding
+conventions indexed in `docs/conventions/`. Read the pages for anything you touch and change them in
+the same diff as the code; the `README.md` indexes are generated, never edited.
 
 ### Findings log
 Defects and gotchas found mid-feature land in `.scratch/<feature-slug>/findings.md` as they surface.

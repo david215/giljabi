@@ -85,6 +85,19 @@ from `context:` and the page's first sentence makes the definition the index lin
 line is a bad definition and the fix lands on the page. `docs/conventions/README.md` is the exception
 because it indexes files it does not own.
 
+## Why a relation is declared once and the neighbourhood is derived
+
+Reciprocal edges look like completeness and are the graph's "stated twice" defect in miniature: two
+homes for one fact, and the pair drifts the moment one side is edited. Yet an edge in only one
+direction is useless to the page it points at — the page that most needs to know it is being
+asserted about. The resolution is to pick the home by the same rule as any fact (the page whose code
+enforces the edge declares it) and to make the reverse a lookup, not a line: `grep "to: <id>}"`.
+The index renders the union on every line so a reader who never learns the rule still sees the
+**neighbourhood**, and the skills that touch code — implement, review, grill, tend — read one hop
+out along it, because a change to an entity's code goes stale first on the pages *about* it, not on
+its own. Relations earned their place only when something traversed them; before that they were
+metadata the dangling check validated and nobody read.
+
 ## Why tending is its own skill
 
 `/knowledge` is loaded on every page edit and must stay the contract alone. The questions no page

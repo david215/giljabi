@@ -47,6 +47,11 @@ page **in the same commit**, regenerates the index, and removes each `(intended)
 ticket's code just made true (`/knowledge` has the page contract and the index script). This is not a follow-up task; a doc update deferred out of the diff is one that
 does not happen, and the review's Knowledge axis will fail the slice for it.
 
+The entity's page is not the only page that talks about its code. Read its **neighbourhood** — the
+`related:` ids on the page's index line, or `/knowledge`'s lookup — for every claim about the code
+this ticket changed, and rewrite each one that is no longer true, in the same diff. You are the one
+session that knows which claim just went stale; the review's axis only catches what you missed.
+
 ## Route discoveries; never defer them
 
 Mid-implementation discovery gets classified the moment it surfaces:

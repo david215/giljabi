@@ -90,6 +90,13 @@ reached from the other through `relations:`. Regrouping is a frontmatter edit pl
 index, which is why the index is generated: hand-maintained grouping is the one drift nothing else
 detects. On a platform page, `context:` names the technology (`prisma`, `postgres`, `nest`).
 
+**A relation is declared once, on the page whose code enforces it** — the foreign key, the `CHECK`,
+the view SQL, the service that performs the action — and labelled from that page's viewpoint
+(`withdrawal --soft-deletes--> organization`, never also `organization --soft-deleted-by-->
+withdrawal`). The reverse direction is derived, not written: a fact has one home and an edge is a
+fact. A page's **neighbourhood** is the union of the edges it declares and the edges declared at it;
+the index renders it on every line, and the lookup below computes it.
+
 ## The four rules
 
 1. **Current state only.** The page says what is true now. How it got that way, what it replaced,
@@ -165,8 +172,15 @@ grep -rho 'to: [a-z0-9-]*' docs/domain/ docs/platform/ | sed 's/to: //' | sort -
 done
 ```
 
-Dangling relations fail the review's Knowledge axis. The check validates references, not truth —
-truth is checked by reading, which is why pages stay short enough to read. Shape and placement
+```bash
+grep -rlE "to: <id>\}" docs/domain docs/platform   # the pages declaring an edge at <id>
+```
+
+Dangling relations and reciprocal pairs fail the review's Knowledge axis. The checks validate
+references, not truth — truth is checked by reading, which is why pages stay short enough to read.
+The second command is the **neighbourhood** lookup: together with the page's own `relations:` it
+names every page that asserts something about `<id>` — the pages a change to `<id>`'s code can make
+stale, and the scope `/implement`, `/review`, `/grill` and `/knowledge-tend` read one hop out to. Shape and placement
 drift — a page in the wrong layer, an oversized page, a stale index — are `/knowledge-tend`'s job.
 
 ## Migrating and tending

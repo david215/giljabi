@@ -63,8 +63,10 @@ it; skip anything tooling enforces:
 - **Refused Bequest** — an implementer ignoring most of what it inherits → composition.
 
 **Knowledge sources**: the `docs/domain/` and `docs/platform/` pages whose entities the diff
-touches — map pages to changed files by the entity each file serves, erring toward inclusion — plus
-`/knowledge-tend`'s placement, index and relation checks (its checks 1–3) as pass/fail.
+touches — map pages to changed files by the entity each file serves, erring toward inclusion —
+**and each touched page's neighbourhood** (`/knowledge`'s lookup: the pages declaring an edge at it),
+read for the claims they make about the touched entity; plus `/knowledge-tend`'s placement, index
+and relation checks (its checks 1–3) as pass/fail, and its shape signals (check 3) as proposals.
 
 ## 3. Spawn the three sub-agents in parallel
 
@@ -79,11 +81,13 @@ paths. Each returns findings as `file:line` + claim + evidence, under 400 words.
 - **Knowledge brief**: (a) claims on touched pages the diff has made false; (b) behaviour changes
   the diff makes that no page states and the anti-inference test says a page must (paste the test:
   *would a reader working from code alone arrive at the opposite?*); (c) `(intended)` markers whose
-  code this diff built but whose marker survives; (d) dangling `relations:` ids; (e) a generated
-  index that no longer matches its pages (`diff <(index.sh docs/domain) docs/domain/README.md`, same
-  for platform), a new page with no `context:`, or a page or `CLAUDE.md` paragraph the layer table
-  places elsewhere. This axis checks pages against **code**, including entities the spec never
-  mentioned.
+  code this diff built but whose marker survives; (d) dangling `relations:` ids and reciprocal
+  pairs; (e) a generated index that no longer matches its pages (`diff <(index.sh docs/domain)
+  docs/domain/README.md`, same for platform), a new page with no `context:`, or a page or
+  `CLAUDE.md` paragraph the layer table places elsewhere; (f) a page this diff grew that now passes
+  the noun-section test (`/knowledge-tend` check 3) — proposed as a split, so the shape fix rides
+  the slice that caused it rather than a later docs PR. This axis checks pages against **code**,
+  including entities the spec never mentioned.
 
 ## 4. Aggregate, then dispose
 

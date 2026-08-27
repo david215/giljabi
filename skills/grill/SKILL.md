@@ -31,7 +31,7 @@ cannot reach the database, write the SQL to `.scratch/<feature-slug>/`, show it,
 proceed on an unrun survey without saying the spec rests on unmeasured assumptions.
 
 **Tend the pages you are about to lean on.** Before round one, run `/knowledge-tend` scoped to the
-entities the change touches (checks 1–4). A page that drifted since it was written makes the
+entities the change touches (checks 1–4; check 4 reads their neighbourhood too). A page that drifted since it was written makes the
 interview lie in the one place it trusts most; fixing it first costs a few sweeps and is applied on
 the user's approval like any other tend.
 

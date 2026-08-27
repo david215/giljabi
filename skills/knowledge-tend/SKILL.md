@@ -62,14 +62,26 @@ plus `/knowledge`'s dangling-relation check. Any output is a finding: a stale in
 renamed or never written, and the fix is the user's call. A page with no `context:` lands under
 `uncategorised`, which is a finding too.
 
+A **reciprocal pair** — `A → B` declared on A and `B → A` declared on B — is a finding: an edge is
+declared once, on the page whose code enforces it (`/knowledge`). Propose removing the derived side;
+the neighbourhood lookup keeps the reverse reachable.
+
+```bash
+for f in docs/domain/*.md docs/platform/*.md; do id=$(sed -n 's/^id: //p' "$f" | head -1)
+  grep -o 'to: [a-z0-9-]*' "$f" | cut -d' ' -f2 | while read t
+    do grep -qlE "to: $id\}" docs/domain/$t.md docs/platform/$t.md 2>/dev/null && echo "reciprocal: $id <-> $t"; done; done
+```
+
 ## 3. Shape
 
 Mechanical signals that a page wants splitting or regrouping — each a *proposal*, since a long page
 can be a rich entity and a short one a thin one:
 
-- **Size** — a page over 100 lines. Read its `##` sections: a section that names its own noun
-  (`## Purge Job` inside `organization.md`) is a page waiting to be cut out. Propose the split and
-  the relation that links them.
+- **Size** — a page over 100 lines is *when you look*, not a limit: a central entity whose lines
+  carry file paths and a Hazards section runs 100–140 by design. The rule is the **noun-section
+  test**: a `##` section that names its own noun, cites its own code and has Hazards that reference
+  it (`## Purge Job` inside `organization.md`) is a page waiting to be cut out. Propose the split
+  and the relation that links them; a long page that fails the test is left alone.
 - **Fan-out** — a page with more than ~6 `relations:` is usually a context, not an entity.
 - **Context vs code** — a page whose `context:` names one boundary while every file it cites lives
   in another. Propose the regroup: a frontmatter edit and a regenerated index.
@@ -79,7 +91,10 @@ can be a rich entity and a short one a thin one:
 ## 4. Drift
 
 The conversion step from `/migrate-docs`, run on a page that already exists: **every claim is
-re-minted**. For each claim on each page in scope, check the code still agrees — delegate the sweeps
+re-minted**. Scope is the named pages **plus their neighbourhood** (`/knowledge`'s lookup): a
+neighbour is checked only for the claims it makes about the named entity, since those are the ones
+the named entity's code can have made stale. For each claim on each page in scope, check the code
+still agrees — delegate the sweeps
 to a read-only search subagent at the `fast` tier returning `file:line` and the quoted line, never a
 bare count, and read the hits yourself. Three outcomes, each a proposal:
 

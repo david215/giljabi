@@ -96,10 +96,11 @@ rm -rf .scratch/<feature-slug>
 `.scratch/` is gitignored; a deleted directory is unrecoverable. That is the point — and why the
 checks run first, every time.
 
-**Re-check the shape.** Run `/knowledge-tend` scoped to the feature's pages, checks 2–3: a feature
-that grew a page past the size signal or moved an entity's code across a boundary has changed what
-the right grouping is, and the close is the one moment somebody is looking. Proposals only; apply on
-approval, as its own docs commit.
+**Re-check what only the merged range can show.** Run `/knowledge-tend` scoped to the feature's
+pages, check 2 only — the index and relations as they stand after every slice landed. Shape
+(check 3) was `/review`'s job on each slice, where a split rides the slice that caused it; a shape
+proposal surfacing here means a review missed it, which is a `[friction]` line, and the fix is its
+own docs commit on approval.
 
 **Route the friction.** `findings.md` lines tagged `[friction]` — moments a skill fought you, an
 instruction that misfired, a gate that checked the wrong thing — append to `retro/inbox.md` in the

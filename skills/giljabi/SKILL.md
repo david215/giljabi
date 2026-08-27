@@ -17,7 +17,7 @@ reset costs nothing.
 | 1. Interrogate | `/grill` (tends touched pages first via `/knowledge-tend`) | knowledge pages (`(intended)`-marked), `findings.md` |
 | 2. Specify | `/to-spec` — drafted by a `deep` agent from `findings.md`, edited here | `spec.md` |
 | 3. Slice | `/to-tickets` — drafted by a `deep` agent from `spec.md`, approved here | `issues/NN-*.md`, `slices.md` |
-| 4. Commit the plan | — | a small docs PR, merged before any implementation |
+| 4. Commit the plan | — | the `(intended)` pages as the first commit on the feature branch |
 | 5. Build, per slice | `/implement` × N, `/review`, `/pr` | code, page updates, one PR per slice |
 | 6. Close | `/knowledge-tend` on the feature's pages | cleanup, layer shape re-checked, friction routed to retro |
 
@@ -27,7 +27,7 @@ so once and continue; the gate is at phase 4.
 ## Not every change is a feature
 
 A change that fits one context window and ships as one PR runs the standalone path:
-`/implement` → `/review` → `/commit` → `/pr`. No `.scratch/`, no plan PR, no phases. The knowledge
+`/implement` → `/review` → `/commit` → `/pr`. No `.scratch/`, no plan commit, no phases. The knowledge
 discipline is not what is skipped — `/implement` still updates pages in the same diff and `/review`'s
 Knowledge axis still fails drift; only the ceremony that exists to survive context resets is.
 
@@ -43,8 +43,12 @@ of phase 1. Phase 2 tests that: spawn a `deep` agent to run `/to-spec` **from `f
 repo**, not from this conversation. It returns the draft; you review and edit it here with the user,
 then write `spec.md` and publish. If the draft is thinner than the discussion felt, the checkpoint
 was thin — fix `findings.md`, re-run the drafter, and log the gap as `[friction]`. Phase 3 is the same
-shape: a `deep` agent drafts the ticket breakdown from `spec.md`; the quiz and the publish happen
-here.
+shape: a `deep` agent drafts the ticket breakdown from `spec.md`; the `/to-tickets` quiz runs here as
+a **gate** — the breakdown is published only after the user has answered it, and the approval that
+closed the spec does not carry over to the breakdown. Both phases' decisions — the spec's defaults,
+the quiz's seams, granularity and slice boundaries — go through the structured-question capability
+(harness map below), one question per decision, recommendation first, with the argument in prose
+beside it as `/grill` does. A default confirmed in prose alone is a default nodded through.
 
 ## Phase 4 — commit the plan
 
@@ -52,24 +56,30 @@ here.
 come from it. Missing → stop and run `/setup`; a workflow that guesses the integration branch
 produces PRs nobody wants.
 
-Phase 1 wrote knowledge pages carrying `(intended)` claims. Commit them on their own branch and open
-a small PR, **merged before implementation starts**. Two reasons: reviewing that PR is reviewing the
-design, at design size; and every slice branches from the integration branch, so the plan must be on
-it for any slice after the first to see it.
+Phase 1 wrote knowledge pages carrying `(intended)` claims. Open the feature branch — one branch for
+the whole feature, `feat/<feature-slug>` in `vcs.md`'s convention — and commit them as its first
+commit. They ship in slice 1's PR, reviewed beside the code that proves them; every later slice is a
+commit on the same branch, so nothing branches blind to the plan. Open the plan as its own PR first
+only when the user asks for the design reviewed at design size — it buys that at the price of a
+serial merge before any code.
 
 ## Phase 5 — build, slice by slice
 
 A **slice** is a group of tickets that ships as one independently-mergeable PR (`/to-tickets`
-declares them, in `slices.md`). Slices run **sequentially, always** — never in parallel, whatever the
-ticket graph looks like. Per slice:
+declares them, in `slices.md`). Tickets bound a context window; slices bound a review. A slice is
+not where the context resets — tickets are — and a ticket is not a PR. Slices run **sequentially,
+always** — never in parallel, whatever the ticket graph looks like. Per slice:
 
-1. **Branch** — off the integration branch, named by `vcs.md`'s convention over
-   `<feature-slug>-<slice-slug>`. If the previous slice's PR has not merged yet, branch off that
-   slice's branch instead and say so in the PR description.
+1. **Branch** — the feature branch from phase 4, stacked: every slice is commits on
+   `feat/<feature-slug>`, and each slice's PR is opened from that branch at the slice boundary. After
+   a slice's PR merges, sync the branch with the integration branch (`vcs.md`'s merge strategy
+   decides merge or rebase) before the next slice's commits — `/pr` scopes from the merge base, and
+   under squash-merge an unsynced branch describes the previous slice again.
 2. **Implement** — one `/implement` run per ticket, a context reset between tickets. Work the
    frontier: any ticket whose blockers are done, lowest number first. Name tickets by **filename**
    (`/implement 03-invitations-follow-organization-timezone`), never by position.
-3. **Review** — `/review` at slice scope: fixed point is the slice branch's start, spec source is
+3. **Review** — `/review` at slice scope: fixed point is the previous slice's merged tip (the
+   feature branch's start for slice 1), spec source is
    `spec.md` restricted to this slice's tickets; its three axes run as `deep` agents. Loop fix →
    `/review` → `/commit` until green or until a failure is accepted out loud — by the user, not by
    you.
@@ -104,8 +114,8 @@ own docs commit on approval.
 
 **Route the friction.** `findings.md` lines tagged `[friction]` — moments a skill fought you, an
 instruction that misfired, a gate that checked the wrong thing — append to `retro/inbox.md` in the
-giljabi repo checkout. When the user runs a retro there: read the inbox, propose one skill diff per
-item, apply each only on their approval, delete the routed lines. Evolution is regular, never
+giljabi repo checkout. `/retro`, run there, reads the inbox, proposes one skill diff per item,
+applies each only on approval, and deletes the routed lines. Evolution is regular, never
 automatic — a skill that edits itself unsupervised is a feedback loop with no test.
 
 ## Delegation and tiers

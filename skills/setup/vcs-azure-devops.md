@@ -26,6 +26,11 @@ Skills read this in reverse, stripping the prefix to recover the feature slug th
 working directory — so a repo with no convention should say so plainly, and the whole branch name
 becomes the slug.
 
+## PR template
+
+`<PR_TEMPLATE_PATH or none>` — stays where the host discovers it (the root, or a host directory);
+this file points at it and does not house it.
+
 ## Language
 
 Commit subjects and PR bodies are written in **<LANGUAGE>**.

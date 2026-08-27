@@ -25,8 +25,8 @@ nothing; run no command that changes the working tree or git state.* After the a
 
 ## 1. Pin the fixed point
 
-Whatever the user supplied — a SHA, branch, tag, merge-base. Under `/giljabi`, the slice branch's
-start. If unspecified, ask.
+Whatever the user supplied — a SHA, branch, tag, merge-base. Under `/giljabi`, the previous slice's
+merged tip — the feature branch's start for slice 1. If unspecified, ask.
 
 ```bash
 git rev-parse <fixed-point>                 # must resolve

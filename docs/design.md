@@ -27,11 +27,15 @@ were considered — they only convert silent clobbering into deferred merge conf
 state (one database, one port range), and the human whose decisions both slices need does not
 parallelize.
 
-## Why the plan is its own PR, merged first
+## Why the plan is the first commit on one feature branch, not its own PR
 
-Slices branch from the integration branch. If the `(intended)` pages rode the first slice, every
-later slice would branch blind to the plan it implements. Merging the plan first also reviews the
-design at design size instead of inside a 3,000-line diff.
+The plan once merged as its own PR before any code, because slices branched from the integration
+branch and a later slice would otherwise branch blind to the plan it implements. A feature now runs
+on one branch — slices are stacked commits on `feat/<slug>`, each PR opened from it at a slice
+boundary — so every slice already sits on the plan and that reason is gone. What the separate PR
+still bought, design-size review, came at the price of `(intended)` pages reviewed apart from the
+code that proves them and a serial merge before slice 1; the default is now the cheaper shape, with
+the plan PR available on request.
 
 ## Why "accept" is human-only in review
 

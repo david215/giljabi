@@ -52,10 +52,14 @@ sequence on a shared integration branch that all block a final integrate-and-ver
 A **slice** is the PR unit: a set of tickets that merges as one reviewable, revertable, deployable
 change. Rules:
 
-- Every slice is mergeable on its own — it leaves the integration branch releasable.
+- Every slice is mergeable on its own — nothing in it waits on a later slice.
 - A slice's tickets' blockers all resolve inside the slice or in earlier slices; edges never point
   forward across a slice boundary.
 - Size for a reviewer, not a milestone: a slice a human cannot review in one sitting is two slices.
+- Slice for the **reviewer, not the deployer**. A related series of PRs deploys together, and the
+  integration branch briefly broken between two of them is accepted unless `docs/agents/testing.md`
+  says otherwise; commit order inside the series already lets later work reference earlier work.
+  "Protects deploy" is never a slicing reason on its own.
 - A single-slice feature is normal. Do not manufacture slices.
 
 Slices are declared here and revisable mid-flight — implementation may split a slice that grew or
@@ -65,8 +69,10 @@ merge two that collapsed; update `slices.md` when it happens.
 
 Present the breakdown as a numbered list — per ticket: **Title**, **Blocked by**, **What it
 delivers**; per slice: which tickets and what the PR ships. Ask: is the granularity right? are the
-edges genuine? do the slice boundaries match how this should be reviewed and merged? Iterate until
-approved.
+edges genuine? do the slice boundaries match how this should be reviewed and merged? Each of those is
+a decision, and goes through the harness's structured-question capability (`/giljabi`'s harness map)
+— one question per decision, your recommendation first, the argument in prose beside it, as `/grill`
+does. Iterate until approved; the breakdown is published only after the user has answered.
 
 ### 6. Publish
 

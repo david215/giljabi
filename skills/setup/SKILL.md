@@ -48,7 +48,8 @@ Every answer you can read out of the repo is one the user does not have to type:
 - Test-runner config: `package.json` scripts, `Makefile`, `pyproject.toml`, `Cargo.toml`,
   `jest.*.config.*` / `vitest.config.*` / `pytest.ini` — plus a sample of the test files themselves
   (`**/*.spec.*`, `**/*.test.*`, `**/test_*.py`) to read the layout off the paths.
-- `find . -maxdepth 3 -iname 'pull_request_template*'` — whether the repo ships a PR template.
+- `find . -maxdepth 3 -iname 'pull_request_template*'` — whether the repo ships a PR template, and
+  where; `vcs.md` records the path and the template stays there.
 - `CLAUDE.md` / `AGENTS.md` — an existing `## Agent skills` block, and any rules already in prose.
 - `docs/agents/`, `docs/domain/`, `docs/platform/`, `docs/conventions/` — this skill's own prior output.
 - Legacy docs — `docs/adr/`, `CONTEXT.md`, a known-issues file. Their presence means a migration to

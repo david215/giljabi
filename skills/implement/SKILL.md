@@ -30,7 +30,9 @@ doesn't care about internal structure. Anti-patterns to refuse:
 
 - **Implementation-coupled** — mocks internal collaborators, tests private methods, asserts call
   counts, or verifies through a side channel. The tell: it breaks on refactor with behaviour
-  unchanged.
+  unchanged. A spec that pins a helper's ORM or query call shape is this smell even when the helper
+  is "the unit": where a convention page names a module boundary, the seam sits at that boundary,
+  never below it.
 - **Tautological** — the assertion recomputes the expected value the way the code does, so it passes
   by construction. Expected values come from an independent source: a known-good literal, a worked
   example, the spec.
@@ -86,7 +88,9 @@ question you already have; implementation decides what to do about the answer.
 
 The ticket is done when: the typecheck and this ticket's suites are green (a red suite means the
 work is wrong — fix it, or have the user accept the failure out loud); the pages are updated in the
-diff; `/commit` has run on the current branch — delegated to a `fast` agent, which reads the ticket
+diff; the **ticket file** records it — every acceptance box you completed ticked and its `Status:`
+line set to `done` where the tracker has one, since `STATE.md` names only the next ticket and nothing
+else says which ones finished; `/commit` has run on the current branch — delegated to a `fast` agent, which reads the ticket
 file and `directives.md` and has everything the message needs; and `STATE.md` names the next
 ticket. Review runs at
 slice scope via `/review` — running standalone outside `/giljabi`, run `/review` yourself over the

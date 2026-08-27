@@ -77,14 +77,18 @@ find . -maxdepth 3 -iname 'pull_request_template*' -not -path './.git/*' -not -p
 
 Azure DevOps reads `pull_request_template.md` from the repo root, `.azuredevops/`, or `docs/`.
 GitHub reads it from `.github/`, the root, or `docs/`, in any casing. Either host may hold a
-directory of named templates; pick the one matching the change, or the default, and say which.
+directory of named templates; pick the one matching the change, or the default, and say which. The
+template lives where its host reads it — `docs/agents/` is a place no host scans, so `vcs.md` may
+point at the template but never house it.
 
 **Found one? It is the contract. Fill it; do not redesign it.**
 
 - Preserve every label, its order, the checkbox syntax, and the blockquote markers exactly. A team
   reads these by shape, and a renamed label is a silent divergence from the template the repo ships.
-- Replace a placeholder only when the diff answers it. `(as detailed as possible)` gets content;
-  a placeholder asking whether local tests ran does not — you did not run them.
+- A **hint** is the placeholder text itself — `(as detailed as possible)`, `> (가능한 자세히)` — and it
+  is not structure: under a heading you fill, the answer replaces the hint, keeping the marker it sat
+  in. A hint the diff cannot answer (did local tests run?) stays intact, its box unchecked — you did
+  not run them.
 - Check a box only on evidence in the diff. Leave the rest unchecked with their placeholders intact.
   An unchecked box is information; a box checked on assumption is a false claim to a reviewer.
 
@@ -228,6 +232,15 @@ the bare command fails in the same direction as `wc -c` while looking like the f
 
 Over budget means a label is mis-grained. Go back to Step 4 and merge, rather than abbreviating
 prose into shorthand.
+
+Then grep the body for hints that survived under a heading you filled:
+
+```bash
+grep -nE '^\s*>?\s*\(.*\)\s*$' <body-file>
+```
+
+Every hit is either under an unanswerable item, left intact on purpose, or a fill failure — fix the
+second kind before pushing.
 
 ```bash
 git push -u origin <branch>    # or plain `git push` when upstream is set

@@ -34,7 +34,7 @@ for d in skills/*/; do
 done
 
 # No skill references a skill that does not exist in this repo.
-known="giljabi|grill|to-spec|to-tickets|implement|review|commit|pr|knowledge|knowledge-tend|migrate-docs|setup|clear|compact|handoff|new"
+known="giljabi|grill|retro|writing-for-agents|to-spec|to-tickets|implement|review|commit|pr|knowledge|knowledge-tend|migrate-docs|setup|clear|compact|handoff|new"
 if grep -rnoE '`/[a-z-]+`' skills/*/SKILL.md | grep -vE "\`/(${known})\`"; then
   echo "FAIL: reference to an unknown skill (above)"; fail=1
 fi

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Retro"
+  short_description: "Turn retro/inbox.md friction lines into approved skill diffs"
+policy:
+  allow_implicit_invocation: false

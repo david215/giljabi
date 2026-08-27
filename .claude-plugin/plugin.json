@@ -1,6 +1,6 @@
 {
   "name": "giljabi",
-  "description": "Twelve agent skills that run a feature from an idea to merged PRs — grill, spec, sliced tickets, plan commit, test-first implementation, three-axis review — leaving behind a current-state knowledge layer any agent can work from.",
+  "description": "Thirteen agent skills that run a feature from an idea to merged PRs — grill, spec, sliced tickets, plan commit, test-first implementation, three-axis review — leaving behind a current-state knowledge layer any agent can work from.",
   "repository": "https://github.com/david215/giljabi",
   "skills": [
     "./skills/commit",
@@ -11,6 +11,7 @@
     "./skills/knowledge-tend",
     "./skills/migrate-docs",
     "./skills/pr",
+    "./skills/retro",
     "./skills/review",
     "./skills/setup",
     "./skills/to-spec",

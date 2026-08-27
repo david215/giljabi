@@ -1,6 +1,6 @@
 # giljabi (길잡이)
 
-Twelve agent skills that keep a repo's knowledge of itself true — one current-state page per domain
+Thirteen agent skills that keep a repo's knowledge of itself true — one current-state page per domain
 entity and platform behaviour, rewritten in the same diff as the code — and a feature pipeline, idea
 to merged PRs, whose every phase is what keeps those pages honest. *Giljabi* is Korean for "guide":
 the one who leaves the markers so the next traveler crosses the terrain alone. The markers are the
@@ -22,7 +22,7 @@ pipeline exists to touch the layer at every step: the grill tends the pages it w
 asking, implement updates them in the code diff, review fails drift, close re-checks the shape.
 
 ```
-/grill  →  /to-spec  →  /to-tickets  →  plan PR  →  /implement × N  →  /review  →  /pr
+/grill  →  /to-spec  →  /to-tickets  →  plan commit  →  /implement × N  →  /review  →  /pr
                                                     └──────── per slice, sequential ───────┘
 ```
 
@@ -48,6 +48,7 @@ table: domain, platform, conventions, agents, runbook, and an entry point that o
 | `commit` | Secret-screened Conventional Commits in the repo's own conventions |
 | `pr` | Real PRs from the merge base, template-faithful, on GitHub or Azure DevOps |
 | `setup` | One run configures a repo: tracker, VCS, testing, `.scratch/`, the knowledge directories |
+| `retro` | Turns `retro/inbox.md` friction lines into skill diffs, applied on approval — the only way skills change |
 
 ## Install
 
@@ -72,7 +73,7 @@ Edit here, push, reinstall — never `cp` into an install directory: a copy has 
 ## Evolution
 
 Skills evolve through a friction loop, never by editing themselves: workflow runs capture
-`[friction]` moments, `/giljabi`'s close phase routes them to `retro/inbox.md` here, and a retro run
+`[friction]` moments, `/giljabi`'s close phase routes them to `retro/inbox.md` here, and `/retro` run
 in this repo turns each into a proposed diff applied only on human approval.
 
 ## Lineage

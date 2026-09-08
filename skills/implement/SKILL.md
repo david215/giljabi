@@ -40,7 +40,10 @@ doesn't care about internal structure. Anti-patterns to refuse:
 Where to inject dependencies and what to fake: [mocking.md](./mocking.md).
 
 Run the typechecker and single test files regularly; `docs/agents/testing.md` carries this repo's
-commands and traps.
+commands and traps. `docs/conventions/README.md` indexes how code is written here — read it before the
+first edit, and the pages it names for whatever the ticket writes: comments and their language, naming,
+layout. A convention learned here costs one read; learned from the review's Standards axis it costs a
+round.
 
 ## Knowledge rides the same diff
 
@@ -62,6 +65,12 @@ Mid-implementation discovery gets classified the moment it surfaces:
 - **Real but separate** — create a ticket **now**: into this feature's `slices.md` plan when it
   blocks the feature, into the tracker's backlog when it does not. Then carry on.
 - **Ambiguous** — put the decision to the user and wait.
+
+A discovery that changes what the plan asserts — a path dropped, an error shape corrected — is an
+**amendment**, and it lands on every artifact carrying the claim in the same turn: `spec.md`, the
+knowledge page, and every open `issues/*.md`. Grep the old claim across `.scratch/<feature-slug>/`
+and rewrite each hit; the amendment is done when that grep returns nothing. An open ticket still
+describing the old shape is the next window's spec.
 
 There is no deferral pile. Non-work facts — a constraint measured, a gotcha that cost an hour, a
 `[friction]` moment with a skill — still go to `.scratch/<feature-slug>/findings.md` as they

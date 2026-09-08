@@ -72,9 +72,16 @@ changes it.
 
 ## 3. Spawn the three sub-agents in parallel
 
-Each prompt carries the diff command and commit list. Anything an axis must **obey** goes in its
-prompt in full — the smell baseline, the page contract; paths it merely needs to **read** pass as
-paths. Each returns findings as `file:line` + claim + evidence, under 400 words.
+Run the **gates** once before spawning and paste the results into every prompt: the typecheck and
+the slice's suites (a `fast` agent runs `docs/agents/testing.md`'s commands and returns failures
+verbatim), the index diff and the dangling-relation check (`/knowledge-tend` check 2). An axis reads
+gate output and spends its run on judgment; a claim about a population still goes to the query
+command `docs/agents/data.md` names, since no gate can pre-run it. Each prompt carries the diff
+command, the commit list and the gate results. Anything an axis must **obey** goes in its prompt in
+full — the smell baseline, the page contract; paths it merely needs to **read** pass as paths. Each
+returns findings as `file:line` with the line quoted beside it + claim + evidence, under 400 words. A
+finding whose quote is not at that line is unverified: it goes back to its axis for the pointer
+before it is disposed — a rule can be real while its pointer is invented.
 
 - **Standards brief**: every place the diff violates a documented standard (cite file + rule), and
   every baseline smell (name it, quote the hunk). Distinguish hard violations from judgement calls.
@@ -109,6 +116,12 @@ Then route **every** finding through the disposition rule:
   one prompt**, your recommendation first.
 - **Accept is human-only.** You may fix and you may ticket; you may never decide something stays
   broken. Any would-be accept escalates.
+
+**Re-check the fixes, not the slice.** After the fix-now dispositions land, re-run only the axes
+whose findings you fixed, each over the fix commits alone (`git diff <pre-fix HEAD>...HEAD`) with its
+findings pasted, returning each as closed or open; the gates run once more, here. Green is every axis
+reporting its findings closed and the gates clean; a new finding re-enters the disposition rule. A
+fix confined to what a gate proves — a typecheck error, a stale index — needs the gate, not an axis.
 
 A judgement call the user decides is a candidate rule for a knowledge page or standards doc — write
 it down and it becomes evidence-backed forever after, which is how this review asks less over time.

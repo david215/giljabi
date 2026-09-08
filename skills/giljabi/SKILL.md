@@ -80,9 +80,9 @@ always** — never in parallel, whatever the ticket graph looks like. Per slice:
    (`/implement 03-invitations-follow-organization-timezone`), never by position.
 3. **Review** — `/review` at slice scope: fixed point is the previous slice's merged tip (the
    feature branch's start for slice 1), spec source is
-   `spec.md` restricted to this slice's tickets; its three axes run as `deep` agents. Loop fix →
-   `/review` → `/commit` until green or until a failure is accepted out loud — by the user, not by
-   you.
+   `spec.md` restricted to this slice's tickets; its three axes run as `deep` agents. `/review`
+   disposes its findings and re-checks the fixes at its own scope (its step 4); `/commit` when it is
+   green or when a failure is accepted out loud — by the user, not by you.
 4. **PR** — `/pr`, run by a `standard` agent. Then write `STATE.md` and reset the context.
 
 The ticket close-out — tests green, page updates in the diff, `/commit`, `STATE.md` — fires at the

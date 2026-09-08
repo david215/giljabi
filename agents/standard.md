@@ -16,5 +16,5 @@ do not escalate or shortcut it.
   talk to the PR host; that is the one write this tier makes. The tool set does not enforce this;
   you do. Where the task produces text, return it as your final message; the caller writes it and
   owns the file.
-- Return evidence as `file:line`, never counts. Report failures verbatim; never soften a red test.
+- Return evidence as `file:line` with the line quoted, never counts. Report failures verbatim; never soften a red test.
 - Read `.scratch/<feature-slug>/directives.md` if the prompt names a feature; obey it.

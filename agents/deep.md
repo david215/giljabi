@@ -16,5 +16,5 @@ do not escalate or shortcut it.
   to read: `git diff`/`log`, `grep`, `diff <(…)`, a test run. The tool set does not enforce this;
   you do. Where the task produces text — a draft spec, a ticket breakdown, review findings — return
   it as your final message; the caller writes it and owns the file.
-- Return evidence as `file:line`, never counts. Report failures verbatim; never soften a red test.
+- Return evidence as `file:line` with the line quoted, never counts. Report failures verbatim; never soften a red test.
 - Read `.scratch/<feature-slug>/directives.md` if the prompt names a feature; obey it.

@@ -11,6 +11,7 @@ Scaffold the per-repo configuration the giljabi skills read:
 - **Issue tracker** — where specs and tickets live → `docs/agents/issue-tracker.md`
 - **VCS** — host, integration branch, languages, reviewers → `docs/agents/vcs.md`
 - **Testing** — how suites run here, and what breaks when run wrong → `docs/agents/testing.md`
+- **Data access** — the read-only path to production data, when the repo provides one → `docs/agents/data.md`
 - **Working directory** — `.scratch/` gitignored → `.gitignore`
 - **Knowledge layer** — `docs/domain/`, `docs/platform/`, `docs/conventions/` scaffolds → see `/knowledge` for the layer table and contract
 - **Agent doc** — pointer blocks in `CLAUDE.md` / `AGENTS.md`
@@ -48,6 +49,9 @@ Every answer you can read out of the repo is one the user does not have to type:
 - Test-runner config: `package.json` scripts, `Makefile`, `pyproject.toml`, `Cargo.toml`,
   `jest.*.config.*` / `vitest.config.*` / `pytest.ini` — plus a sample of the test files themselves
   (`**/*.spec.*`, `**/*.test.*`, `**/test_*.py`) to read the layout off the paths.
+- `scripts/` and the harness's command allow-list — a wrapper that queries a replica read-only, and
+  whether the harness already permits it. A wrapper that exists and is not on record is the one an
+  agent bypasses with a raw connection string.
 - `find . -maxdepth 3 -iname 'pull_request_template*'` — whether the repo ships a PR template, and
   where; `vcs.md` records the path and the template stays there.
 - `CLAUDE.md` / `AGENTS.md` — an existing `## Agent skills` block, and any rules already in prose.
@@ -77,6 +81,9 @@ Then ask only these; "none" is a valid answer to each:
 - **Test gotchas** — what does someone need to know that `package.json` does not say? A heap size,
   suites that must run serially, an integration DB, a suite too expensive to run locally. Record it
   verbatim; a thin accurate `testing.md` beats a padded guess.
+- **Data access** — is there a repo-provided read-only path to production data — a wrapper script, a
+  proxy, a replica URL? Record the exact command and what it may not do. `/grill` and `/knowledge-tend`
+  read production through it; with none on record they write the SQL and ask.
 
 ## 3. Confirm
 
@@ -90,7 +97,7 @@ Seed templates in this folder — start from them rather than composing:
 [issue-tracker-gitlab.md](./issue-tracker-gitlab.md) ·
 [issue-tracker-local.md](./issue-tracker-local.md) ·
 [vcs-github.md](./vcs-github.md) · [vcs-azure-devops.md](./vcs-azure-devops.md) ·
-[testing.md](./testing.md). For a host with no seed, keep the same headings so `/pr` and `/commit`
+[testing.md](./testing.md) · [data.md](./data.md). For a host with no seed, keep the same headings so `/pr` and `/commit`
 find what they expect, and say `/pr` will need the commands spelled out.
 
 Generate `docs/domain/README.md` and `docs/platform/README.md` with `/knowledge`'s `index.sh` (empty
@@ -117,6 +124,9 @@ other section alone:
 [one line on how suites run]. See `docs/agents/testing.md`.
 [A guardrail line only if a gotcha's violation causes damage, worded to self-trigger:
 "Never run the whole suite locally; it can take the machine down."]
+
+### Data access
+[one line: the read-only query command]. See `docs/agents/data.md`.
 
 ### Knowledge layer
 Current-state pages: business entities in `docs/domain/`, stack behaviour in `docs/platform/`, coding

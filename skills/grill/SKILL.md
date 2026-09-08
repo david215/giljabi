@@ -24,11 +24,12 @@ state that contract in every prompt (`/giljabi` maps tiers and agent types per h
 summarised map is a secondary source at the moment you most need a primary one.
 
 **Map the data too, when behaviour keys off it.** Code says what *can* happen; only stored data says
-how often and to how many rows. Read production **read-only, aggregates before identities** — counts
-and distributions first, rows only when the count is small. The map prices existence; the survey
-prices importance — a question deserves attention in proportion to the population it governs. If you
-cannot reach the database, write the SQL to `.scratch/<feature-slug>/`, show it, and ask — do not
-proceed on an unrun survey without saying the spec rests on unmeasured assumptions.
+how often and to how many rows. Reach production through the repo's own read-only query command —
+`docs/agents/data.md` names it — and read **aggregates before identities**: counts and distributions
+first, rows only when the count is small. The map prices existence; the survey prices importance — a
+question deserves attention in proportion to the population it governs. With no command on record, or
+one you cannot run, write the SQL to `.scratch/<feature-slug>/`, show it, and ask; a spec written over
+an unrun survey says so in those words — *rests on unmeasured assumptions*.
 
 **Tend the pages you are about to lean on.** Before round one, run `/knowledge-tend` scoped to the
 entities the change touches (checks 1–4; check 4 reads their neighbourhood too). A page that drifted since it was written makes the

@@ -117,6 +117,12 @@ encodes a decision more precisely than prose; trim to the decision-rich part.
 code; "removes all four call sites" is a measurement taken from reasoning. Where a number genuinely
 carries the requirement, grep for it first — and read the hits, not the match count.
 
+**A ticket that copies a site names what the site does, not where it is.** "Error mapping identical
+to the evaluation call" grounds the requirement on a call site's shape; the acceptance criterion
+states the behaviour that site observably produces, read from the code and the framework it calls
+into. An idiom can be broken where it stands, and a ticket that inherits its shape inherits the bug
+as a requirement.
+
 ## Capture as you go
 
 Slicing exposes things no ticket should carry — an unsafe prefactor, a coupling that blocks a clean

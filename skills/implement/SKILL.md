@@ -40,17 +40,23 @@ doesn't care about internal structure. Anti-patterns to refuse:
 Where to inject dependencies and what to fake: [mocking.md](./mocking.md).
 
 Run the typechecker and single test files regularly; `docs/agents/testing.md` carries this repo's
-commands and traps. `docs/conventions/README.md` indexes how code is written here — read it before the
-first edit, and the pages it names for whatever the ticket writes: comments and their language, naming,
-layout. A convention learned here costs one read; learned from the review's Standards axis it costs a
+commands and traps. Three reads come before the first edit: `docs/conventions/README.md` and the pages
+it names for whatever the ticket writes — comments and their language, naming, layout; the
+`docs/domain/` page of every entity the ticket changes; and the `docs/platform/` page of every
+technology the ticket's code calls into — the ORM, the database, the framework — found through
+`docs/platform/README.md`. A trap learned here costs one read; learned from the review it costs a
 round.
 
 ## Knowledge rides the same diff
 
 A change that alters an entity's behaviour updates that entity's `docs/domain/` or `docs/platform/`
 page **in the same commit**, regenerates the index, and removes each `(intended)` marker this
-ticket's code just made true (`/knowledge` has the page contract and the index script). This is not a follow-up task; a doc update deferred out of the diff is one that
-does not happen, and the review's Knowledge axis will fail the slice for it.
+ticket's code just made true (`/knowledge` has the page contract, the marker rule and the index
+script). Updating means putting every behaviour this ticket changed through `/knowledge`'s
+anti-inference test — *would a reader working from code alone arrive at the opposite?* — and writing
+each line that passes: a column nullable in the schema that no writer leaves null, a path no caller
+can reach. The review's Knowledge axis runs the same test over the diff and fails what is missing.
+This is not a follow-up task; a doc update deferred out of the diff is one that does not happen.
 
 The entity's page is not the only page that talks about its code. Read its **neighbourhood** — the
 `related:` ids on the page's index line, or `/knowledge`'s lookup — for every claim about the code

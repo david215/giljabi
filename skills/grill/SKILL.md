@@ -34,9 +34,11 @@ an unrun survey says so in those words — *rests on unmeasured assumptions*.
 **Tend the pages you are about to lean on.** Before round one, run `/knowledge-tend` scoped to every
 `docs/domain/` and `docs/platform/` page the plan will touch — platform pages as much as domain ones;
 a stale timeout claim lies exactly like a stale invariant (checks 1–4; check 4 reads their
-neighbourhood too). A page that drifted since it was written makes the interview lie in the one place
-it trusts most; fixing it first costs a few sweeps and is applied on the user's approval like any
-other tend.
+neighbourhood too). The map and check 4 share their sweeps: a claim the map already re-verified to
+`file:line` is check 4 done for that claim, so the tend covers checks 1–3 and the claims the map did
+not reach — one sweep per claim, never two and never none. A page that drifted since it was written
+makes the interview lie in the one place it trusts most; fixing it first costs a few sweeps and is
+applied on the user's approval like any other tend.
 
 ## Name the feature after its outcome
 
@@ -90,8 +92,8 @@ repo — how to run this feature's work — goes to `directives.md` the moment i
 
 Load `/knowledge` and hold the interview to its discipline: challenge terms against existing pages,
 sharpen fuzzy language to one canonical term, cross-reference claims with code. The moment a
-decision or term settles, write it to the entity's page — marked `(intended)` where the code does
-not yet make it true. Do not batch; phase 4 commits these pages as the plan.
+decision or term settles, write it to the entity's page — each claim marked `(intended)` where the
+code does not yet make it true. Do not batch; phase 4 commits these pages as the plan.
 
 Findings that are neither terms nor decisions — a defect passed by, a measured constraint, a gotcha
 — append to `findings.md` as they surface, one line, unjudged.

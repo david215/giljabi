@@ -109,9 +109,11 @@ the index renders it on every line, and the lookup below computes it.
    in the same commit — and regenerates the index. A doc update deferred to later is a doc update
    that does not happen; a deferral pile was tried and became a graveyard.
 4. **`(intended)` marks the unbuilt.** Planning commits claims about code that does not exist yet.
-   Tag each such claim inline with `(intended)`; a wholly-new entity takes `status: intended`
-   page-level instead. `grep -rn '(intended)' docs/domain/ docs/platform/` is the list of
-   promised-but-unbuilt work. Implementation removes each marker in the diff that makes the claim true.
+   Tag each such claim inline with `(intended)` — on the sentence, never on a heading, so a ticket
+   that builds half a section removes exactly the markers it made true; a wholly-new entity takes
+   `status: intended` page-level instead. `grep -rn '(intended)' docs/domain/ docs/platform/` is the
+   list of promised-but-unbuilt work. Implementation removes each marker in the diff that makes the
+   claim true; a marker found on a heading is first moved onto each claim beneath it still unbuilt.
 
 ## What a page keeps — the anti-inference test
 
@@ -132,6 +134,12 @@ choose it* — once the code forecloses it, it is history, and history goes.
 cut the story); anything restating the code; references to anything ephemeral — tickets, specs,
 `.scratch/` paths, feature slugs. State the fact, not where it was decided: *no ticket asked for
 it* → *nobody asked for it*.
+
+A claim about a system the repo does not contain — the host, a managed database's extension policy,
+a partner's API — has no code to falsify it, so the page names the primary source it was read from
+beside the claim, or tags it `(unverified)`. A source is something a reader can open: vendor
+documentation, a support case, a measured run. This holds on every layer in the table, runbooks
+included.
 
 Point at a page from code in **one line**. The code site may add a short *local* why — why this
 ordering, what breaks if a reader "fixes" this line — when that fact passes the anti-inference test

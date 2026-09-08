@@ -28,9 +28,9 @@ repo-wide unasked. Callers scope it:
 
 | Caller | Scope | Runs |
 | --- | --- | --- |
-| `/grill`, before round one | entities the plan touches | 1–4 — a stale page makes the interview lie |
-| `/review`, Knowledge axis | pages the diff touches | 1–3 as pass/fail; 4 is what the axis already does |
-| `/giljabi` phase 6 | the feature's pages | 2–3 — does the shape still fit after this feature |
+| `/grill`, before round one | every `docs/domain/` and `docs/platform/` page the plan will touch | 1–4 — a stale page makes the interview lie |
+| `/review`, Knowledge axis | every page the diff touches, plus neighbourhood | 1–2 and 4 as pass/fail, 3 as proposals — the primary run |
+| `/giljabi` phase 6, features of more than one slice | the feature's pages | 2 — index and relations after every slice landed |
 | `/migrate-docs` | the cluster | 1, 4, 5 — its verify, place and repoint steps are these |
 | standalone | as given | as given |
 

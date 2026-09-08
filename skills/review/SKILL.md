@@ -65,8 +65,10 @@ it; skip anything tooling enforces:
 **Knowledge sources**: the `docs/domain/` and `docs/platform/` pages whose entities the diff
 touches — map pages to changed files by the entity each file serves, erring toward inclusion —
 **and each touched page's neighbourhood** (`/knowledge`'s lookup: the pages declaring an edge at it),
-read for the claims they make about the touched entity; plus `/knowledge-tend`'s placement, index
-and relation checks (its checks 1–3) as pass/fail, and its shape signals (check 3) as proposals.
+read for the claims they make about the touched entity; plus `/knowledge-tend` at that scope —
+placement and index (checks 1–2) and drift on every claim of every touched page (check 4) as
+pass/fail, shape (check 3) as proposals. This is the layer's primary tend, run before the PR that
+changes it.
 
 ## 3. Spawn the three sub-agents in parallel
 
@@ -78,7 +80,9 @@ paths. Each returns findings as `file:line` + claim + evidence, under 400 words.
   every baseline smell (name it, quote the hunk). Distinguish hard violations from judgement calls.
 - **Spec brief**: (a) requirements missing or partial; (b) behaviour nobody asked for; (c)
   requirements that look implemented but wrong. Quote the spec line for each.
-- **Knowledge brief**: (a) claims on touched pages the diff has made false; (b) behaviour changes
+- **Knowledge brief**: (a) every claim on every touched page, re-verified against code — a claim the
+  diff made false and one already stale surface alike, since a page rewritten in this PR is signed
+  off whole; (b) behaviour changes
   the diff makes that no page states and the anti-inference test says a page must (paste the test:
   *would a reader working from code alone arrive at the opposite?*); (c) `(intended)` markers whose
   code this diff built but whose marker survives; (d) dangling `relations:` ids and reciprocal

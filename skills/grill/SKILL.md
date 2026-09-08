@@ -31,10 +31,12 @@ question deserves attention in proportion to the population it governs. With no 
 one you cannot run, write the SQL to `.scratch/<feature-slug>/`, show it, and ask; a spec written over
 an unrun survey says so in those words — *rests on unmeasured assumptions*.
 
-**Tend the pages you are about to lean on.** Before round one, run `/knowledge-tend` scoped to the
-entities the change touches (checks 1–4; check 4 reads their neighbourhood too). A page that drifted since it was written makes the
-interview lie in the one place it trusts most; fixing it first costs a few sweeps and is applied on
-the user's approval like any other tend.
+**Tend the pages you are about to lean on.** Before round one, run `/knowledge-tend` scoped to every
+`docs/domain/` and `docs/platform/` page the plan will touch — platform pages as much as domain ones;
+a stale timeout claim lies exactly like a stale invariant (checks 1–4; check 4 reads their
+neighbourhood too). A page that drifted since it was written makes the interview lie in the one place
+it trusts most; fixing it first costs a few sweeps and is applied on the user's approval like any
+other tend.
 
 ## Name the feature after its outcome
 

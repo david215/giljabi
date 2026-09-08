@@ -19,7 +19,8 @@ layer's shape and re-verifies its claims against code; `/migrate-docs` folds leg
 **A feature does not fit in one context window.** Every phase therefore leaves an artifact — a page,
 a spec, a ticket — and the next phase reads a file instead of remembering a conversation. The
 pipeline exists to touch the layer at every step: the grill tends the pages it will lean on before
-asking, implement updates them in the code diff, review fails drift, close re-checks the shape.
+asking, implement updates them in the code diff, review re-verifies every touched page and fails
+drift, close re-checks the index a stacked series leaves.
 
 ```
 /grill  →  /to-spec  →  /to-tickets  →  plan commit  →  /implement × N  →  /review  →  /pr

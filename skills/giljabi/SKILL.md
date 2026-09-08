@@ -1,6 +1,6 @@
 ---
 name: giljabi
-description: Run a feature from an idea to merged PRs while keeping the repo's knowledge layer true at every phase — grill (pages tended first), spec, tickets sliced into independently-mergeable PRs, a plan commit, sequential implementation with page updates in the same diff, three-axis review, a closing tend. Owns the phase order and the context resets; each phase's method lives in its own skill. Use when starting or resuming feature work.
+description: Run a feature from an idea to merged PRs while keeping the repo's knowledge layer true at every phase — grill (pages tended first), spec, tickets sliced into independently-mergeable PRs, a plan commit, sequential implementation with page updates in the same diff, three-axis review that tends every page it touches, a closing index check across stacked slices. Owns the phase order and the context resets; each phase's method lives in its own skill. Use when starting or resuming feature work.
 ---
 
 # giljabi (길잡이)
@@ -18,8 +18,8 @@ reset costs nothing.
 | 2. Specify | `/to-spec` — drafted by a `deep` agent from `findings.md`, edited here | `spec.md` |
 | 3. Slice | `/to-tickets` — drafted by a `deep` agent from `spec.md`, approved here | `issues/NN-*.md`, `slices.md` |
 | 4. Commit the plan | — | the `(intended)` pages as the first commit on the feature branch |
-| 5. Build, per slice | `/implement` × N, `/review`, `/pr` | code, page updates, one PR per slice |
-| 6. Close | `/knowledge-tend` on the feature's pages | cleanup, layer shape re-checked, friction routed to retro |
+| 5. Build, per slice | `/implement` × N, `/review` (the layer's primary tend — `/knowledge-tend` on every page the slice touches), `/pr` | code, page updates, one PR per slice |
+| 6. Close | `/knowledge-tend` check 2 on the feature's pages, when slices stacked | cleanup, index and relations re-checked across the series, friction routed to retro |
 
 Phases 1–3 need only the knowledge pages (`docs/domain/`, `docs/platform/`) and tolerate their absence. If `docs/agents/` is missing, say
 so once and continue; the gate is at phase 4.
@@ -106,11 +106,12 @@ rm -rf .scratch/<feature-slug>
 `.scratch/` is gitignored; a deleted directory is unrecoverable. That is the point — and why the
 checks run first, every time.
 
-**Re-check what only the merged range can show.** Run `/knowledge-tend` scoped to the feature's
-pages, check 2 only — the index and relations as they stand after every slice landed. Shape
-(check 3) was `/review`'s job on each slice, where a split rides the slice that caused it; a shape
-proposal surfacing here means a review missed it, which is a `[friction]` line, and the fix is its
-own docs commit on approval.
+**Re-check what only the merged range can show.** A feature of more than one slice runs
+`/knowledge-tend` scoped to its pages, check 2 only — the index and relations as they stand after
+every slice landed, the one shape no per-slice review saw whole. A single-slice feature skips it and
+says so: its merged range is the diff its review already checked. Shape (check 3) was `/review`'s job
+on each slice, where a split rides the slice that caused it; a shape proposal surfacing here means a
+review missed it, which is a `[friction]` line, and the fix is its own docs commit on approval.
 
 **Route the friction.** `findings.md` lines tagged `[friction]` — moments a skill fought you, an
 instruction that misfired, a gate that checked the wrong thing — append to `retro/inbox.md` in the

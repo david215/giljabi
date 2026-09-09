@@ -19,7 +19,7 @@ and you open by asking the user to describe their own codebase — slower and le
 reading it.
 
 **Delegate the sweep, read the hits yourself.** Send each sweep to a read-only search subagent at
-the `fast` tier — one per question — returning **`file:line` pointers, never conclusions or counts**;
+the `standard` tier — one per question — returning **`file:line` pointers, never conclusions or counts**;
 state that contract in every prompt (`/giljabi` maps tiers and agent types per harness). Then open the files that matter, here: the map becomes the design tree, and a
 summarised map is a secondary source at the moment you most need a primary one.
 

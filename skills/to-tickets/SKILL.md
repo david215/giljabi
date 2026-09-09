@@ -40,6 +40,17 @@ the change easy, then make the easy change" — and put any prefactor first.
 
 Give each ticket its **blocking edges** — the tickets that must complete before it starts.
 
+**Weigh each ticket, `routine` or `involved`.** `/implement` runs inline, so this line is what sets
+the session's reasoning effort for the run (`/giljabi` phase 5, step 2) — you are judging it here,
+with the whole breakdown in view, precisely so nobody re-judges it one ticket at a time. `involved`
+means the ticket holds a decision the spec did not settle: a seam to design, a concurrency or
+migration order to get right, an idiom to break rather than inherit, a blast radius nobody has
+measured. `routine` means the shape is already decided and the work is carrying it out — a
+tracer bullet through layers that exist, a batch in an expand–contract sequence, a page update.
+Line count is not the signal: a 400-line mechanical migration is `routine` and a 20-line change to
+a shared lock is `involved`. When it is genuinely unclear, mark `involved` — the cost of the wrong
+guess is asymmetric.
+
 **Wide refactors are the exception to vertical slicing.** One mechanical change whose blast radius
 fans across the codebase — a column rename, a shared-symbol retype — cannot land green as one
 tracer bullet. Sequence it as **expand–contract**: expand (add the new form beside the old), migrate
@@ -67,8 +78,8 @@ merge two that collapsed; update `slices.md` when it happens.
 
 ### 5. Quiz the user
 
-Present the breakdown as a numbered list — per ticket: **Title**, **Blocked by**, **What it
-delivers**; per slice: which tickets and what the PR ships. Ask: is the granularity right? are the
+Present the breakdown as a numbered list — per ticket: **Title**, **Blocked by**, **Weight**, **What
+it delivers**; per slice: which tickets and what the PR ships. Ask: is the granularity right? are the
 edges genuine? do the slice boundaries match how this should be reviewed and merged? Each of those is
 a decision, and goes through the harness's structured-question capability (`/giljabi`'s harness map)
 — one question per decision, your recommendation first, the argument in prose beside it, as `/grill`
@@ -104,6 +115,8 @@ not a layer-by-layer list.
 **Slice:** <N — slug>
 
 **Blocked by:** numbers/titles, or "None — can start immediately".
+
+**Weight:** routine | involved — see the drafting rules; sets the implementer's reasoning effort.
 
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2

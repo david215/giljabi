@@ -113,24 +113,44 @@ for the same reason skills never edit themselves.
 
 ## Why harness-specific tokens are capabilities with a map
 
-`/clear`, `AskUserQuestion`, the `Explore` agent type and three others are Claude Code spellings of
+`/clear`, `AskUserQuestion`, `/handoff` and two others are Claude Code spellings of
 capabilities every harness has under another name. Skills name the capability; one table in
 `giljabi/SKILL.md` maps it per harness (Claude Code, Codex verified; others translate). The map is
-not a `docs/agents/` file because the harness is a property of the session, not the repo.
+not a `docs/agents/` file because the harness is a property of the session, not the repo. A sixth row
+mapped read-only search to Claude Code's built-in `Explore` type and was deleted: `Explore` pins no
+model, so a sweep ran at whatever the session was set to — the leak the tiers exist to close — and it
+carries Bash like everything else, so it was never the read-only guarantee the row implied. A sweep
+is now a `standard` agent with a pointers-only contract, and the capability is the tier.
 
 ## Why tiers apply only to delegated work
 
 A skill running inline runs on the session model; nothing a skill says can change that, and
-switching `/model` for a thirty-second `/commit` costs more than it saves. So the tier vocabulary
+switching `/model` for a thirty-second `/commit` costs more than it saves. The exception proves the
+rule: `/implement` is inline and is not thirty seconds, so `giljabi` phase 5 does ask for the switch
+— off the ticket's `Weight:` line, not off a fresh judgment. So the tier vocabulary
 (`deep | standard | fast`) attaches to subagents — each tier fixing model *and* reasoning effort
 together, because both answer one question and two knobs is a choice with no rule — and the set of delegated skills widened to make
 tiers worth having: `to-spec` and `to-tickets` draft as `deep` subagents from artifacts (reviewed
-and edited inline, published after approval), all three `review` axes run `deep`, `pr` runs `standard` (prose humans read, synthesized from
-several artifacts), `commit`/test runs and `Explore` sweeps run `fast`. On Claude Code a tier is an agent definition the plugin ships, so a skill spawns by type name and
+and edited inline, published after approval), all three `review` axes run `deep`, `pr` and `commit`
+run `standard` — prose humans read, synthesized from several artifacts — and so does every search
+sweep, leaving `fast` the suites. On Claude Code a tier is an agent definition the plugin ships, so a skill spawns by type name and
 model and effort travel together; on Codex it is the `model` and `reasoning_effort` pair on
 `spawn_agent`. A tier is never verified by
 asking the model its name — self-report is wrong on both harnesses; session logs are the evidence. `grill`, `setup`, `implement` stay inline — their primary source
 is the user.
+
+The tiers name job weight, so the models under them can move without a skill changing. They sit at
+Opus/high, Sonnet/medium and Haiku/low: the strongest model is not a tier at all but an escalation
+the user asks for — `deep` spawned with a per-call `model: fable` override, recorded in
+`directives.md` so it survives the context reset phase 5 performs between tickets. Escalation is the
+user's because a tier exists to remove the model choice from spawn time, and a model judging whether
+a task is hard enough to deserve more of itself is the one judge with an interest in the answer. The
+same reasoning bans effort that floats with perceived complexity: variance is fine when it keys off
+something written down, which is why the only complexity-driven choice in the workflow reads a
+`Weight:` line `to-tickets` stamped with the whole breakdown in view. `fast`'s floor moved for the
+opposite reason — Haiku at low effort is right for running a command and pasting the failures, and
+wrong for anything that words or decides, so `commit` (whose message lands in `git log` forever) and
+the sweeps (whose misses poison a design map) left it.
 
 ## Why there is a standalone path
 
@@ -145,7 +165,7 @@ in the phases — so the standalone path loses no page and no check, only bookke
 ## Why the tier agents are non-editing by instruction, not by tool set
 
 Every tier carries Bash: `review`'s Knowledge axis runs `git diff` and `diff <(index.sh …)`, `fast`
-runs suites and `/commit`. Bash can also `sed -i` and `git commit`, so no `tools:` list makes an
+runs suites, `standard` runs `/commit`. Bash can also `sed -i` and `git commit`, so no `tools:` list makes an
 agent read-only, and an earlier version claiming "read-only by tool set" was asserting a guarantee
 nothing provided. The honest shape is the one Codex already had: the constraint is stated in the
 agent definition and repeated in every prompt, and the caller checks `git status` afterwards. A

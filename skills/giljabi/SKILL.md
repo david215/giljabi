@@ -77,7 +77,12 @@ always** — never in parallel, whatever the ticket graph looks like. Per slice:
    under squash-merge an unsynced branch describes the previous slice again.
 2. **Implement** — one `/implement` run per ticket, a context reset between tickets. Work the
    frontier: any ticket whose blockers are done, lowest number first. Name tickets by **filename**
-   (`/implement 03-invitations-follow-organization-timezone`), never by position.
+   (`/implement 03-invitations-follow-organization-timezone`), never by position. `/implement` runs
+   inline, so **set the session's reasoning effort from the ticket's `Weight:` line before the run**
+   — `involved` → high, `routine` → medium (Claude Code: `/effort`, with `/model` for the model
+   itself; Codex: `/model`, which sets both). `/to-tickets` stamped that line at phase 3, when the
+   whole breakdown was in view; re-judging it here, one ticket at a time, is the guess the marker
+   exists to replace.
 3. **Review** — `/review` at slice scope: fixed point is the previous slice's merged tip (the
    feature branch's start for slice 1), spec source is
    `spec.md` restricted to this slice's tickets; its three axes run as `deep` agents. `/review`
@@ -127,13 +132,32 @@ together, because both answer one question and two knobs is a choice with no rul
 
 | Tier | Runs | Claude Code | Codex |
 | --- | --- | --- | --- |
-| `deep` | `/to-spec` and `/to-tickets` drafts; every `/review` axis | agent type `deep` (`fable`, effort high) | `spawn_agent(model: gpt-5.6-sol, reasoning_effort: high)` |
-| `standard` | `/pr`; also the inline session default | agent type `standard` (`opus`, medium) | `spawn_agent(model: gpt-5.6-terra, reasoning_effort: medium)` |
-| `fast` | `/commit`; test runs; read-only search sweeps | agent type `fast` (`sonnet`, low) | `spawn_agent(model: gpt-5.6-luna, reasoning_effort: low)` |
+| `deep` | `/to-spec` and `/to-tickets` drafts; every `/review` axis | agent type `deep` (`opus`, effort high) | `spawn_agent(model: gpt-5.6-sol, reasoning_effort: high)` |
+| `standard` | `/pr`; `/commit`; every read-only search sweep | agent type `standard` (`sonnet`, medium) | `spawn_agent(model: gpt-5.6-terra, reasoning_effort: medium)` |
+| `fast` | test and typecheck runs — nothing else | agent type `fast` (`haiku`, low) | `spawn_agent(model: gpt-5.6-luna, reasoning_effort: low)` |
 
 The Claude Code agent types ship in this repo's `agents/`. `/grill`, `/setup` and `/implement` never
 delegate their own work — their primary source is the user. Never verify a tier by asking the model
 what it is: self-report is wrong on both harnesses; the harness's session log is the evidence.
+
+**`fast` is execution, not cheap thinking.** Its one job is running a command out of
+`docs/agents/testing.md` and returning the failures verbatim. A sweep that decides what it found, a
+message humans will read, a claim checked against a page — all `standard` or above, however small
+they look.
+
+**Escalating `deep` to the strongest model is the user's call, never yours.** The tier is Opus at
+high effort; when the user says a job warrants `fable`, spawn the same `deep` type with a per-call
+`model: fable` override (effort stays `high` from the definition) and write the escalation to
+`directives.md` — `deep tier → fable` — or it is gone at the next context reset, which phase 5
+performs between every ticket. Codex has no stronger model to escalate *to*: raise
+`reasoning_effort` on `gpt-5.6-sol` if that session offers a level above `high`, and tell the user it
+does not if it does not. Never escalate on your own read of a task's difficulty: a tier exists to
+remove that judgment from spawn time, and the model doing the judging is the one that benefits
+from it.
+
+**Inline work has no tier.** `/grill` (phase 1) and `/implement` (phase 5) run in this session, so
+they run on whatever `/model` is set to and nothing a skill says can change that. Where the session
+model matters, these phases ask you to set it — see phase 5, step 2.
 
 ## Harness map
 
@@ -146,12 +170,16 @@ what this session's harness offers:
 | summarise and continue | `/compact` | `/compact` |
 | hand off to another session | `/handoff` | write the handoff document by hand |
 | ask the user a structured question | `AskUserQuestion` | ask in prose; Codex has no equivalent outside plan mode |
-| read-only search subagent | `Explore` | `spawn_agent` with a read-only instruction — Codex has no read-only type, so state the constraint in the prompt |
 | tiered subagent | agent types `deep`/`standard`/`fast` | `spawn_agent(model, reasoning_effort)` per the tier table |
 
 Codex subagents can invoke skills and can be pinned to a model (both verified). On an unmapped
-harness, translate these six yourself before the first phase and write the translation to
+harness, translate these five yourself before the first phase and write the translation to
 `directives.md`.
+
+There is no separate read-only-search capability: a sweep is a `standard` agent told to return
+`file:line` and nothing else. Claude Code's built-in `Explore` type carries no model of its own, so
+it would run a sweep at whatever this session is set to — the tier exists to stop exactly that, and
+Bash is in `Explore`'s tool set anyway, so it is no more read-only than a tier is.
 
 ## STATE.md — where you are
 
@@ -183,7 +211,9 @@ An instruction from the user that is not spec, not a repo fact, and not a hazard
 suite this week", "log every skill hiccup to workflow-notes.md", "don't touch the billing module
 until Kim's PR lands" — has no page and no ticket. It goes to `.scratch/<feature-slug>/directives.md`
 the moment it is said: one line each, current state only, rewritten in place, deleted when it
-lapses. Every session start reads it after `STATE.md`; every delegated agent is told to read it. It
+lapses. A model escalation is one of these — `deep tier → fable` — for the same reason: it is an
+instruction, not a fact about the repo, and a context reset is where it would otherwise be lost.
+Every session start reads it after `STATE.md`; every delegated agent is told to read it. It
 is not `findings.md` — that file grows and its register is unjudged discovery; a directive on line
 40 is a directive missed.
 

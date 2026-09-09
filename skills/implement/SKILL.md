@@ -88,7 +88,7 @@ surface, one line, unjudged:
 
 ## Delegate discovery, keep decisions
 
-A bounded, read-only question goes to a `fast`-tier search subagent (`/giljabi` maps the type per
+A bounded, read-only question goes to a `standard`-tier search subagent (`/giljabi` maps the type per
 harness): every call site of `X`, every spec building a fixture, every importer of a module you are
 changing. It returns **`file:line` lists, never counts** — state that contract in the prompt; a
 subagent reporting a number has thrown the evidence somewhere nobody can inspect. Running a suite is
@@ -105,7 +105,7 @@ The ticket is done when: the typecheck and this ticket's suites are green (a red
 work is wrong — fix it, or have the user accept the failure out loud); the pages are updated in the
 diff; the **ticket file** records it — every acceptance box you completed ticked and its `Status:`
 line set to `done` where the tracker has one, since `STATE.md` names only the next ticket and nothing
-else says which ones finished; `/commit` has run on the current branch — delegated to a `fast` agent, which reads the ticket
+else says which ones finished; `/commit` has run on the current branch — delegated to a `standard` agent, which reads the ticket
 file and `directives.md` and has everything the message needs; and `STATE.md` names the next
 ticket. Review runs at
 slice scope via `/review` — running standalone outside `/giljabi`, run `/review` yourself over the

@@ -95,7 +95,7 @@ re-minted**. Scope is the named pages **plus their neighbourhood** (`/knowledge`
 neighbour is checked only for the claims it makes about the named entity, since those are the ones
 the named entity's code can have made stale. For each claim on each page in scope, check the code
 still agrees — delegate the sweeps
-to a read-only search subagent at the `fast` tier returning `file:line` and the quoted line, never a
+to a read-only search subagent at the `standard` tier returning `file:line` and the quoted line, never a
 bare count, and read the hits yourself. Three outcomes, each a proposal:
 
 - the code agrees → nothing;

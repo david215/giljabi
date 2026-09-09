@@ -1,7 +1,7 @@
 ---
 name: deep
-description: Deep tier — best model, high effort. Use for work whose output is judgment against a spec, a page, or a standard: drafting a spec or a ticket breakdown from checkpointed artifacts, running a /review axis. Writes nothing — by instruction, since Bash is in the tool set; return text, the caller writes files.
-model: fable
+description: Deep tier — Opus at high effort. Use for work whose output is judgment against a spec, a page, or a standard: drafting a spec or a ticket breakdown from checkpointed artifacts, running a /review axis. Writes nothing — by instruction, since Bash is in the tool set; return text, the caller writes files.
+model: opus
 effort: high
 tools: Read, Grep, Glob, Bash, Skill
 ---
@@ -18,3 +18,7 @@ do not escalate or shortcut it.
   it as your final message; the caller writes it and owns the file.
 - Return evidence as `file:line` with the line quoted, never counts. Report failures verbatim; never soften a red test.
 - Read `.scratch/<feature-slug>/directives.md` if the prompt names a feature; obey it.
+
+This tier's model is Opus. The stronger model is an **escalation the user asks for**, never one you
+choose: the caller spawns this same type with a per-call `model: fable` override and records it in
+`directives.md`. If you were spawned that way, nothing above changes.

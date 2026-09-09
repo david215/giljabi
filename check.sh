@@ -25,6 +25,12 @@ for f in agents/*.md; do
   grep -qE '^effort: (low|medium|high|xhigh|max)$' "$f" || { echo "FAIL: $f has no valid effort"; fail=1; }
 done
 
+# Every tier a skill names exists in agents/. Catches a retiering that renames or drops one,
+# and a skill reaching for a harness agent type the tier table no longer maps.
+while read -r t; do
+  [ -f "agents/$t.md" ] || { echo "FAIL: skills name a '$t' tier with no agents/$t.md"; fail=1; }
+done < <(grep -rhoE '`[a-z-]+`-?( )?(tier|agents?|subagent)' skills/*/SKILL.md | sed 's/.*`\([a-z-]*\)`.*/\1/' | sort -u)
+
 # plugin.json paths exist, and every skill dir is listed.
 while read -r p; do
   [ -d "$p" ] || { echo "FAIL: plugin.json lists missing $p"; fail=1; }
@@ -34,7 +40,8 @@ for d in skills/*/; do
 done
 
 # No skill references a skill that does not exist in this repo.
-known="giljabi|grill|retro|writing-for-agents|to-spec|to-tickets|implement|review|commit|pr|knowledge|knowledge-tend|migrate-docs|setup|clear|compact|handoff|new"
+# Skills in this repo, plus the harness commands the skills legitimately name.
+known="giljabi|grill|retro|writing-for-agents|to-spec|to-tickets|implement|review|commit|pr|knowledge|knowledge-tend|migrate-docs|setup|clear|compact|handoff|new|model|effort"
 if grep -rnoE '`/[a-z-]+`' skills/*/SKILL.md | grep -vE "\`/(${known})\`"; then
   echo "FAIL: reference to an unknown skill (above)"; fail=1
 fi

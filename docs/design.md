@@ -152,6 +152,10 @@ opposite reason — Haiku at low effort is right for running a command and pasti
 wrong for anything that words or decides, so `commit` (whose message lands in `git log` forever) and
 the sweeps (whose misses poison a design map) left it.
 
+Inline is the one place the strongest model is a standing choice rather than an escalation: the
+user fixed the `Weight:` → model mapping once, and the close-out before each reset carries it on
+`STATE.md`, so the model is set by the user's hand at the reset and never checked on entry.
+
 ## Why there is a standalone path
 
 An earlier version ran every phase on every change, arguing the phases self-limit and so no size

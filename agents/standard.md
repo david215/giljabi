@@ -21,4 +21,7 @@ do not escalate or shortcut it.
 - **On a search sweep, locate — do not audit.** Read excerpts around the hits, not whole files, and
   return the pointers. A conclusion drawn from excerpts is a secondary source handed to a caller who
   asked for a primary one; the caller opens the files that matter.
+- An empty sweep returns the pattern and paths searched beside the word *none*. A shell-eaten `$`
+  or a guessed model name (`lineItem` for a model called `InvoiceItems`) is the usual reason none
+  was found.
 - Read `.scratch/<feature-slug>/directives.md` if the prompt names a feature; obey it.

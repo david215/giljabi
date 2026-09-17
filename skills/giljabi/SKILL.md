@@ -36,6 +36,11 @@ runs the six phases. A one-line fix never needs one; a change whose interview su
 cannot settle in one sitting always does — at that point stop, name the slug, and start phase 1 with
 what you have learned as the first entry in `findings.md`.
 
+**A hotfix says so at the start.** `vcs.md`'s **Hotfix** section names its base, PR target and
+return path (reverse merge or cherry-pick); the branch, `/review`'s fixed point and `/pr`'s target
+follow that section, and the return to the integration branch is the last step before the close.
+No Hotfix section → ask, and write the answer to `vcs.md` before branching.
+
 ## Phases 2 and 3 — draft delegated, decision here
 
 `/grill` checkpoints `findings.md` after every round so that the transcript is disposable at the end
@@ -78,11 +83,15 @@ always** — never in parallel, whatever the ticket graph looks like. Per slice:
 2. **Implement** — one `/implement` run per ticket, a context reset between tickets. Work the
    frontier: any ticket whose blockers are done, lowest number first. Name tickets by **filename**
    (`/implement 03-invitations-follow-organization-timezone`), never by position. `/implement` runs
-   inline, so **set the session's reasoning effort from the ticket's `Weight:` line before the run**
-   — `involved` → high, `routine` → medium (Claude Code: `/effort`, with `/model` for the model
-   itself; Codex: `/model`, which sets both). `/to-tickets` stamped that line at phase 3, when the
-   whole breakdown was in view; re-judging it here, one ticket at a time, is the guess the marker
-   exists to replace.
+   inline, on the session model, and the ticket's `Weight:` line names that model — `involved` →
+   the strongest model (Claude Code `fable`), `routine` → the `deep` tier's model (`opus`); Codex
+   sets model and effort together with `/model`. The switch happens at the **reset**, never on
+   entry: the close-out writes the model beside the ticket on `STATE.md`'s `Next:` line and your
+   last message before the reset repeats it, so the user resets, sets the model, and re-enters
+   `/giljabi`, which reads `STATE.md` and starts the ticket without asking. The session model is
+   never checked on entry — self-report is wrong, and the user just set it. `/to-tickets` stamped
+   the line at phase 3, when the whole breakdown was in view; re-judging it here, one ticket at a
+   time, is the guess the marker exists to replace.
 3. **Review** — `/review` at slice scope: fixed point is the previous slice's merged tip (the
    feature branch's start for slice 1), spec source is
    `spec.md` restricted to this slice's tickets; its three axes run as `deep` agents. `/review`
@@ -94,6 +103,14 @@ The ticket close-out — tests green, page updates in the diff, `/commit`, `STAT
 reset between tickets. Tickets run back to back in one window blur the boundary, and the close-out
 is what goes missing.
 
+A decision taken between tickets — a ticket added at a slice boundary, a shape reversed in review,
+a copy string settled — is an **amendment**, and lands before the reset on every artifact carrying
+the claim: `spec.md` (its `## Solution` included — a solution that contradicts the shipped design is
+the next drafter's source), the knowledge page, every open ticket, as `/implement` does mid-ticket.
+A spec's list of open items is current state like a page: an item closes by deletion when its
+decision lands, and an item that gates shipped code — copy pending from a stakeholder — is an
+`(intended)` line on the page, where the review sees it, not a list nobody reconciles.
+
 ## Phase 6 — close
 
 After the last slice's PR merges:
@@ -102,8 +119,10 @@ After the last slice's PR merges:
 git fetch origin
 # 1. The feature's commits are on the integration branch:
 git log origin/<integration-branch> --oneline | head -20
-# 2. The knowledge pages landed — derive from the merged ranges, not memory:
-git diff --name-only <merge-base> <last-merge-commit> -- docs/
+# 2. The knowledge pages landed — from the feature's own commits, never the merge base: on a branch
+#    far behind the integration branch a merge-base range lists everyone else's pages.
+#    --first-parent skips what syncing brought in; the plan commit is the branch's first.
+git log --first-parent --format= --name-only <plan-commit>^..feat/<feature-slug> -- docs/ | sort -u
 # 3. Only when both hold:
 rm -rf .scratch/<feature-slug>
 ```
@@ -145,6 +164,11 @@ what it is: self-report is wrong on both harnesses; the harness's session log is
 message humans will read, a claim checked against a page — all `standard` or above, however small
 they look.
 
+**A delegated `/commit` or `/pr` is briefed with paths, never with format.** The prompt names what
+to read — the ticket file, `directives.md`, `docs/agents/vcs.md` — and carries no instruction about
+message shape, language or attribution: the skill reads the repo's rule, and a harness reminder
+restated in the prompt becomes an override of it that the agent has no standing to refuse.
+
 **Escalating `deep` to the strongest model is the user's call, never yours.** The tier is Opus at
 high effort; when the user says a job warrants `fable`, spawn the same `deep` type with a per-call
 `model: fable` override (effort stays `high` from the definition) and write the escalation to
@@ -157,7 +181,7 @@ from it.
 
 **Inline work has no tier.** `/grill` (phase 1) and `/implement` (phase 5) run in this session, so
 they run on whatever `/model` is set to and nothing a skill says can change that. Where the session
-model matters, these phases ask you to set it — see phase 5, step 2.
+model matters, the close-out before the reset names it — phase 5, step 2.
 
 ## Harness map
 
@@ -177,9 +201,13 @@ harness, translate these five yourself before the first phase and write the tran
 `directives.md`.
 
 There is no separate read-only-search capability: a sweep is a `standard` agent told to return
-`file:line` and nothing else. Claude Code's built-in `Explore` type carries no model of its own, so
-it would run a sweep at whatever this session is set to — the tier exists to stop exactly that, and
-Bash is in `Explore`'s tool set anyway, so it is no more read-only than a tier is.
+`file:line` and nothing else — and, on an empty result, the exact pattern and paths it searched, so
+the caller can widen them. An absence that contradicts something already read — "no callers" of a
+symbol a page names, "no `$transaction`" in a module that opens one — gets one confirming grep with
+a widened pattern before it is used; a grep narrower than the claim it checks reads as a
+refutation. Claude Code's built-in `Explore` type carries no model of its own, so it would run a
+sweep at whatever this session is set to — the tier exists to stop exactly that, and Bash is in
+`Explore`'s tool set anyway, so it is no more read-only than a tier is.
 
 ## STATE.md — where you are
 
@@ -191,7 +219,7 @@ Artifacts carry content; none carries **position**. `.scratch/<feature-slug>/STA
 
 Workflow: /giljabi — read that skill before acting
 Phase:    5 of 6 — build (slice 2 of 3)
-Next:     /implement 04-timezone-backfill
+Next:     /implement 04-timezone-backfill — involved → /model fable
 Slices:   1 merged (PR 5699) · 2 in progress: 03 done, 04–05 open · 3 not started
 Branch:   feat/email-language-timezone
 Directives: 2 active — directives.md

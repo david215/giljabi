@@ -40,8 +40,8 @@ the change easy, then make the easy change" — and put any prefactor first.
 
 Give each ticket its **blocking edges** — the tickets that must complete before it starts.
 
-**Weigh each ticket, `routine` or `involved`.** `/implement` runs inline, so this line is what sets
-the session's reasoning effort for the run (`/giljabi` phase 5, step 2) — you are judging it here,
+**Weigh each ticket, `routine` or `involved`.** `/implement` runs inline, so this line is what names
+the session model for the run (`/giljabi` phase 5, step 2) — you are judging it here,
 with the whole breakdown in view, precisely so nobody re-judges it one ticket at a time. `involved`
 means the ticket holds a decision the spec did not settle: a seam to design, a concurrency or
 migration order to get right, an idiom to break rather than inherit, a blast radius nobody has
@@ -116,7 +116,7 @@ not a layer-by-layer list.
 
 **Blocked by:** numbers/titles, or "None — can start immediately".
 
-**Weight:** routine | involved — see the drafting rules; sets the implementer's reasoning effort.
+**Weight:** routine | involved — see the drafting rules; names the implementer's session model.
 
 - [ ] Acceptance criterion 1
 - [ ] Acceptance criterion 2

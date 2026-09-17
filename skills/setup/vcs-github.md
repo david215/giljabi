@@ -14,6 +14,26 @@ than one account logged in can have the wrong one active.
 
 `<DEFAULT_BRANCH>` — the branch PRs target, and the merge-base for computing a change's scope.
 
+## Merge strategy
+
+`<MERGE_STRATEGY>` — how the host lands a PR on the integration branch.
+
+<!--
+One of: "Merge commit — a stacked branch fast-forwards after its PR merges." / "Squash — a stacked
+branch is re-synced from the integration branch after every merge." / "Rebase." `/giljabi` phase 5
+reads this when it syncs a feature branch between slices.
+-->
+
+## Hotfix
+
+`<HOTFIX_PATH or none>`
+
+<!--
+Base, PR target and return path, e.g. "Branch `hotfix/<slug>` from `production`; PR to `production`;
+after merge, reverse-merge `production` into `<DEV_BRANCH>` — never cherry-pick." Or "None — every
+change targets the integration branch." `/giljabi` and `/pr` read this before branching.
+-->
+
 ## Branch naming
 
 `<BRANCH_PATTERN>`

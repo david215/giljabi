@@ -22,6 +22,10 @@ No `vcs.md`? Infer the host from `git remote get-url origin` and the integration
 `git symbolic-ref refs/remotes/origin/HEAD`, say so in one line, and open the PR without reviewers
 rather than guessing at people.
 
+**Target** is the integration branch unless the caller names another — a hotfix, whose target
+`vcs.md`'s **Hotfix** section records. Every `<integration-branch>` below is then that target: the
+merge base, the scope, the PR's base branch and the active-PR lookup all follow it.
+
 **This skill runs no tests and computes no test scope.** What the body may claim about tests is
 decided by evidence alone — a CI run visible on the branch, or a run the user reported. It never
 claims a run it cannot point at.

@@ -40,6 +40,10 @@ Every answer you can read out of the repo is one the user does not have to type:
   returns hits across all time and near-zero recently. A genuine split → ask.
 - `git branch -a --sort=-committerdate | head -20` — branch naming. Record the prefixes actually in
   use; skills strip `<type>/` to recover the feature slug.
+- `git log --merges -10 --format=%s origin/<integration-branch>` — the merge strategy.
+  Host-generated subjects (`Merged PR …`, `Merge pull request …`) → merge commit; no merge commits →
+  squash or rebase, which the host's branch policy settles. `/giljabi` syncs a stacked branch by
+  this answer.
 - Recent merged PR titles (`gh pr list --state merged --limit 10 --json title`, or the `az` form) —
   repos routinely use Conventional Commits on commits and a plain phrase on PR titles; infer each
   from its own evidence. No CLI access → "same as the commit subject", and say so.
@@ -84,6 +88,8 @@ Then ask only these; "none" is a valid answer to each:
 - **Data access** — is there a repo-provided read-only path to production data — a wrapper script, a
   proxy, a replica URL? Record the exact command and what it may not do. `/grill` and `/knowledge-tend`
   read production through it; with none on record they write the SQL and ask.
+- **Hotfix** — does a production fix take a different base, PR target and return path than feature
+  work? Record all three, or `none`.
 
 ## 3. Confirm
 

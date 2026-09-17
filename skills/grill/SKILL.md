@@ -82,7 +82,10 @@ its one-line reason, every rejected branch with why it lost, every open branch, 
 map established. The checkpoint has two readers and must satisfy both: a mid-phase context reset
 re-entering from files instead of re-interviewing, and the `deep` agent that drafts `/to-spec` from
 this file alone in phase 2 — it never sees the transcript, so a decision missing here is a decision
-missing from the spec. The main window holds the conversation — never the greps.
+missing from the spec. The main window holds the conversation — never the greps. A population in
+the checkpoint carries its measurement — `(measured <date>: <query>)` — or the word *unmeasured*;
+a count carried without its query is a guess the drafter inherits as a fact, and the ticket after
+it builds on the guess.
 
 An instruction the user gives that is neither a decision about the feature nor a fact about the
 repo — how to run this feature's work — goes to `directives.md` the moment it is said

@@ -23,6 +23,11 @@ paths instead of every edge case.
   tracer bullet that responds to what the last cycle taught you. Never all tests first, then all
   implementation: bulk tests verify imagined behaviour and go insensitive to real changes.
 - **Refactoring is not part of the loop.** It belongs to the review, not the red-green cycle.
+- **Red by mutation when the behaviour already exists.** A guard spec over shipped behaviour cannot
+  go red by being written, so prove it red the other way: break the source in the one way the spec
+  guards — flip the constant, shift the index, swap the fixture — watch the spec fail, then restore
+  the source byte-for-byte (`git diff --exit-code -- <file>` proves the restore). A guard spec that
+  never went red guards nothing.
 
 A good test verifies behaviour through the public interface and reads like a specification —
 "user can checkout with valid cart" — with one logical assertion. It survives refactors because it
@@ -47,6 +52,9 @@ technology the ticket's code calls into — the ORM, the database, the framework
 `docs/platform/README.md`. A trap learned here costs one read; learned from the review it costs a
 round.
 
+A red spec whose output shows no cause: look first at what the spec mutes — a spied logger, a
+swallowed rejection — before reading the code it exercises. The cause printed; the spec ate it.
+
 ## Knowledge rides the same diff
 
 A change that alters an entity's behaviour updates that entity's `docs/domain/` or `docs/platform/`
@@ -68,6 +76,10 @@ session that knows which claim just went stale; the review's axis only catches w
 Mid-implementation discovery gets classified the moment it surfaces:
 
 - **Belongs to this ticket** — fix it in scope.
+- **Belongs to a page** — a trap in the test infrastructure, a behaviour of the stack, a command
+  that misleads — is written where its layer lives (`docs/agents/testing.md`, `docs/platform/`, a
+  `## Hazards` section) in this diff, like any page update; left in `findings.md` it is relearned
+  next run.
 - **Real but separate** — create a ticket **now**: into this feature's `slices.md` plan when it
   blocks the feature, into the tracker's backlog when it does not. Then carry on.
 - **Ambiguous** — put the decision to the user and wait.
@@ -101,12 +113,21 @@ question you already have; implementation decides what to do about the answer.
 
 ## Close out
 
-The ticket is done when: the typecheck and this ticket's suites are green (a red suite means the
-work is wrong — fix it, or have the user accept the failure out loud); the pages are updated in the
-diff; the **ticket file** records it — every acceptance box you completed ticked and its `Status:`
-line set to `done` where the tracker has one, since `STATE.md` names only the next ticket and nothing
-else says which ones finished; `/commit` has run on the current branch — delegated to a `standard` agent, which reads the ticket
-file and `directives.md` and has everything the message needs; and `STATE.md` names the next
-ticket. Review runs at
-slice scope via `/review` — running standalone outside `/giljabi`, run `/review` yourself over the
-whole change at the end, and say that you did.
+The close-out is a sequence, and the gates are the last step before anything is committed —
+an edit made after them is work the gates never saw:
+
+1. **Pages and ticket file.** The pages are updated in the diff. The ticket file records what this
+   run finished — its `Status:` line set to `done` where the tracker has one, since `STATE.md` names
+   only the next ticket and nothing else says which ones finished.
+2. **Gates, over the tree that will be committed.** The typecheck and this ticket's suites, run
+   after the last edit to any file — a red suite means the work is wrong: fix it, or have the user
+   accept the failure out loud, and every fix returns you to this step. Tick each acceptance box
+   from this run's output and only then; a box ticked from an earlier run vouches for code it never
+   saw. A note claiming a run was green or a mutation was killed names the command and quotes its
+   result line — a reviewer treats a bare claim as unverified, so write what they can check.
+3. **`/commit`** on the current branch — delegated to a `standard` agent briefed as `/giljabi`'s
+   delegation section says: paths to read, no format instruction of its own.
+4. **`STATE.md`** names the next ticket.
+
+Review runs at slice scope via `/review` — running standalone outside `/giljabi`, run `/review`
+yourself over the whole change at the end, and say that you did.

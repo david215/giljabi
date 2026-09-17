@@ -141,10 +141,14 @@ beside the claim, or tags it `(unverified)`. A source is something a reader can 
 documentation, a support case, a measured run. This holds on every layer in the table, runbooks
 included.
 
-Point at a page from code in **one line**. The code site may add a short *local* why — why this
-ordering, what breaks if a reader "fixes" this line — when that fact passes the anti-inference test
-at the line and has no home on the page. Never restate the page's argument at the call site: two
-copies drift, and the code copy is the one nobody updates.
+A code comment owns three things, at whatever length each needs. The **contract** of the code
+itself — what a caller must know at the seam: parameters, ordering, error modes — is the code's
+documentation, JSDoc-length when the seam warrants it, and never the page's: the anti-inference
+test cuts from a page what the code shows. The **local why** — why this ordering, what breaks if a
+reader "fixes" this line — when it passes the anti-inference test at the line and has no home on
+the page. And **one pointer line** to the page that holds the domain invariant. What the page owns
+stays on the page: its argument restated at the call site is two homes, and the code copy is the
+one nobody updates.
 
 ## Sharpening, while designing
 

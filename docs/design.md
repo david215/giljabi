@@ -184,6 +184,8 @@ unjudged discovery; a directive on line 40 is a directive missed.
 The page owns the domain invariant; the code site may own the *local* why — why this ordering,
 what breaks if a reader "fixes" this line — because that fact has no locatable home on a page.
 Restating the page's argument at the call site stays banned: two homes, and the code copy drifts.
+Length is not the test — a contract-length JSDoc is the code's own documentation, which the page
+must not carry; a three-line restatement of the page's argument is the drift the rule exists to stop.
 
 ## Why the setup gate sits at phase 4
 

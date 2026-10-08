@@ -123,12 +123,16 @@ git log origin/<integration-branch> --oneline | head -20
 #    far behind the integration branch a merge-base range lists everyone else's pages.
 #    --first-parent skips what syncing brought in; the plan commit is the branch's first.
 git log --first-parent --format= --name-only <plan-commit>^..feat/<feature-slug> -- docs/ | sort -u
-# 3. Only when both hold:
-rm -rf .scratch/<feature-slug>
+# 3. Only when both hold — archive, never delete. <group> collects the branches of one conceptual
+#    feature; a feature that stands alone is its own group.
+mkdir -p .scratch/archive/<group> && mv .scratch/<feature-slug> .scratch/archive/<group>/
 ```
 
-`.scratch/` is gitignored; a deleted directory is unrecoverable. That is the point — and why the
-checks run first, every time.
+Then prepend `Archived: <date> — merged and done` to the archived `STATE.md`, so a cold session that
+opens it does not resume. The archive is work history, not spec history: nothing reads it, and no
+page, ticket or later spec cites a path under `archive/`. `.scratch/` is gitignored, so the archive
+is on one machine; the checks run first, every time, because they are what make that acceptable —
+anything durable has already left for a page.
 
 **Re-check what only the merged range can show.** A feature of more than one slice runs
 `/knowledge-tend` scoped to its pages, check 2 only — the index and relations as they stand after

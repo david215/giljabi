@@ -145,6 +145,7 @@ Defects and gotchas found mid-feature land in `.scratch/<feature-slug>/findings.
 ### Feature state
 A `.scratch/<feature-slug>/STATE.md` means that feature is mid-flight. Read it before touching that
 feature's code — it names the workflow in progress and the command that resumes it.
+`.scratch/archive/` is not a feature in flight.
 ```
 
 The last three blocks are **pointers whose full rules live in the skills** — a repo doc restating

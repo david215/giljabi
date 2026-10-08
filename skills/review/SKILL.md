@@ -129,7 +129,8 @@ Then route **every** finding through the disposition rule — the gates' failure
   of it yourself: **fix now** when it belongs to this change, **ticket** when it doesn't (into the
   feature's slice plan if it blocks the feature, the backlog otherwise). A ticket is code work
   someone will schedule; a wrong page claim is never one — rewrite it now, or tag it
-  `(unverified)`. A repo whose tracker is `.scratch/` has no backlog, since phase 6 deletes it:
+  `(unverified)`. A repo whose tracker is `.scratch/` has no backlog, since phase 6 archives the
+  feature directory and nothing reads the archive:
   what fits no slice is fixed now, lands on the page's `## Hazards`, or goes to the user. List
   every call you made in the report.
 - **Judgement call** — no documented rule decides it — goes to the user, all of them **batched into

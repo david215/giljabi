@@ -2,7 +2,7 @@
 
 Issues and specs for this repo live as markdown files in `.scratch/`.
 
-**`.scratch/` is gitignored and ephemeral.** It carries thinking between context windows — the spec
+**`.scratch/` is gitignored and local.** It carries thinking between context windows — the spec
 answers "what are we building", the tickets answer "what do I build next", and both questions stop
 being asked the moment the feature merges. Nothing durable may live only here. See *Lifecycle*.
 
@@ -19,18 +19,24 @@ being asked the moment the feature merges. Nothing durable may live only here. S
 
 ## Lifecycle
 
-Specs and tickets are extracted, then deleted. Nothing in `.scratch/` survives its feature.
+Specs and tickets are extracted, then archived. A finished feature's directory moves whole to
+`.scratch/archive/<group>/<feature-slug>/`; no skill reads it again.
 
 **Durable value never waits here.** Knowledge pages change in the same diff as the code
 (`/knowledge`); discoveries are routed to tickets or decisions as they surface (`/implement`).
 Nothing in `.scratch/` is a holding pen for documentation.
 
-**After the merge — delete.** The procedure lives in the `/giljabi` skill, not here. It is identical
-on every tracker, because `.scratch/<feature-slug>/` exists on every tracker; what differs on this one
-is only how much sits inside it — the spec and tickets as well as the working files.
+**After the merge — archive.** The procedure lives in the `/giljabi` skill, not here. It is
+identical on every tracker, because `.scratch/<feature-slug>/` exists on every tracker; what differs
+on this one is only how much sits inside it — the spec and tickets as well as the working files. A
+`<group>` collects the branches of one conceptual feature; a feature that stands alone is its own
+group.
 
-**There is no recovery** — `.scratch/` is gitignored, so a deleted directory is not in a branch, a
-stash, or the remote. The `/giljabi` procedure checks before it removes.
+**The archive is work history, not spec history.** Nothing official lives there: no page, ticket or
+later spec may cite a path under `archive/`, and an archived `STATE.md` is not a resume point. It is
+also local — `.scratch/` is gitignored, so the archive is not in a branch, a stash, or the remote.
+That is acceptable only because nothing durable lives there; the `/giljabi` procedure checks before
+it moves.
 
 ## When a skill says "publish to the issue tracker"
 

@@ -47,10 +47,12 @@ No Hotfix section → ask, and write the answer to `vcs.md` before branching.
 of phase 1. Phase 2 tests that: spawn a `deep` agent to run `/to-spec` **from `findings.md` and the
 repo**, not from this conversation. It returns the draft; you review and edit it here with the user,
 then write `spec.md` and publish. If the draft is thinner than the discussion felt, the checkpoint
-was thin — fix `findings.md`, re-run the drafter, and log the gap as `[friction]`. Phase 3 is the same
-shape: a `deep` agent drafts the ticket breakdown from `spec.md`; the `/to-tickets` quiz runs here as
-a **gate** — the breakdown is published only after the user has answered it, and the approval that
-closed the spec does not carry over to the breakdown. Both phases' decisions — the spec's defaults,
+was thin — fix `findings.md`, re-run the drafter, and log the gap as `[friction]`. A spec that
+moves while a drafter runs is re-issued to that drafter as the delta — the harness map's continue
+row — rather than respawned. Phase 3 is the same shape: a `deep` agent drafts the ticket
+breakdown from `spec.md`; the `/to-tickets` quiz runs here as a **gate** — the breakdown is
+published only after the user has answered it, and the approval that closed the spec does not
+carry over to the breakdown. Both phases' decisions — the spec's defaults,
 the quiz's seams, granularity and slice boundaries — go through the structured-question capability
 (harness map below), one question per decision, recommendation first, with the argument in prose
 beside it as `/grill` does. A default confirmed in prose alone is a default nodded through.
@@ -93,11 +95,15 @@ always** — never in parallel, whatever the ticket graph looks like. Per slice:
    the line at phase 3, when the whole breakdown was in view; re-judging it here, one ticket at a
    time, is the guess the marker exists to replace.
 3. **Review** — `/review` at slice scope: fixed point is the previous slice's merged tip (the
-   feature branch's start for slice 1), spec source is
-   `spec.md` restricted to this slice's tickets; its three axes run as `deep` agents. `/review`
-   disposes its findings and re-checks the fixes at its own scope (its step 4); `/commit` when it is
-   green or when a failure is accepted out loud — by the user, not by you.
-4. **PR** — `/pr`, run by a `standard` agent. Then write `STATE.md` and reset the context.
+   feature branch's start for slice 1), spec source is `spec.md` restricted to this slice's tickets;
+   its three axes run as `deep` agents. `/review` disposes its findings and re-checks the fixes at
+   its own scope (its step 4); `/commit` when it is green or when a failure is accepted out loud —
+   by the user, not by you.
+4. **Fold the review's commits.** When the review left more than one fix commit, `git reset --soft`
+   to the last ticket commit and one `/commit`, so the PR carries one review commit after its
+   tickets; the user may ask instead for each fix folded into the ticket it corrects. This runs
+   before `/pr` — after the push it is a force-push behind an open PR.
+5. **PR** — `/pr`, run by a `standard` agent. Then write `STATE.md` and reset the context.
 
 The ticket close-out — tests green, page updates in the diff, `/commit`, `STATE.md` — fires at the
 reset between tickets. Tickets run back to back in one window blur the boundary, and the close-out
@@ -107,6 +113,9 @@ A decision taken between tickets — a ticket added at a slice boundary, a shape
 a copy string settled — is an **amendment**, and lands before the reset on every artifact carrying
 the claim: `spec.md` (its `## Solution` included — a solution that contradicts the shipped design is
 the next drafter's source), the knowledge page, every open ticket, as `/implement` does mid-ticket.
+A new ask that collides with a recorded decision is named as a collision in one line and put to the
+user — which one stands — before anything is built on either. An amendment that adds a ticket
+drafts it as phase 3 does: a `deep` agent from the amended `spec.md`, the quiz as the gate.
 A spec's list of open items is current state like a page: an item closes by deletion when its
 decision lands, and an item that gates shipped code — copy pending from a stakeholder — is an
 `(intended)` line on the page, where the review sees it, not a list nobody reconciles.
@@ -119,10 +128,11 @@ After the last slice's PR merges:
 git fetch origin
 # 1. The feature's commits are on the integration branch:
 git log origin/<integration-branch> --oneline | head -20
-# 2. The knowledge pages landed — from the feature's own commits, never the merge base: on a branch
-#    far behind the integration branch a merge-base range lists everyone else's pages.
-#    --first-parent skips what syncing brought in; the plan commit is the branch's first.
-git log --first-parent --format= --name-only <plan-commit>^..feat/<feature-slug> -- docs/ | sort -u
+# 2. The knowledge pages landed — from each slice PR's landing commit, never a branch range: under
+#    a merge-commit strategy --first-parent walks the integration branch's own merges and lists
+#    everyone's pages, and --no-merges drops every earlier slice. <m> is the commit that landed the
+#    slice on the integration branch (a merge commit or a squash, per vcs.md); one line per slice.
+git diff --name-only <m>^1 <m> -- docs/ | sort -u
 # 3. Only when both hold — archive, never delete. <group> collects the branches of one conceptual
 #    feature; a feature that stands alone is its own group.
 mkdir -p .scratch/archive/<group> && mv .scratch/<feature-slug> .scratch/archive/<group>/
@@ -141,11 +151,15 @@ says so: its merged range is the diff its review already checked. Shape (check 3
 on each slice, where a split rides the slice that caused it; a shape proposal surfacing here means a
 review missed it, which is a `[friction]` line, and the fix is its own docs commit on approval.
 
-**Route the friction.** `findings.md` lines tagged `[friction]` — moments a skill fought you, an
-instruction that misfired, a gate that checked the wrong thing — append to `retro/inbox.md` in the
-giljabi repo checkout. `/retro`, run there, reads the inbox, proposes one skill diff per item,
-applies each only on approval, and deletes the routed lines. Evolution is regular, never
-automatic — a skill that edits itself unsupervised is a feedback loop with no test.
+**Measure the close, then route the friction.** Append a `## Close` block to `findings.md`: review
+rounds per slice, fix commits before the fold, findings per axis in round 1 and after, judgement
+calls the review batched. Then sort every `[friction]` line by what fixes it: a repo page — a test
+trap, a command's variable, a width check's exemption — is written on that page now, as
+`/implement` routes a discovery, and the line is struck; a skill's method goes to `retro/inbox.md`
+in the giljabi repo checkout under a heading naming the feature and PR, the close block copied
+beneath it. `/retro`, run there, reads the inbox, proposes one skill diff per item, applies each
+only on approval, and deletes the routed lines. Evolution is regular, never automatic — a skill
+that edits itself unsupervised is a feedback loop with no test.
 
 ## Delegation and tiers
 
@@ -199,9 +213,10 @@ what this session's harness offers:
 | hand off to another session | `/handoff` | write the handoff document by hand |
 | ask the user a structured question | `AskUserQuestion` | ask in prose; Codex has no equivalent outside plan mode |
 | tiered subagent | agent types `deep`/`standard`/`fast` | `spawn_agent(model, reasoning_effort)` per the tier table |
+| continue a delegated agent with its context | `SendMessage` to the agent | respawn from the artifact (no continuation verified) |
 
 Codex subagents can invoke skills and can be pinned to a model (both verified). On an unmapped
-harness, translate these five yourself before the first phase and write the translation to
+harness, translate these six yourself before the first phase and write the translation to
 `directives.md`.
 
 There is no separate read-only-search capability: a sweep is a `standard` agent told to return
@@ -230,7 +245,8 @@ Directives: 2 active — directives.md
 Also:     one-line pointers only — side quests, experiments, warnings
 ```
 
-Hard cap ~12 lines. **A line may point, never narrate** — slice detail lives in `slices.md`,
+Hard cap ~12 lines. **A line may point, never narrate or count** — a number here is stale by the
+next append; slice detail lives in `slices.md`,
 outcomes in `findings.md`, operating hazards on knowledge pages. The previous design allowed
 narration nowhere and gave overflow no destination, so overflow went here; the destinations now
 exist, so use them. Write it when work completes, not when context resets — a reset leaves no turn

@@ -25,6 +25,11 @@ the skill whose step was running when the friction happened.
 Then read `docs/design.md`: a fix that contradicts one of its entries is not a wording fix but a
 reversed decision, and is handled as one (step 3).
 
+Items are moments; the `## Close` blocks beside them are measurements. Read the blocks across
+features before classifying: a number that repeats — three re-check rounds on every slice, a fold
+asked for three features running — is one item with several witnesses, and its diff is drafted
+from the pattern, not from the latest line.
+
 ## 2. Classify every item
 
 Take the first that fits:

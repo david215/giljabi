@@ -113,7 +113,7 @@ for the same reason skills never edit themselves.
 
 ## Why harness-specific tokens are capabilities with a map
 
-`/clear`, `AskUserQuestion`, `/handoff` and two others are Claude Code spellings of
+`/clear`, `AskUserQuestion`, `/handoff` and three others are Claude Code spellings of
 capabilities every harness has under another name. Skills name the capability; one table in
 `giljabi/SKILL.md` maps it per harness (Claude Code, Codex verified; others translate). The map is
 not a `docs/agents/` file because the harness is a property of the session, not the repo. A sixth row

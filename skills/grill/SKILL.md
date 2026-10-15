@@ -36,9 +36,11 @@ an unrun survey says so in those words — *rests on unmeasured assumptions*.
 a stale timeout claim lies exactly like a stale invariant (checks 1–4; check 4 reads their
 neighbourhood too). The map and check 4 share their sweeps: a claim the map already re-verified to
 `file:line` is check 4 done for that claim, so the tend covers checks 1–3 and the claims the map did
-not reach — one sweep per claim, never two and never none. A page that drifted since it was written
-makes the interview lie in the one place it trusts most; fixing it first costs a few sweeps and is
-applied on the user's approval like any other tend.
+not reach — one sweep per claim, never two and never none. Every claim of every touched page gets
+its sweep, the page written last week included — freshness is a sweep result, not a date — and a
+tend that skips a claim names it, so the review's axis runs it. A page that drifted since it was
+written makes the interview lie in the one place it trusts most; fixing it first costs a few sweeps
+and is applied on the user's approval like any other tend.
 
 ## Name the feature after its outcome
 
@@ -68,6 +70,10 @@ content, not two copies: the tool's labels cannot hold an argument, and prose ca
 Four questions per tool call at most — on a wider frontier, ask the remainder in prose rather than
 dropping it. Without such a tool, the prose block stands alone.
 
+A question offers answers to what the user asked. A dependency the ask did not name — *without X,
+the backfill is undone on PATCH* — is stated beside it as a consequence and left for the user to
+raise; offered as a `(Recommended)` option it is a scope decision the click takes for them.
+
 **Facts are your job; decisions are the user's.** A question needing a fact from the environment
 goes to a lookup or a subagent, never to the user — and an unfinished lookup only blocks the
 questions downstream of it, so ask the rest of the frontier now.
@@ -77,15 +83,18 @@ argue against it with evidence before asking within it.
 
 ## Checkpoint continuously
 
-After every round, write to `.scratch/<feature-slug>/findings.md`: every settled decision with
-its one-line reason, every rejected branch with why it lost, every open branch, and every fact the
-map established. The checkpoint has two readers and must satisfy both: a mid-phase context reset
+After every round — the scoping turn before round one included, since a decision made while naming
+the feature is a decision — write to `.scratch/<feature-slug>/findings.md`: every settled decision
+with its one-line reason, every rejected branch with why it lost, every open branch, and every fact
+the map established. The checkpoint has two readers and must satisfy both: a mid-phase context reset
 re-entering from files instead of re-interviewing, and the `deep` agent that drafts `/to-spec` from
 this file alone in phase 2 — it never sees the transcript, so a decision missing here is a decision
 missing from the spec. The main window holds the conversation — never the greps. A population in
-the checkpoint carries its measurement — `(measured <date>: <query>)` — or the word *unmeasured*;
-a count carried without its query is a guess the drafter inherits as a fact, and the ticket after
-it builds on the guess.
+the checkpoint carries its measurement — `(measured <date>, <environment>: <query>)`, one
+environment per figure, a sum written beside the buckets it adds — or the word *unmeasured*; a
+count carried without its query is a guess the drafter inherits as a fact, and the ticket after it
+builds on the guess. A decision with a convention or platform page behind it — a migration shape,
+an error status — carries the page it was checked against.
 
 An instruction the user gives that is neither a decision about the feature nor a fact about the
 repo — how to run this feature's work — goes to `directives.md` the moment it is said

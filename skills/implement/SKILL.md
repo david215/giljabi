@@ -15,7 +15,9 @@ where behaviour is observed without reaching inside (everything a caller must kn
 invariants, ordering, error modes). Before writing any test, write down the seams under test and
 confirm them with the user — usually the spec already did; re-confirm only what it left open. Tests
 at unconfirmed seams don't get written: agreeing seams up front is how effort lands on critical
-paths instead of every edge case.
+paths instead of every edge case. A seam over an input enumerates the value classes the transport
+allows — absent, present, `null`, empty — one case each where the spec distinguishes them; a
+present/omitted table never sends the `null` a client can.
 
 - **Red before green.** The failing test first, then only enough code to pass it. No speculative
   features, no anticipating future tests.
@@ -24,10 +26,11 @@ paths instead of every edge case.
   implementation: bulk tests verify imagined behaviour and go insensitive to real changes.
 - **Refactoring is not part of the loop.** It belongs to the review, not the red-green cycle.
 - **Red by mutation when the behaviour already exists.** A guard spec over shipped behaviour cannot
-  go red by being written, so prove it red the other way: break the source in the one way the spec
-  guards — flip the constant, shift the index, swap the fixture — watch the spec fail, then restore
-  the source byte-for-byte (`git diff --exit-code -- <file>` proves the restore). A guard spec that
-  never went red guards nothing.
+  go red by being written, so prove it red the other way: snapshot the green file (`cp <file>
+  <scratch>`) **immediately before** the mutation, break the source in the one way the spec guards —
+  flip the constant, shift the index, swap the fixture — watch the spec fail, then restore from the
+  snapshot and `cmp` proves it. `git checkout -- <file>` restores `HEAD`, and on a test-first run
+  `HEAD` is not your green file. A guard spec that never went red guards nothing.
 
 A good test verifies behaviour through the public interface and reads like a specification —
 "user can checkout with valid cart" — with one logical assertion. It survives refactors because it
@@ -37,7 +40,9 @@ doesn't care about internal structure. Anti-patterns to refuse:
   counts, or verifies through a side channel. The tell: it breaks on refactor with behaviour
   unchanged. A spec that pins a helper's ORM or query call shape is this smell even when the helper
   is "the unit": where a convention page names a module boundary, the seam sits at that boundary,
-  never below it.
+  never below it. A seam that rule refuses is the user's decision, never yours — accept is
+  human-only here as in review — unless this ticket's diff redraws that page's boundary, in which
+  case the page change lands first and the seam follows the rule as rewritten.
 - **Tautological** — the assertion recomputes the expected value the way the code does, so it passes
   by construction. Expected values come from an independent source: a known-good literal, a worked
   example, the spec.
@@ -84,11 +89,17 @@ Mid-implementation discovery gets classified the moment it surfaces:
   blocks the feature, into the tracker's backlog when it does not. Then carry on.
 - **Ambiguous** — put the decision to the user and wait.
 
+A decision the ticket leaves open across several sites — one refusal for three strategies, one
+default for seven fields — is taken after reading what each site consumes, and the reading goes in
+`findings.md` beside the decision.
+
 A discovery that changes what the plan asserts — a path dropped, an error shape corrected — is an
 **amendment**, and it lands on every artifact carrying the claim in the same turn: `spec.md`, the
-knowledge page, and every open `issues/*.md`. Grep the old claim across `.scratch/<feature-slug>/`
-and rewrite each hit; the amendment is done when that grep returns nothing. An open ticket still
-describing the old shape is the next window's spec.
+knowledge page, and every open `issues/*.md`. Grep the changed fact across
+`.scratch/<feature-slug>/` **and `docs/`** and rewrite each hit; re-read the spec's Out of Scope and
+Testing Decisions whole, since an appended amendment contradicts the line it did not read; the
+amendment is done when the grep returns nothing. An open ticket still describing the old shape is
+the next window's spec.
 
 There is no deferral pile. Non-work facts — a constraint measured, a gotcha that cost an hour, a
 `[friction]` moment with a skill — still go to `.scratch/<feature-slug>/findings.md` as they

@@ -72,6 +72,10 @@ change. Rules:
   says otherwise; commit order inside the series already lets later work reference earlier work.
   "Protects deploy" is never a slicing reason on its own.
 - A single-slice feature is normal. Do not manufacture slices.
+- A slice that must not share a deploy with its neighbour names its gate as a predicate on the
+  deploy boundary — *the previous slice is on `production`* — never a pipeline on the integration
+  branch or a list of apps: `vcs.md` says which branch deploys, and a release cut sweeps everything
+  on the integration branch into one deploy.
 
 Slices are declared here and revisable mid-flight — implementation may split a slice that grew or
 merge two that collapsed; update `slices.md` when it happens.
@@ -124,7 +128,9 @@ not a layer-by-layer list.
 </ticket-template>
 
 No file paths or code snippets — they go stale fast. Exception: a prototype-produced snippet that
-encodes a decision more precisely than prose; trim to the decision-rich part.
+encodes a decision more precisely than prose; trim to the decision-rich part. A ticket's page
+instruction names the claim that changes, never the line or section to edit — the page contract
+decides whether the claim is written or cut.
 
 **State scope by extent, not by count.** "Removes all of its call sites" survives contact with the
 code; "removes all four call sites" is a measurement taken from reasoning. Where a number genuinely

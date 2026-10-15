@@ -22,6 +22,11 @@ missing.
    observed without reaching inside. Prefer existing seams; propose new ones at the highest point
    possible; the ideal count is one. Confirm the seams with the user before writing.
 
+   Every claim the spec makes about code that exists — a seam's signature, what a module may
+   import, how many markers a page carries, which rows a query touches — is read at the code before
+   it is written; the drafter has the repo for this. A claim read nowhere is written `(unverified)`,
+   and the ticket drafter measures it.
+
 3. Write the spec from the template below and publish it to the configured tracker.
 
 4. **Re-check the feature slug against the finished spec.** The slug was chosen at maximum

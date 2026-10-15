@@ -213,6 +213,11 @@ git status --short
 Confirm the commit exists, report the short hash and title, and confirm the tree is otherwise clean
 — or name what is left, if scope was narrowed in Step 3.
 
+Then read the message against the diff: each body bullet names a hunk in `git diff --cached`, and
+each changed file sits under some bullet. A bullet with no hunk is cut and a file with no bullet
+gets one — by `git commit --amend -F <corrected-file>` in the same turn, the Step 5.5 case, not
+the on-request amend of Step 5.
+
 ## Versus `/pr`
 
 `/commit` is local only: it never pushes and never touches the PR host. `/pr` pushes the branch and

@@ -111,8 +111,9 @@ the index renders it on every line, and the lookup below computes it.
 4. **`(intended)` marks the unbuilt.** Planning commits claims about code that does not exist yet.
    Tag each such claim inline with `(intended)` — on the sentence, never on a heading, so a ticket
    that builds half a section removes exactly the markers it made true; a wholly-new entity takes
-   `status: intended` page-level instead. `grep -rn '(intended)' docs/domain/ docs/platform/` is the
-   list of promised-but-unbuilt work. Implementation removes each marker in the diff that makes the
+   `status: intended` page-level instead. `grep -rn intended docs/domain/ docs/platform/` — the bare
+   word, since a marker with a note inside (`(intended; …)`) hides from the literal — is the list of
+   promised-but-unbuilt work. Implementation removes each marker in the diff that makes the
    claim true; a marker found on a heading is first moved onto each claim beneath it still unbuilt.
 
 ## What a page keeps — the anti-inference test

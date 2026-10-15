@@ -72,6 +72,19 @@ for f in docs/domain/*.md docs/platform/*.md; do id=$(sed -n 's/^id: //p' "$f" |
     do grep -qlE "to: $id\}" docs/domain/$t.md docs/platform/$t.md 2>/dev/null && echo "reciprocal: $id <-> $t"; done; done
 ```
 
+A **missing edge** — a page whose body links another page with no relation declared in either
+direction — is a finding too; propose the edge on the page whose code enforces it:
+
+```bash
+for f in docs/domain/*.md docs/platform/*.md; do id=$(sed -n 's/^id: //p' "$f" | head -1); [ -n "$id" ] || continue
+  grep -oE '\]\(([a-z0-9-]+/)?[a-z0-9-]+\.md' "$f" | sed -E 's#.*/##; s#\]\(##; s#\.md$##' | sort -u | while read -r t
+    do [ "$t" = "$id" ] && continue; tf=$(ls docs/domain/"$t".md docs/platform/"$t".md 2>/dev/null | head -1); [ -n "$tf" ] || continue
+    grep -qE "to: $t\}" "$f" || grep -qE "to: $id\}" "$tf" || echo "missing edge: $id -> $t"; done; done
+```
+
+An empty result is trusted only after the script names a pair you know is missing — write the
+link on a scratch copy and watch it print.
+
 ## 3. Shape
 
 Mechanical signals that a page wants splitting or regrouping — each a *proposal*, since a long page

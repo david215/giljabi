@@ -13,9 +13,10 @@ do not escalate or shortcut it.
   invoked through the Skill tool and followed as written.
 - Write nothing. No file edits, and no Bash that changes the working tree or git state — no
   `sed -i`, no redirect into a tracked path, no `git add`/`commit`/`checkout`/`stash`. Bash is here
-  to read: `git diff`/`log`, `grep`, `diff <(…)`, a test run. The tool set does not enforce this;
-  you do. Where the task produces text — a draft spec, a ticket breakdown, review findings — return
-  it as your final message; the caller writes it and owns the file.
+  to read: `git diff`/`log`, `grep`, `diff <(…)`. Suites and typechecks are the `fast` tier's job
+  and run beside you; run none. The tool set does not enforce this; you do. Where the task
+  produces text — a draft spec, a ticket breakdown, review findings — return it as your final
+  message; the caller writes it and owns the file.
 - Return evidence as `file:line` with the line quoted, never counts. Report failures verbatim; never soften a red test.
 - Read `.scratch/<feature-slug>/directives.md` if the prompt names a feature; obey it.
 

@@ -73,7 +73,10 @@ changes it.
 ## 3. Spawn the gates and the three sub-agents in one turn
 
 The **gates** and the axes start together: a `fast` agent runs the typecheck and the slice's suites
-from `docs/agents/testing.md` and returns failures verbatim, while you run the index diff and the
+from `docs/agents/testing.md` — the brief names the page each command is copied from (a migration
+proof from the migrations platform page) and composes none, and states the condition to **run** in
+the positive (*run the suite when step 1 printed nothing*), since a skip condition inverts in a
+low-effort reader — and returns failures verbatim, while you run the index diff and the
 dangling-relation check (`/knowledge-tend` check 2) here. Neither waits on the other — an axis
 spends its run on judgment and the gates on execution — so each axis prompt says the gates are
 running beside it and it runs none of them. Gate output is evidence: a red typecheck, a failing
@@ -81,13 +84,16 @@ suite or a stale index enters step 4 as an evidence-backed finding you own. A cl
 population goes to the query command `docs/agents/data.md` names, run by **you** when an axis
 returns the claim marked unchecked with the query it needs — no gate can pre-run it and no axis
 holds the command. Each prompt carries the diff command, the commit list, the spec source's path,
-the integration branch's name, and `directives.md`'s path when a feature is in flight. Anything an
-axis must **obey** goes in its prompt in full — the smell baseline, the page contract; paths it
+the integration branch's name, and `directives.md`'s path when a feature is in flight — every path
+and every premise in it read at its source this session (`ls` the path; open the spec file behind a
+`STATE.md` summary), since a wrong premise in a brief is reproduced by three axes at once. Anything
+an axis must **obey** goes in its prompt in full — the smell baseline, the page contract; paths it
 merely needs to **read** pass as paths. Each returns findings as `file:line` with the line quoted
 beside it + claim + evidence, under 400 words, and every `file:line` it writes — the anchor and each
 supporting citation alike — was read back with `sed -n` before it was written. A finding whose
 quote is not at that line is unverified: it goes back to its axis for the pointer before it is
-disposed — a rule can be real while its pointer is invented.
+disposed — a rule can be real while its pointer is invented. A claim that a line is pre-existing or
+new is made from `git log -L` or the range diff, with the command beside it.
 
 A finding that contradicts a decision the spec source records — a runbook choice, a default the
 user settled — is a **conflict**, not a failure: the axis quotes both lines, and it lands in step
@@ -101,11 +107,17 @@ user settled — is a **conflict**, not a failure: the axis quotes both lines, a
   zero-callers or dead-code claim is verified against the integration branch (`git grep <symbol>
   origin/<integration-branch>`), never the checkout alone: a branch behind it sees callers that are
   not there.
-- **Spec brief**: (a) requirements missing or partial; (b) behaviour nobody asked for; (c)
-  requirements that look implemented but wrong. Quote the spec line for each.
+- **Spec brief**: (a) requirements missing or partial; (b) behaviour nobody asked for — the plan
+  commit's pages excluded: phase 1's tend ships in slice 1's PR by design (`/giljabi` phase 4), and
+  the brief names that commit; (c) requirements that look implemented but wrong — every optional
+  input the spec names traced absent, present **and `null`**, the value a transport allows that a
+  present/omitted table never sends. Quote the spec line for each.
 - **Knowledge brief**: (a) every claim on every touched page, re-verified against code — a claim the
   diff made false and one already stale surface alike, since a page rewritten in this PR is signed
-  off whole; (b) behaviour changes
+  off whole; a number on a page is repaired with its enumeration pasted (the listing, never the old
+  number plus one); a sentence asserting intent or a decision (*this is deliberate*, *not a
+  capability anyone decided to offer*) cites where it was decided — `spec.md`, a `findings.md`
+  decision line — or is reported as unsourced; (b) behaviour changes
   the diff makes that no page states and the anti-inference test says a page must (paste the test:
   *would a reader working from code alone arrive at the opposite?*); (c) `(intended)` markers whose
   code this diff built but whose marker survives; (d) a new page with no `context:`, or a page or
@@ -143,14 +155,28 @@ A fix that renames, moves or deletes a page section sweeps `.scratch/<feature-sl
 heading and every quote of it — open tickets anchor on page text — and repoints each hit in the
 same commit; the sweep is done when the grep returns nothing.
 
-**Re-check the fixes, not the slice.** After the fix-now dispositions land, re-run only the axes
-whose findings you fixed, each over the fix commits alone (`git diff <pre-fix HEAD>...HEAD`) with
-its findings pasted, returning each as closed or open. A fix commit that touches a page or a
-comment also gets the Knowledge axis's full brief over that commit, whichever axis raised the
-finding — prose written mid-review is the least-reviewed prose in the PR. The gates run once more,
-here. Green is every axis reporting its findings closed and the gates clean; a new finding re-enters
-the disposition rule. A fix confined to what a gate proves — a typecheck error, a stale index —
-needs the gate, not an axis.
+**Fix under the page contract, where the code lives.** A fix-now edit is written as `/implement`
+writes: the convention and platform pages for the file it touches are read first (an edit under
+`migrations/` reads the migrations page's freeze rule before the first byte); a number it writes
+into a page carries the enumeration behind it — the `ls` or grep output, pasted — since a count is
+incremented only by someone who did not enumerate; a claim it rewrites was read at the code it
+describes in this session. A hazard goes on the page whose code holds it — a testing mechanic on
+`testing.md`, not the domain page — written once, where the re-check will find it. Prose written
+mid-review is the least-reviewed prose in the PR, and every re-check round after the first exists
+because of it.
+
+**Re-check the fixes, not the slice — and loop until clean.** After the fix-now dispositions land,
+re-run only the axes whose findings you fixed, each over the fix commits alone
+(`git diff <pre-fix HEAD>...HEAD`) with its findings pasted, returning each as closed or open. A fix
+commit that touches a page or a comment also gets the Knowledge axis's full brief over that commit,
+whichever axis raised the finding. The gates run once more, here. A new finding re-enters the
+disposition rule and its fix is re-checked in turn: the loop runs until a round returns every
+finding closed and nothing new — a second round is the expected case. What a round re-checks
+shrinks as it goes: a finding whose fix only **deletes or repoints** — a claim cut, a pointer
+corrected, a quote re-anchored — closes by reading the line back (`sed -n`) plus the gates, since a
+deletion adds no claim for an axis to test; a fix that **asserts** anything new gets its axis. A fix
+confined to what a gate proves — a typecheck error, a stale index — needs the gate, not an axis.
+Green is every axis's findings closed, nothing new, and the gates clean.
 
 A judgement call the user decides is a candidate rule for a knowledge page or standards doc — write
 it down and it becomes evidence-backed forever after, which is how this review asks less over time.

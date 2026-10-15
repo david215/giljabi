@@ -38,6 +38,7 @@ Take the first that fits:
 | --- | --- | --- |
 | **landed** | the current skill text already says what the item asks for (a previous run or commit fixed it) | cite the line; delete the item |
 | **repo fact** | the fix could differ per repo (a DB URL, a template path, a merge strategy) | no skill diff; state which `docs/agents/` file in the *target* repo should carry it, and whether `/setup` should ask for it — that last part is a skill diff |
+| **user rule** | the fix governs a session that never invokes a skill — a disposition, or a fact about the machine every repo shares (the shell, the harness) | no skill diff; quote the rules-file line that already says it, or draft the line — the rules repo is the user's, and the diff is applied there on approval |
 | **reversed decision** | the fix contradicts a `docs/design.md` entry, or two items pull one skill in opposite directions | step 3 |
 | **skill diff** | the skill said the wrong thing, said it ambiguously, or left a step unnamed | step 4 |
 | **drop** | a one-off with no rule behind it, or the fix would be a no-op the agent already does | say why; delete the item |
@@ -64,8 +65,8 @@ For each skill-diff item, the proposal is:
 
 Placement follows the three tests in `README.md`: method identical in every repo → the skill; could
 differ per repo → the target repo's docs, via `/setup`; governs sessions that never invoke a skill →
-the user's rules file, which this repo does not own — name it and stop. A line that fits nowhere is
-dropped, not homed.
+the user's rules file, applied in that repo on approval like any other diff. A line that fits
+nowhere is dropped, not homed.
 
 Where an item says a decision was asked "in prose", the fix names the **structured-question
 capability** (`/giljabi`'s harness map), not one harness's tool.

@@ -71,7 +71,7 @@ nowhere is dropped, not homed.
 Where an item says a decision was asked "in prose", the fix names the **structured-question
 capability** (`/giljabi`'s harness map), not one harness's tool.
 
-## 5. Approve, apply, verify
+## 5. Approve, apply, verify, ship
 
 Present every proposal, grouped by skill, before applying any. Approval is per item through the
 structured question — recommendation first; "apply all" is an option only when every item in the
@@ -87,6 +87,10 @@ git diff --stat
 
 Delete every routed line from `retro/inbox.md`, leaving the header. One `/commit` per skill touched
 when the diffs are independent; one commit when a reversed decision spans skill and `design.md`.
+
+Then push and reinstall with the Install command in this repo's `README.md`. A session runs the
+installed copy, not the checkout, so a committed diff reaches the next run only after both. The run
+ends with `git status` clean and nothing ahead of `origin/main`.
 
 ## Report
 

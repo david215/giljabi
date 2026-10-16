@@ -72,7 +72,8 @@ can reach. The review's Knowledge axis runs the same test over the diff and fail
 This is not a follow-up task; a doc update deferred out of the diff is one that does not happen.
 
 The entity's page is not the only page that talks about its code. Read its **neighbourhood** — the
-`related:` ids on the page's index line, or `/knowledge`'s lookup — for every claim about the code
+`related:` ids on the page's index line and the sibling lines under its context, or `/knowledge`'s
+lookup — for every claim about the code
 this ticket changed, and rewrite each one that is no longer true, in the same diff. You are the one
 session that knows which claim just went stale; the review's axis only catches what you missed.
 

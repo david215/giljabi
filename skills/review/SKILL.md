@@ -122,9 +122,9 @@ user settled — is a **conflict**, not a failure: the axis quotes both lines, a
   *would a reader working from code alone arrive at the opposite?*); (c) `(intended)` markers whose
   code this diff built but whose marker survives; (d) a new page with no `context:`, or a page or
   `CLAUDE.md` paragraph the layer table places elsewhere — the index diff and the relation checks
-  are gates the caller runs; (e) a page this diff grew that now passes the noun-section test
-  (`/knowledge-tend` check 3) — proposed as a split, so the shape fix rides the slice that caused it
-  rather than a later docs PR. When later slices will rewrite the same sections, the proposal is
+  are gates the caller runs; (e) a section this diff grew that passes the concept test, or a page it
+  touched that fails it (`/knowledge-tend` check 3) — proposed as a split or a fold, so the shape
+  fix rides the slice that caused it rather than a later docs PR. When later slices will rewrite the same sections, the proposal is
   written into `slices.md` against the **last slice**, whose review runs check 3 over the series
   whole; `/giljabi`'s close runs no shape check, so a deferral pointed there is a deferral lost.
   This axis checks pages against **code**, including entities the spec never mentioned.

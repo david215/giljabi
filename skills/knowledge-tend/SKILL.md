@@ -72,29 +72,37 @@ for f in docs/domain/*.md docs/platform/*.md; do id=$(sed -n 's/^id: //p' "$f" |
     do grep -qlE "to: $id\}" docs/domain/$t.md docs/platform/$t.md 2>/dev/null && echo "reciprocal: $id <-> $t"; done; done
 ```
 
-A **missing edge** — a page whose body links another page with no relation declared in either
-direction — is a finding too; propose the edge on the page whose code enforces it:
+A **missing edge** — a page whose body names another page's title or file with no relation
+declared in either direction — is a finding too, and each hit is read: the sentence is a claim the
+other page's code could falsify → propose the edge on the page making it; it restates the other
+page's own fact → propose the cut (one home per fact); the entity is named in passing → leave it,
+and say so. The first run over a layer is long; it is the graph being declared for the first time.
 
 ```bash
 for f in docs/domain/*.md docs/platform/*.md; do id=$(sed -n 's/^id: //p' "$f" | head -1); [ -n "$id" ] || continue
-  grep -oE '\]\(([a-z0-9-]+/)?[a-z0-9-]+\.md' "$f" | sed -E 's#.*/##; s#\]\(##; s#\.md$##' | sort -u | while read -r t
-    do [ "$t" = "$id" ] && continue; tf=$(ls docs/domain/"$t".md docs/platform/"$t".md 2>/dev/null | head -1); [ -n "$tf" ] || continue
-    grep -qE "to: $t\}" "$f" || grep -qE "to: $id\}" "$tf" || echo "missing edge: $id -> $t"; done; done
+  body=$(awk 'n>=2{print} /^---$/{n++}' "$f")
+  for g in docs/domain/*.md docs/platform/*.md; do t=$(sed -n 's/^id: //p' "$g" | head -1); [ -n "$t" ] && [ "$t" != "$id" ] || continue
+    title=$(sed -n 's/^# //p' "$g" | head -1)
+    printf '%s\n' "$body" | grep -qiw -e "$title" -e "$t.md" || continue
+    grep -qE "to: $t\}" "$f" || grep -qE "to: $id\}" "$g" || echo "no edge: $id -> $t (names \"$title\")"; done; done
 ```
 
 An empty result is trusted only after the script names a pair you know is missing — write the
-link on a scratch copy and watch it print.
+title on a scratch copy and watch it print.
 
 ## 3. Shape
 
 Mechanical signals that a page wants splitting or regrouping — each a *proposal*, since a long page
 can be a rich entity and a short one a thin one:
 
-- **Size** — a page over 100 lines is *when you look*, not a limit: a central entity whose lines
-  carry file paths and a Hazards section runs 100–140 by design. The rule is the **noun-section
-  test**: a `##` section that names its own noun, cites its own code and has Hazards that reference
-  it (`## Purge Job` inside `organization.md`) is a page waiting to be cut out. Propose the split
-  and the relation that links them; a long page that fails the test is left alone.
+- **Granularity** — a page is one concept, and the **concept test** decides what one is, in both
+  directions: its code can change while its parent's does not; it has a lifecycle or failure mode
+  of its own; a reader would look it up by that name. Three yeses on a `##` section (`## Purge Job`
+  inside `organization.md`) → propose the split and the relation that links them. Fewer than three
+  on a page (ranges computed on every read from the parent's text; a field with a validator) →
+  propose folding it back as a section of its parent, repointing every edge declared at it. Line
+  count is a reason to run the test and never its verdict: a central entity runs long by design,
+  and a split that makes a thin page is the shape error the test exists to stop.
 - **Fan-out** — a page with more than ~6 `relations:` is usually a context, not an entity.
 - **Context vs code** — a page whose `context:` names one boundary while every file it cites lives
   in another. Propose the regroup: a frontmatter edit and a regenerated index.

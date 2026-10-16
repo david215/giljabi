@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regenerate a knowledge index from page frontmatter and each page's first sentence.
+# Regenerate a knowledge index from page frontmatter, each page's first sentence and its noun sections.
 # usage: index.sh docs/domain > docs/domain/README.md   (same for docs/platform)
 set -euo pipefail
 dir="${1:?usage: index.sh <docs/domain|docs/platform>}"
@@ -26,11 +26,12 @@ for f in "$dir"/*.md; do
     fm==1 && /^context: / { ctx=$0; sub(/^context: */, "", ctx) }
     fm==1 && /^status: /  { st=$0;  sub(/^status: */, "", st) }
     fm>=2 && /^# /        { intitle=1; next }
+    fm>=2 && /^## /       { s=$0; sub(/^## */, "", s); if (s != "Lifecycle" && s != "Invariants" && s != "Hazards") secs = secs (secs ? ", " : "") s }
     fm>=2 && intitle && NF { def = def (def ? " " : "") $0; if ($0 ~ /\.( |$)/) intitle=0 }
     END {
       sub(/\.( .*)?$/, "", def)
-      printf "%s\t%s\t%s\t%s\t%s\t%s\n", (ctx ? ctx : "~"), id, f, (st == "intended" ? " _(intended)_" : ""), def, rel
+      printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\n", (ctx ? ctx : "~"), id, f, (st == "intended" ? " _(intended)_" : ""), def, rel, secs
     }' "$f"
 done | sort -t$'\t' -k1,1 -k2,2 | awk -F'\t' '
   $1 != ctx { ctx=$1; printf "%s### %s\n\n", (NR>1 ? "\n" : ""), (ctx=="~" ? "uncategorised" : ctx) }
-  { printf "- [%s](%s)%s — %s%s\n", $2, $3, $4, $5, ($6 ? " · related: " $6 : "") }'
+  { printf "- [%s](%s)%s — %s%s%s\n", $2, $3, $4, $5, ($6 ? " · related: " $6 : ""), ($7 ? " · sections: " $7 : "") }'

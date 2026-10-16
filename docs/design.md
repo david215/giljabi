@@ -100,7 +100,24 @@ The index renders the union on every line so a reader who never learns the rule 
 **neighbourhood**, and the skills that touch code — implement, review, grill, tend — read one hop
 out along it, because a change to an entity's code goes stale first on the pages *about* it, not on
 its own. Relations earned their place only when something traversed them; before that they were
-metadata the dangling check validated and nobody read.
+metadata the dangling check validated and nobody read. The first graph was an FK diagram: authors
+declared the keys the schema showed and stopped, so a service loading another entity's row had no
+edge and its page sat two hops from what its code read. An edge is a claim on one page that another
+entity's code can falsify; keys and reads are how such claims usually arise, and the page whose code
+enforces the dependency breaks a tie.
+
+## Why pages stay flat, and a concept earns a page by three tests
+
+Nesting `docs/domain/` by context was proposed when the layer reached three dozen pages. The group
+already lives in `context:`, where regrouping is a frontmatter edit; in a path it is a `git mv`
+that breaks every pointer in code comments, tickets and the entry point, and it makes a soft
+grouping load-bearing before the grouping rule is settled (the contexts are not the apps). What a
+directory would buy — siblings as a traversal — the index section gives for a dozen lines, so the
+skills read it beside the hop. Granularity moved off section shape because the shape lied both
+ways: a nickname with a validator passed the noun-section test and would have made a thin page,
+while a cron with its own lease needed a page and no size trigger fired. The three tests run in
+both directions, so a page folds as well as splits, and the index lists noun sections so a folded
+concept keeps its search line.
 
 ## Why tending is its own skill
 

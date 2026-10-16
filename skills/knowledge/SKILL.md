@@ -90,12 +90,17 @@ reached from the other through `relations:`. Regrouping is a frontmatter edit pl
 index, which is why the index is generated: hand-maintained grouping is the one drift nothing else
 detects. On a platform page, `context:` names the technology (`prisma`, `postgres`, `nest`).
 
-**A relation is declared once, on the page whose code enforces it** — the foreign key, the `CHECK`,
-the view SQL, the service that performs the action — and labelled from that page's viewpoint
-(`withdrawal --soft-deletes--> organization`, never also `organization --soft-deleted-by-->
-withdrawal`). The reverse direction is derived, not written: a fact has one home and an edge is a
-fact. A page's **neighbourhood** is the union of the edges it declares and the edges declared at it;
-the index renders it on every line, and the lookup below computes it.
+**An edge is a claim that crosses pages, declared once, on the page that makes the claim.** Page A
+declares an edge to B when a sentence on A would go false if B's code changed — the test every
+claim already meets, applied to its subject: a service that loads B's row to build a request, a
+key or `CHECK` that binds them, a lifecycle on A that B's state gates. The label names the
+relationship from A's viewpoint (`withdrawal --soft-deletes--> organization`, never also
+`organization --soft-deleted-by--> withdrawal`); when both pages claim about each other, the page
+whose code enforces the dependency declares it and the other reaches it through the
+neighbourhood. The reverse direction is derived, not written: a fact has one home and an edge is a
+fact. A page's **neighbourhood** is the union of the edges it declares and the edges declared at
+it; the index renders it on every line, and the lookup below computes it. An entity named in
+passing, with no claim resting on it, is prose.
 
 ## The four rules
 
@@ -164,9 +169,10 @@ When maintaining the model live (a grill session, a design discussion):
 
 ## The index is generated
 
-`README.md` in each knowledge directory is built from frontmatter and each page's first sentence,
-grouped by `context:`, and is never edited by hand — an edited index is a second home for the
-definition. Regenerate after any page edit (`/knowledge-tend` runs it and diffs; the review's
+`README.md` in each knowledge directory is built from frontmatter, each page's first sentence and
+its noun sections (every `##` beyond `Lifecycle`, `Invariants`, `Hazards`), grouped by `context:`,
+so a concept folded into its parent keeps an index line — and is never edited by hand: an edited
+index is a second home for the definition. Regenerate after any page edit (`/knowledge-tend` runs it and diffs; the review's
 Knowledge axis fails a stale one). The script is [index.sh](./index.sh) in this skill's directory:
 
 ```bash
@@ -193,7 +199,9 @@ Dangling relations and reciprocal pairs fail the review's Knowledge axis. The ch
 references, not truth — truth is checked by reading, which is why pages stay short enough to read.
 The second command is the **neighbourhood** lookup: together with the page's own `relations:` it
 names every page that asserts something about `<id>` — the pages a change to `<id>`'s code can make
-stale, and the scope `/implement`, `/review`, `/grill` and `/knowledge-tend` read one hop out to. Shape and placement
+stale, and the scope `/implement`, `/review`, `/grill` and `/knowledge-tend` read one hop out to —
+beside the index section of the page's `context:`, every sibling's definition line, since an edge
+nobody declared is still a page the change can stale. Shape and placement
 drift — a page in the wrong layer, an oversized page, a stale index — are `/knowledge-tend`'s job.
 
 ## Migrating and tending

@@ -64,7 +64,9 @@ renamed or never written, and the fix is the user's call. A page with no `contex
 
 A **reciprocal pair** — `A → B` declared on A and `B → A` declared on B — is a finding: an edge is
 declared once, on the page whose code enforces it (`/knowledge`). Propose removing the derived side;
-the neighbourhood lookup keeps the reverse reachable.
+the neighbourhood lookup keeps the reverse reachable. A page with empty `relations:` and a full
+`related:` column is a **root**: every edge in its neighbourhood is declared at it by a dependant
+whose code enforces it — the declare-once rule holding, and no finding.
 
 ```bash
 for f in docs/domain/*.md docs/platform/*.md; do id=$(sed -n 's/^id: //p' "$f" | head -1)
@@ -75,15 +77,20 @@ for f in docs/domain/*.md docs/platform/*.md; do id=$(sed -n 's/^id: //p' "$f" |
 A **missing edge** — a page whose body names another page's title or file with no relation
 declared in either direction — is a finding too, and each hit is read: the sentence is a claim the
 other page's code could falsify → propose the edge on the page making it; it restates the other
-page's own fact → propose the cut (one home per fact); the entity is named in passing → leave it,
+page's own fact → propose the cut, quoting the sentence on the other page that owns the fact; the
+pointer that replaces it says only what that sentence says, since a replacement clause is a new
+claim and is read against its target like any other; the entity is named in passing → leave it,
 and say so. The first run over a layer is long; it is the graph being declared for the first time.
+The detector matches titles on the body joined to one line, so a title wrapped at the fold still
+hits, and strips `*.md` tokens first: a bare file pointer is the one-home rule at work and claims
+nothing.
 
 ```bash
 for f in docs/domain/*.md docs/platform/*.md; do id=$(sed -n 's/^id: //p' "$f" | head -1); [ -n "$id" ] || continue
-  body=$(awk 'n>=2{print} /^---$/{n++}' "$f")
+  body=$(awk 'n>=2{print} /^---$/{n++}' "$f" | tr -s '[:space:]' ' ' | sed -E 's#[A-Za-z0-9/._-]*\.md##g')
   for g in docs/domain/*.md docs/platform/*.md; do t=$(sed -n 's/^id: //p' "$g" | head -1); [ -n "$t" ] && [ "$t" != "$id" ] || continue
     title=$(sed -n 's/^# //p' "$g" | head -1)
-    printf '%s\n' "$body" | grep -qiw -e "$title" -e "$t.md" || continue
+    printf '%s\n' "$body" | grep -qiw "$title" || continue
     grep -qE "to: $t\}" "$f" || grep -qE "to: $id\}" "$g" || echo "no edge: $id -> $t (names \"$title\")"; done; done
 ```
 
@@ -103,6 +110,10 @@ can be a rich entity and a short one a thin one:
   propose folding it back as a section of its parent, repointing every edge declared at it. Line
   count is a reason to run the test and never its verdict: a central entity runs long by design,
   and a split that makes a thin page is the shape error the test exists to stop.
+- **Name vs reach** — a page whose title names one consumer or one case of what its code serves
+  (`email-language` for a module two `.xlsx` exports also read). For every consumer and file the
+  page cites, ask whether the title covers it; one it does not → propose the rename, repointing
+  every reference as a move does (check 1).
 - **Fan-out** — a page with more than ~6 `relations:` is usually a context, not an entity.
 - **Context vs code** — a page whose `context:` names one boundary while every file it cites lives
   in another. Propose the regroup: a frontmatter edit and a regenerated index.

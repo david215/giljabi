@@ -145,19 +145,31 @@ Then route **every** finding through the disposition rule — the gates' failure
   feature directory and nothing reads the archive:
   what fits no slice is fixed now, lands on the page's `## Hazards`, or goes to the user. List
   every call you made in the report.
-- **Judgement call** — no documented rule decides it — goes to the user, all of them **batched into
-  one prompt**, your recommendation first. The prompt is sent once, after every finding of every
-  axis has a class; a second round means the first went out early.
+- **Judgement call** — no documented rule decides it — goes to the user, all of them **batched**,
+  your recommendation first, through the structured-question capability (`/giljabi`'s harness
+  map). The batch is sent once, after every finding of every axis has a class; where it exceeds
+  the capability's cap on one prompt, the prompts go out back to back in the same turn, and the
+  report lists every judgement call beside the prompt that carried it — a call listed with no
+  prompt is an accept, and accept is human-only. An option that moves or reorders code names the
+  assertion that pins the new position: the test that goes red when the move is reverted.
 - **Accept is human-only.** You may fix and you may ticket; you may never decide something stays
   broken. Any would-be accept escalates.
 
-A fix that renames, moves or deletes a page section sweeps `.scratch/<feature-slug>/` for the old
-heading and every quote of it — open tickets anchor on page text — and repoints each hit in the
-same commit; the sweep is done when the grep returns nothing.
+A finding on a **shape** the diff repeats — a callback, a guard, a DTO — is one instance: grep the
+shape across the diff's scope before disposing it, and dispose every instance in the round.
+
+A fix that renames, moves or deletes a page section sweeps `.scratch/<feature-slug>/`, `docs/` and
+the code (`git grep -n '<page>.md'` and the old heading — code comments point at pages) for the
+old heading and every quote of it — open tickets anchor on page text — and repoints each hit in
+the same commit; the sweep is done when the grep returns nothing. A moved section is two edits:
+the verbatim block closes by `diff` against its source, and every sentence written around it is a
+new claim that gets the axis.
 
 **Fix under the page contract, where the code lives.** A fix-now edit is written as `/implement`
 writes: the convention and platform pages for the file it touches are read first (an edit under
-`migrations/` reads the migrations page's freeze rule before the first byte); a number it writes
+`migrations/` reads the migrations page's freeze rule before the first byte; a page edit reads the
+conventions for docs prose, where the citation rule lives, whatever text the axis proposed); a
+number it writes
 into a page carries the enumeration behind it — the `ls` or grep output, pasted — since a count is
 incremented only by someone who did not enumerate; a claim it rewrites was read at the code it
 describes in this session. A hazard goes on the page whose code holds it — a testing mechanic on

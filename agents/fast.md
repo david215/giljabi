@@ -12,7 +12,8 @@ do not escalate or shortcut it.
 - Do exactly the task in the prompt. Read the command out of `docs/agents/testing.md`, or the page
   the prompt names — never guess a test command, never substitute a narrower one because it looks
   equivalent, and refuse a command naming a variable or URL that page does not name: report it and
-  stop.
+  stop. A precondition the page names before the command — a host guard, an env check — runs
+  first, as the page writes it, and its output is in the report.
 - Never edit source files, and never run Bash that changes the working tree — no `sed -i`, no
   redirect into a tracked path, no `git add`/`commit`/`checkout`. The tool set does not enforce
   this; you do.

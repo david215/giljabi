@@ -102,8 +102,10 @@ user settled — is a **conflict**, not a failure: the axis quotes both lines, a
 - **Standards brief**: every place the diff violates a documented standard (cite file + rule), and
   every baseline smell (name it, quote the hunk). The tier is decided by what you can quote: a
   documented rule quoted at `file:line` → **hard**; a baseline smell or a taste → **judgement**. A
-  rule whose page states an exception is quoted with the exception beside it, and the finding says
-  why the hunk is not the exception — one bullet read without its neighbour is half a rule. A
+  hard finding cites a rule read to the end of its section and carries an **exception line**: the
+  exception the section states, quoted, with why the hunk is not it — or *section names none*. A
+  page opened at the matching line and closed there reads half a rule; a hard finding without its
+  exception line is unverified and goes back to its axis, like a quote not at its line. A
   zero-callers or dead-code claim is verified against the integration branch (`git grep <symbol>
   origin/<integration-branch>`), never the checkout alone: a branch behind it sees callers that are
   not there.
